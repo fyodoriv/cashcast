@@ -3330,7 +3330,6 @@ Next review: **Mon, Nov 2**.
 - [ ] 2026-10-16: Pay Test Costly down to $50.00 — you do this (moves money)
 - [ ] 2026-10-18: Move $63,647 above your reserve to a higher-rate safe account you can withdraw in time; if it is for a first home, put up to $8,000 of it in your FHSA, in savings you can withdraw in time inside it — you do this (moves money)
 - [ ] 2026-10-18: Review 3 recurring payments (about $7,800.00 a year) and cancel the ones you no longer use
-- [ ] 2026-10-18: Spending was $29,400.00 above income in 12 months: pick one category to cut
 - [ ] 2026-10-18: Invest $63,647.28 of cash above the reserve — you do this (moves money)
 - [ ] 2026-10-20: Pay the canary card — you do this (moves money)
 - [ ] 2026-10-23: Pay Test Flat 2% down to $750.00 — you do this (moves money)
@@ -3804,7 +3803,7 @@ Next review: **Mon, Nov 2**.
 {"command": "tasks", "event": "command", "result": "ok"}
 {"event": "fetch_plan", "services": 0, "stale": 0}
 {"command": "fetch", "event": "command", "result": "ok"}
-{"event": "fetch_plan", "services": 13, "stale": 13}
+{"event": "fetch_plan", "services": 16, "stale": 16}
 {"command": "fetch", "event": "command", "result": "ok"}
 {"command": "moneywiz", "event": "report_shown", "scope": "agent:aggregates"}
 {"command": "moneywiz", "event": "command", "result": "failed"}
@@ -3945,7 +3944,7 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"event": "change_done"}
-{"blocked": 13, "event": "tasks_resolved", "resolved": 1}
+{"blocked": 12, "event": "tasks_resolved", "resolved": 1}
 {"command": "tasks", "event": "report_shown", "scope": "agent:strategy"}
 {"command": "tasks", "event": "command", "result": "ok"}
 {"cards": 3, "event": "cashback_scored", "ratio": 1.25}
