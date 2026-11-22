@@ -548,6 +548,22 @@ pub fn summarize(inbox: &Inbox, cfg: &Config, today: NaiveDate) -> Result<Summar
             uncategorized += 1;
         }
 
+        // `[pay] min_salary`: a smaller deposit is side income, not pay.
+        let side;
+        let kind = if matches!(kind, Kind::Salary)
+            && cfg
+                .pay
+                .min_salary
+                .is_some_and(|m| cents < (m * 100.0).round() as i64)
+        {
+            side = Kind::Income {
+                kind: "other".into(),
+                source: t.category.join(" > "),
+            };
+            &side
+        } else {
+            kind
+        };
         match kind {
             Kind::Salary => deposits.push((t, cents)),
             Kind::Income { kind, source } => {

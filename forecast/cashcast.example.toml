@@ -29,6 +29,7 @@
 # anchor = "2026-09-25"            # a recent payday (weekly and biweekly)
 # net_h1 = 3000.00                 # net pay per cheque, January to June
 # net_h2 = 3100.00                 # net pay per cheque, July to December
+# min_salary = 500.00              # a salary deposit under this is side income, not pay
 
 # [pay.holidays]                   # a weekly or biweekly payday on one moves earlier
 # "New Year 2027" = "2027-01-01"

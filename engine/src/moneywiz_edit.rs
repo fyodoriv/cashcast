@@ -69,6 +69,9 @@ pub struct CategorySpec {
     pub delete: Option<String>,
     /// Where rows in a deleted category go.
     pub move_to: Option<String>,
+    /// add: "expense" or "income", when the parent's name is both (such as
+    /// an expense and an income "Travel").
+    pub kind: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Default)]
@@ -91,6 +94,16 @@ pub struct WriterPlan {
     /// yes|no`): MoneyWiz drops links sent to an archived account.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub archive: Vec<ArchiveEdit>,
+    /// Rows MoneyWiz shows as pending, to mark cleared (with `fixes`).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub clear: Vec<ClearEdit>,
+}
+
+/// A pending row to mark cleared (MoneyWiz status 2).
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct ClearEdit {
+    pub entity: String,
+    pub gid: String,
 }
 
 /// An account's `archived` flag, checked first.
@@ -203,6 +216,9 @@ pub struct CategoryOp {
     /// add: a top-level category whose settings (income or expense) to copy.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub like: Option<Vec<String>>,
+    /// add: 1 expense or 2 income, to pick between two parents of one name.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub kind: Option<i64>,
 }
 
 pub struct Resolved {
@@ -275,6 +291,11 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
                         to: None,
                         move_to: None,
                         like: None,
+                        kind: match spec.kind.as_deref() {
+                            Some("expense") => Some(1),
+                            Some("income") => Some(2),
+                            _ => None,
+                        },
                     });
                 }
             }
@@ -310,6 +331,7 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
                         to: Some(to),
                         move_to: None,
                         like: None,
+                        kind: None,
                     });
                 }
             }
@@ -344,6 +366,17 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
         fix_edits(store, bank, sync, &mut plan, &mut by_gid);
         fold_edits(store, sync, &mut plan, &mut by_gid);
         date_kept_corrections(store, sync, &mut plan, &mut by_gid);
+        // The bank is the record: a row it holds is not pending. MoneyWiz
+        // lists pending rows at the top of every register.
+        plan.clear = store
+            .txns
+            .iter()
+            .filter(|t| t.pending && !t.gid.is_empty())
+            .map(|t| ClearEdit {
+                entity: t.entity.clone(),
+                gid: t.gid.clone(),
+            })
+            .collect();
     }
 
     // Deletes come last, after rows may have moved out of them.
@@ -375,6 +408,7 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
                 to: None,
                 move_to,
                 like: None,
+                kind: None,
             });
         }
     }
@@ -400,7 +434,9 @@ fn row_edit(
         return Ok(Some(edit));
     };
     if edit.category.as_ref().is_some_and(|c| *c == t.category)
-        && edit.category_kind.is_none_or(|k| t.category_kind == Some(k))
+        && edit
+            .category_kind
+            .is_none_or(|k| t.category_kind == Some(k))
     {
         edit.category = None;
         edit.category_kind = None;
@@ -411,7 +447,11 @@ fn row_edit(
     if edit.memo.as_deref().is_some_and(|m| m == t.memo) {
         edit.memo = None;
     }
-    if edit.date.as_deref().is_some_and(|d| d == t.date.to_string()) {
+    if edit
+        .date
+        .as_deref()
+        .is_some_and(|d| d == t.date.to_string())
+    {
         edit.date = None;
     }
     let left = edit.amount.is_some()
@@ -448,8 +488,23 @@ fn row_edit_any(
     let same = found
         .windows(2)
         .all(|w| w[0].text == w[1].text && w[0].memo == w[1].memo);
+    // A category-only edit (the owner's answer for an uncategorized row) picks
+    // the one matching row that has no category yet.
+    let category_only = (spec.set_category.is_some() || spec.set_category_path.is_some())
+        && spec.set_amount.is_none()
+        && spec.set_payee.is_none()
+        && spec.set_memo.is_none()
+        && spec.set_date.is_none()
+        && !spec.delete
+        && spec.nth.is_none();
+    let bare: Vec<&MwTxn> = found
+        .iter()
+        .copied()
+        .filter(|t| t.category.is_empty())
+        .collect();
     let t = match found.as_slice() {
         [t] => *t,
+        [_, _, ..] if category_only && bare.len() == 1 => bare[0],
         many if same && spec.nth.is_some_and(|n| (1..=many.len()).contains(&n)) => {
             many[spec.nth.unwrap_or(1) - 1]
         }
@@ -1217,6 +1272,12 @@ pub fn render(r: &Resolved, plan_path: &str) -> String {
     if !p.trades.is_empty() {
         out.push_str(&format!("{} investment trades to add\n", p.trades.len()));
     }
+    if !p.clear.is_empty() {
+        out.push_str(&format!(
+            "{} pending rows to mark cleared\n",
+            p.clear.len()
+        ));
+    }
     if !p.holdings.is_empty() {
         let zero = p
             .holdings
@@ -1265,6 +1326,7 @@ pub fn is_empty(p: &WriterPlan) -> bool {
         && p.trades.is_empty()
         && p.holdings.is_empty()
         && p.archive.is_empty()
+        && p.clear.is_empty()
 }
 
 /// Checks that a store holds every change in the plan. Returns the report
@@ -1376,7 +1438,16 @@ pub fn verify(store: &Store, plan: &WriterPlan) -> (String, usize) {
     {
         missing.push("the category tree is not the one the migration expects".into());
     }
+    let still = plan
+        .clear
+        .iter()
+        .filter(|c| store.txns.iter().any(|t| t.gid == c.gid && t.pending))
+        .count();
+    if still > 0 {
+        missing.push(format!("{still} rows still pending"));
+    }
     let total = plan.rows.len()
+        + plan.clear.len()
         + plan.trades.len()
         + plan.holdings.len()
         + plan.accounts.len()

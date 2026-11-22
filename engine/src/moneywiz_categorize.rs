@@ -679,6 +679,30 @@ pub fn check_misses(
 
 /// The rows with no category found, for the owner only (`--list`): day,
 /// account, amount and payee text. Never part of the counts report.
+/// Each guessed row, so the owner can answer row by row (`categorize --list`).
+pub fn render_picks(store: &Store, picks: &[Pick]) -> String {
+    let mut out = String::from(
+        "\n## Rows with a suggested category\n\n| Day | Account | Amount | Payee and description | Suggested category | From |\n|---|---|---:|---|---|---|\n",
+    );
+    for p in picks {
+        let t = p.row;
+        let account = store.account(t.account).map_or("?", |a| a.name.as_str());
+        out.push_str(&format!(
+            "| {} | {account} | {} | {} | {} | {} |\n",
+            t.date,
+            crate::money::fmt_cents(t.cents),
+            t.text.replace('|', "/"),
+            p.path.join(" > "),
+            if p.source == "payee" {
+                "your rows"
+            } else {
+                "engine guess"
+            },
+        ));
+    }
+    out
+}
+
 pub fn render_left(store: &Store, left: &Unpicked) -> String {
     let mut out = String::from(
         "\n## Rows with no category found\n\nThe other side: a row in another account with the opposite amount (within 1 %) within 10 days (a transfer needs no category).\n\n| Day | Account | Amount | Payee and description | Possible other side |\n|---|---|---:|---|---|\n",

@@ -108,6 +108,8 @@ pub struct MwTxn {
     pub holding: Option<String>,
     /// Core Data sync id (`GID`), for in-place edits. Empty when absent.
     pub gid: String,
+    /// MoneyWiz shows the row as pending (status 1, not cleared).
+    pub pending: bool,
 }
 
 impl MwTxn {
@@ -610,10 +612,11 @@ fn read(conn: &Connection) -> Result<Store, String> {
             &["ZINVESTMENTHOLDING", "ZINVESTMENTHOLDING1"],
             "ZINVESTMENTHOLDING",
         )?;
+        let status = col(&["ZSTATUS1"], "ZSTATUS1")?;
         let holding_symbols = holding_symbols(conn, &schema)?;
         let or_null = |c: &Option<String>| c.clone().unwrap_or_else(|| "NULL".into());
         let sql = format!(
-            "SELECT Z_PK, Z_ENT, {account_col}, {amount_col}, {date_col}, {}, {}, {}, {}, {}, {}, {}, {} FROM ZSYNCOBJECT WHERE Z_ENT IN ({})",
+            "SELECT Z_PK, Z_ENT, {account_col}, {amount_col}, {date_col}, {}, {}, {}, {}, {}, {}, {}, {}, {} FROM ZSYNCOBJECT WHERE Z_ENT IN ({})",
             or_null(&desc),
             or_null(&payee),
             or_null(&notes),
@@ -622,6 +625,7 @@ fn read(conn: &Connection) -> Result<Store, String> {
             or_null(&gid),
             or_null(&original),
             or_null(&holding),
+            or_null(&status),
             join_ids(&txn_ids)
         );
         let mut stmt = conn.prepare(&sql).map_err(sql_err)?;
@@ -641,6 +645,7 @@ fn read(conn: &Connection) -> Result<Store, String> {
                     r.get::<_, Option<String>>(10)?,
                     r.get::<_, Option<f64>>(11)?,
                     r.get::<_, Option<i64>>(12)?,
+                    r.get::<_, Option<i64>>(13)?,
                 ))
             })
             .map_err(sql_err)?;
@@ -659,6 +664,7 @@ fn read(conn: &Connection) -> Result<Store, String> {
                 gid,
                 orig,
                 held,
+                status,
             ) = row.map_err(sql_err)?;
             let (Some(account), Some(amount), Some(date)) = (account, amount, date) else {
                 continue;
@@ -706,6 +712,7 @@ fn read(conn: &Connection) -> Result<Store, String> {
                 other_account: other,
                 holding: held.map(|h| holding_symbols.get(&h).cloned().unwrap_or_default()),
                 gid: gid.unwrap_or_default(),
+                pending: status == Some(1),
             });
         }
     }
@@ -1416,6 +1423,39 @@ fn stock_plan(
     ap.start_fix = ap.start_cash - (opening + cash_before);
 }
 
+/// Drops MoneyWiz rows that form a card check: a charge of 1.00 or less and
+/// its reversal, in one account on one day with the same text. They sum to
+/// zero, and the bank side drops them too (`inbox::drop_reversal_pairs`), so
+/// they need no offset.
+fn drop_card_checks(store: &Store, amounts: &HashMap<i64, i64>, pks: &mut Vec<i64>) {
+    let rows: HashMap<i64, &MwTxn> = store.txns.iter().map(|t| (t.pk, t)).collect();
+    let mut gone = vec![false; pks.len()];
+    for i in 0..pks.len() {
+        let (Some(a), Some(&ca)) = (rows.get(&pks[i]), amounts.get(&pks[i])) else {
+            continue;
+        };
+        if gone[i] || ca == 0 || ca.abs() > 100 || a.text.is_empty() {
+            continue;
+        }
+        let pair = (i + 1..pks.len()).find(|&j| {
+            !gone[j]
+                && rows.get(&pks[j]).is_some_and(|b| {
+                    b.account == a.account && b.date == a.date && b.text == a.text
+                })
+                && amounts.get(&pks[j]) == Some(&-ca)
+        });
+        if let Some(j) = pair {
+            gone[i] = true;
+            gone[j] = true;
+        }
+    }
+    let mut n = 0;
+    pks.retain(|_| {
+        n += 1;
+        !gone[n - 1]
+    });
+}
+
 pub fn plan(store: &Store, inbox: &Inbox, cfg: Option<&MoneyWiz>) -> Result<Plan, String> {
     let since = match cfg.and_then(|c| c.since.as_deref()) {
         Some(s) => Some(
@@ -1837,6 +1877,7 @@ pub fn plan(store: &Store, inbox: &Inbox, cfg: Option<&MoneyWiz>) -> Result<Plan
             .filter(|(mi, m)| !mw_used[*mi] && m.date >= from && m.date <= to)
             .map(|(_, m)| m.pk)
             .collect();
+        drop_card_checks(store, &amounts, &mut ap.only_in_moneywiz);
         stock_plan(
             store,
             inbox,
@@ -2728,6 +2769,16 @@ pub struct SyncResult {
     pub sent: usize,
 }
 
+/// The "Only in MoneyWiz" cell: rows left for the owner, plus the rows the
+/// sync offsets (they stood in for bank rows), so neither hides as 0.
+fn only_cell(only: usize, offset: usize) -> String {
+    match (only, offset) {
+        (n, 0) => n.to_string(),
+        (0, m) => format!("{m} offset"),
+        (n, m) => format!("{n} + {m} offset"),
+    }
+}
+
 /// `moneywiz sync`: the plan, and with `apply` the links sent to MoneyWiz.
 pub fn sync(
     db: &Path,
@@ -2955,7 +3006,7 @@ pub fn sync(
             fmt_cents(added),
             ap.fix.len(),
             fmt_cents(diff),
-            ap.only_in_moneywiz.len(),
+            only_cell(ap.only_in_moneywiz.len(), ap.stand_in.len()),
             check
         ));
         total_add += ap.add.len();
@@ -3677,6 +3728,7 @@ mod tests {
             other_account: other,
             holding: None,
             gid: String::new(),
+            pending: false,
         };
         let store = Store {
             file_name: String::new(),

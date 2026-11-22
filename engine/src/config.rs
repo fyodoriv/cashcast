@@ -279,6 +279,9 @@ pub struct Pay {
     pub early_days: Option<i64>,
     /// A deposit up to this many days after a payday belongs to it.
     pub late_days: Option<i64>,
+    /// A salary deposit smaller than this (in the base currency) is side
+    /// income, not salary: it counts as "other" income. Default: no floor.
+    pub min_salary: Option<f64>,
 }
 
 pub fn parse(text: &str) -> Result<Config, String> {

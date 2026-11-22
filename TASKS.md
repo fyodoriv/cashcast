@@ -51,6 +51,13 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     count as spending. First check: does `import` read the database once the report CSV is
     older than the newest bank export? 2026-11-16: with every dated Scotia, TD, CIBC and
     Wealthsimple download marked `excluded` (prefix keys), the WAPE fell to 54.6 %.
+    2026-11-22 backtest (Jan 2025 to Oct 2026): each line alone misses by about a quarter
+    (net salary 24.3 %, extra income 26.2 %, spending excl. rent 23.2 %), so rows no longer
+    count twice; net cash flow is their difference and misses by 69.2 %. The biggest misses
+    are lumpy Travel and Uncategorized spending, and RSU/ESPP and "other" income that come in
+    some months only. The salary floor (`[pay] min_salary`) moves rows between salary and
+    other income, so it does not change net cash flow. Next lever: forecast lumpy categories
+    and stock-plan income by month of year, not as a flat average.
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows

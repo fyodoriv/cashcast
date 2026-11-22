@@ -22,7 +22,8 @@ fn store(name: &str) -> moneywiz::Store {
         "CREATE TABLE Z_PRIMARYKEY (Z_ENT INTEGER PRIMARY KEY, Z_NAME VARCHAR, Z_SUPER INTEGER, Z_MAX INTEGER);
          CREATE TABLE ZSYNCOBJECT (Z_PK INTEGER PRIMARY KEY, Z_ENT INTEGER, ZGID VARCHAR, ZNAME VARCHAR,
            ZCURRENCYNAME VARCHAR, ZOPENINGBALANCE FLOAT, ZNAME2 VARCHAR, ZPARENTCATEGORY INTEGER, ZAMOUNT1 FLOAT,
-           ZDATE1 TIMESTAMP, ZDESC2 VARCHAR, ZNOTES1 VARCHAR, ZACCOUNT2 INTEGER, ZRECIPIENTACCOUNT1 INTEGER);
+           ZDATE1 TIMESTAMP, ZDESC2 VARCHAR, ZNOTES1 VARCHAR, ZACCOUNT2 INTEGER, ZRECIPIENTACCOUNT1 INTEGER,
+           ZSTATUS1 INTEGER);
          CREATE TABLE ZCATEGORYASSIGMENT (Z_PK INTEGER PRIMARY KEY, ZTRANSACTION INTEGER, ZCATEGORY INTEGER, ZAMOUNT FLOAT);
          INSERT INTO Z_PRIMARYKEY VALUES (10,'Account',0,0),(11,'BankChequeAccount',10,0),(20,'Category',0,0),
            (37,'Transaction',0,0),(48,'WithdrawTransaction',37,0),(46,'TransferWithdrawTransaction',37,0);
@@ -41,8 +42,8 @@ fn store(name: &str) -> moneywiz::Store {
         (105, 48, -7.0, "2026-09-04", "ETRANSFER CANARYMW5"),
     ] {
         c.execute(
-            "INSERT INTO ZSYNCOBJECT (Z_PK,Z_ENT,ZGID,ZACCOUNT2,ZAMOUNT1,ZDATE1,ZDESC2) VALUES (?1,?2,?3,1,?4,?5,?6)",
-            rusqlite::params![pk, ent, format!("g{pk}"), amount, ts(day), desc],
+            "INSERT INTO ZSYNCOBJECT (Z_PK,Z_ENT,ZGID,ZACCOUNT2,ZAMOUNT1,ZDATE1,ZDESC2,ZSTATUS1) VALUES (?1,?2,?3,1,?4,?5,?6,?7)",
+            rusqlite::params![pk, ent, format!("g{pk}"), amount, ts(day), desc, if pk == 101 { 1 } else { 2 }],
         )
         .unwrap();
     }
@@ -471,6 +472,49 @@ fn by_gid(s: &moneywiz::Store, gid: &str, to: &str) -> moneywiz_edit::RowEdit {
 }
 
 #[test]
+fn a_category_edit_picks_the_one_matching_row_with_no_category() {
+    let _ = store("uncat");
+    let path = std::env::temp_dir()
+        .join(format!("cashcast-mw-edit-uncat-{}", std::process::id()))
+        .join("MoneyWiz.sqlite");
+    let c = Connection::open(&path).unwrap();
+    // A second -30.00 row on the day of the categorized row 103.
+    c.execute(
+        "INSERT INTO ZSYNCOBJECT (Z_PK,Z_ENT,ZGID,ZACCOUNT2,ZAMOUNT1,ZDATE1,ZDESC2) VALUES (106,48,'g106',1,-30.0,?1,'CINEMA CANARYMW6')",
+        rusqlite::params![ts("2026-09-03")],
+    )
+    .unwrap();
+    drop(c);
+    let s = moneywiz::open(&path).unwrap();
+    let r = moneywiz_edit::resolve(
+        &s,
+        &file(
+            r#"
+            [[row]]
+            account = "Chequing"
+            date = "2026-09-03"
+            amount = -30.00
+            set_category = "Food/Groceries"
+
+            [[row]]
+            account = "Chequing"
+            date = "2026-09-03"
+            amount = -30.00
+            set_memo = "a memo edit still needs text"
+            "#,
+        ),
+        None,
+    );
+    let gids: Vec<_> = r.plan.rows.iter().map(|e| e.gid.as_str()).collect();
+    assert_eq!(gids, ["g106"], "{:?}", r.problems);
+    assert!(
+        r.problems[0].starts_with("row #2: 2 MoneyWiz rows match"),
+        "{:?}",
+        r.problems
+    );
+}
+
+#[test]
 fn nth_picks_one_of_identical_rows_only() {
     let s = store("nth");
     let r = moneywiz_edit::resolve(
@@ -636,4 +680,45 @@ fn a_row_edit_already_in_moneywiz_is_not_planned_again() {
     );
     let out = moneywiz_edit::render(&r, "plan.json");
     assert!(out.contains("(1 already done)"), "{out}");
+}
+
+#[test]
+fn a_category_add_names_its_kind_for_a_parent_of_two_kinds() {
+    let s = store("kind");
+    let r = moneywiz_edit::resolve(
+        &s,
+        &file(
+            r#"
+            [[category]]
+            add = "Food/Shared"
+            kind = "expense"
+
+            [[category]]
+            add = "Fun/Other"
+            "#,
+        ),
+        None,
+    );
+    let kinds: Vec<_> = r.plan.categories.iter().map(|c| c.kind).collect();
+    assert_eq!(kinds, [Some(1), None], "{:?}", r.problems);
+    let json = serde_json::to_string(&r.plan).unwrap();
+    assert!(json.contains("\"kind\":1"), "{json}");
+}
+
+#[test]
+fn fixes_mark_pending_rows_cleared() {
+    let s = store("pending");
+    assert!(s.txns.iter().any(|t| t.pk == 101 && t.pending));
+    let empty = moneywiz::Plan {
+        accounts: Vec::new(),
+        untouched: Vec::new(),
+        unlinked_exports: Vec::new(),
+        file_named: Vec::new(),
+    };
+    let r = moneywiz_edit::resolve(&s, &file(""), Some((&[], &empty)));
+    let gids: Vec<&str> = r.plan.clear.iter().map(|c| c.gid.as_str()).collect();
+    assert_eq!(gids, ["g101"], "only the pending row is cleared");
+    assert!(!moneywiz_edit::is_empty(&r.plan));
+    let none = moneywiz_edit::resolve(&s, &file(""), None);
+    assert!(none.plan.clear.is_empty(), "only --fixes clears");
 }

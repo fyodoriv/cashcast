@@ -38,6 +38,13 @@ struct Plan: Decodable {
     let trades: [TradeAdd]?
     let holdings: [HoldingEdit]?
     let archive: [ArchiveEdit]?
+    let clear: [ClearEdit]?
+}
+
+/// A pending row to mark cleared (status 2).
+struct ClearEdit: Decodable {
+    let entity: String
+    let gid: String
 }
 
 /// Archive an account, or show it again: MoneyWiz drops links sent to an
@@ -101,6 +108,7 @@ struct CategoryOp: Decodable {
     let to: String?
     let move_to: [String]?
     let like: [String]?
+    let kind: Int?
 }
 
 final class PassthroughTransformer: ValueTransformer {
@@ -280,7 +288,10 @@ final class Categories {
             self.path($0) == path && (user == nil || same($0.value(forKey: "user") as? NSManagedObject, user))
                 && (kind == nil || ($0.value(forKey: "type") as? NSNumber)?.intValue == kind)
         }
-        guard found.count <= 1 else { throw Fail("\(found.count) categories have the same path") }
+        guard found.count <= 1 else {
+            let kinds = found.map { "\(($0.value(forKey: "type") as? NSNumber)?.intValue ?? 0)" }.joined(separator: ",")
+            throw Fail("\(found.count) categories have the same path \(path.joined(separator: " > ")) (types \(kinds))")
+        }
         return found.first
     }
 
@@ -289,10 +300,11 @@ final class Categories {
         return c
     }
 
-    func add(_ path: [String], like: [String]?) throws {
+    func add(_ path: [String], like: [String]?, kind: Int? = nil) throws {
         let user = try user()
-        if try find(path, user: user) != nil { return }
-        let parent = path.count > 1 ? try require(Array(path.dropLast()), user: user) : nil
+        if try find(path, user: user, kind: kind) != nil { return }
+        // kind picks between two parents of one name (an expense and an income one).
+        let parent = path.count > 1 ? try require(Array(path.dropLast()), user: user, kind: kind) : nil
         // A new category copies the required settings (such as income or
         // expense) of its parent, of the `like` category, or of another
         // top-level category.
@@ -497,7 +509,7 @@ func signedShare(of amount: Double, _ ctx: NSManagedObjectContext) throws -> Dou
 func apply(_ plan: Plan, _ ctx: NSManagedObjectContext) throws -> [String: Int] {
     guard plan.contract == 1 else { throw Fail("this writer reads plan contract 1, not \(plan.contract)") }
     let cats = try Categories(ctx)
-    for op in plan.categories where op.op == "add" { try cats.add(op.path, like: op.like) }
+    for op in plan.categories where op.op == "add" { try cats.add(op.path, like: op.like, kind: op.kind) }
     for op in plan.categories where op.op == "rename" {
         guard let to = op.to else { throw Fail("a rename has no new name") }
         try cats.rename(op.path, to: to)
@@ -527,6 +539,10 @@ func apply(_ plan: Plan, _ ctx: NSManagedObjectContext) throws -> [String: Int] 
         }
         archives.append((account, a))
     }
+    for c in plan.clear ?? [] {
+        try requireKeys(c.entity, ["GID", "status"], ctx)
+        try set(try one(c.entity, gid: c.gid, ctx), "status", 2)
+    }
     for e in plan.rows { try edit(e, ctx, cats) }
     for tr in plan.trades ?? [] { try addTrade(tr, ctx) }
     for (holding, h) in holdings {
@@ -546,7 +562,7 @@ func apply(_ plan: Plan, _ ctx: NSManagedObjectContext) throws -> [String: Int] 
     let inserted = ctx.insertedObjects.count
     try ctx.obtainPermanentIDs(for: Array(ctx.insertedObjects))
     if ctx.hasChanges { try ctx.save() }
-    return ["rows": plan.rows.count, "accounts": plan.accounts.count, "categories": plan.categories.count, "archive": (plan.archive ?? []).count, "inserted": inserted]
+    return ["rows": plan.rows.count, "accounts": plan.accounts.count, "categories": plan.categories.count, "archive": (plan.archive ?? []).count, "cleared": (plan.clear ?? []).count, "inserted": inserted]
 }
 
 // MARK: - Commands
@@ -699,6 +715,9 @@ func addTrade(_ tr: TradeAdd, _ ctx: NSManagedObjectContext) throws {
     try set(t, "numberOfShares", tr.shares)
     try set(t, "pricePerShare", tr.price)
     try set(t, "amount", tr.amount)
+    // Cleared, as the broker file records it: without a status MoneyWiz
+    // lists the row as pending.
+    if has(t, "status") { t.setValue(2, forKey: "status") }
     if has(t, "notes") { t.setValue("Added by cashcast", forKey: "notes") }
     try set(t, "investmentHolding", holding)
     let others = (holding?.value(forKey: "investmentTransactions") as? Set<NSManagedObject>) ?? []

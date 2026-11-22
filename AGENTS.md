@@ -180,6 +180,9 @@ Run from the repo root.
 | 2026-11-22 | `cards missed` checked 0 charges in a week with many card rows | the forecast import ended weeks earlier and uses export account names; `cards missed` now reads MoneyWiz rows mapped through `[moneywiz.accounts]` (task `cards-now-fresh-rows` for `cards now`) |
 | 2026-11-22 | `moneywiz edit --fixes` exited 3 "MoneyWiz did not quit" | an open MoneyWiz window blocks the scripted quit (-128); nothing was written. Ask the owner to quit MoneyWiz (Cmd-Q), then rerun. The Sunday weekly writes MoneyWiz without asking, but never closes its windows by keystrokes |
 | 2026-11-22 | `moneywiz categorize` refused: "moneywiz-edits.toml exists", though every edit in it was already in MoneyWiz | nothing moved an applied edits file out of the inbox, and agents may not touch the inbox; categorize now parks a file MoneyWiz already shows in full as `moneywiz-edits-applied-YYYYMMDD.toml` (test `categorize_parks_an_edits_file_moneywiz_already_shows`) |
+| 2026-11-22 | MoneyWiz showed 400+ "pending" rows at the top of All transactions | the writer added broker trades with no status (MoneyWiz `status` 1 = pending, 2 = cleared); it now saves them cleared, and `edit --fixes` clears pending rows (test `fixes_mark_pending_rows_cleared`) |
+| 2026-11-22 | 8 "cashcast fix" offsets for $1 card checks MoneyWiz already held | a charge of $1 or less and its same-day reversal (same account and text) is skipped on the bank side and the MoneyWiz side (tests `a_same_day_charge_and_its_reversal_are_not_bank_rows`, `a_card_check_pair_moneywiz_holds_needs_no_bank_row`) |
+| 2026-11-22 | the transfer plan said to pay a card in full that the owner had already paid | it used a 6-day-old download's balance; skill step 2c: compare each sync balance with the live site and plan transfers from live balances only |
 | 2026-10-02 | the pre-push privacy gate flags a word | do not add accounting-file formats that match it; see memory |
 
 ## Cloud sessions
