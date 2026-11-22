@@ -65,7 +65,9 @@ Rules and fees change. Before you advise on a fee, a day count or a document:
 1. Run `bin/cashcast paperwork sources --live` outside the agent sandbox (canada.ca
    resets connections from the sandbox). Each page shows OK, CHANGED, UNREACHABLE or
    MANUAL. MANUAL is a page it cannot read as text (a PDF): open it and look for the
-   listed quotes by hand.
+   listed quotes by hand. From a shell: `curl -sSL <url> -o "$TMPDIR/form.pdf"`, then
+   `pdftotext "$TMPDIR/form.pdf" - | rg -n -i "<a few words of the quote>"` (a quote can
+   break across lines, so search a short part of it).
 2. On CHANGED, read the official page, update the quote, the rule and `CHECKED` in
    `engine/src/paperwork/facts.rs`, and run its tests. Cite only `canada.ca`,
    `ircc.canada.ca` or `cic.gc.ca` pages.
