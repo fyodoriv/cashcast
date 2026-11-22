@@ -551,6 +551,7 @@ fn run() -> Result<(), String> {
                     };
                     print!("{}", moneywiz_categorize::render(&picks, &left, written));
                     if args.iter().any(|a| a == "--list") {
+                        print!("{}", moneywiz_categorize::render_picks(&store, &picks));
                         print!("{}", moneywiz_categorize::render_left(&store, &left));
                     }
                 }
@@ -648,7 +649,12 @@ fn run() -> Result<(), String> {
                 }
                 Some("edits") => {
                     let store = moneywiz::open(&db)?;
-                    let file = moneywiz_edit::load(&inbox_dir.join(moneywiz_edit::EDITS_FILE))?;
+                    // CASHCAST_MONEYWIZ_EDITS: an edits file outside the inbox, such as the
+                    // owner's answers an agent wrote down (agents never write the inbox).
+                    let edits_path = std::env::var_os("CASHCAST_MONEYWIZ_EDITS")
+                        .map(PathBuf::from)
+                        .unwrap_or_else(|| inbox_dir.join(moneywiz_edit::EDITS_FILE));
+                    let file = moneywiz_edit::load(&edits_path)?;
                     let exports;
                     let sync_plan;
                     let fixes = if args.iter().any(|a| a == "--fixes") {

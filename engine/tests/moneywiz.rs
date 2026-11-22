@@ -1527,6 +1527,21 @@ fn loose_offsets_a_stand_in_row_when_the_bank_balance_proves_it() {
         (listed.only_in_moneywiz, listed.stand_in.len()),
         (vec![340], 0)
     );
+    // The report's "Only in MoneyWiz" cell shows the offset row, not 0.
+    let cfg = config::parse(&format!(
+        "{}match = \"loose\"\n",
+        CONFIG.replace("DB", &db.display().to_string())
+    ))
+    .unwrap();
+    let exports = inbox::load_exports(&home.join("inbox"), &cfg).unwrap();
+    let today = NaiveDate::from_ymd_opt(2026, 10, 1).unwrap();
+    let r = moneywiz::sync(&db, &exports, &cfg, &home, today, false, false).unwrap();
+    let row = r
+        .report
+        .lines()
+        .find(|l| l.starts_with("| Savings |"))
+        .unwrap();
+    assert!(row.contains("| 1 offset |"), "{row}");
     let _ = std::fs::remove_dir_all(home);
 }
 
@@ -4224,5 +4239,51 @@ fn a_deposit_spent_on_a_buy_the_edit_adds_is_not_held() {
     assert!(!report.contains("CANARYZ36CAD"), "{report}");
     // The balance column counts the buy too, so it shows no false mismatch.
     assert!(report.contains("matches the bank (400.00)"), "{report}");
+    let _ = std::fs::remove_dir_all(home);
+}
+
+#[test]
+fn a_same_day_charge_and_its_reversal_are_not_bank_rows() {
+    let (home, _, cfg) = setup("reversal");
+    std::fs::write(
+        home.join("inbox").join("bank.csv"),
+        "Date,Account,Description,Amount,Balance
+2026-09-01,Chequing,CARD CHECK CANARY11,-1.00,
+2026-09-01,Chequing,CARD CHECK CANARY11,1.00,
+2026-09-02,Chequing,COFFEE CANARY12,-4.00,
+2026-09-03,Chequing,REFUND CANARY13,4.00,
+2026-09-04,Chequing,HOTEL HOLD CANARY14,-80.00,
+2026-09-04,Chequing,HOTEL HOLD CANARY14,80.00,
+",
+    )
+    .unwrap();
+    let exports = inbox::load_exports(&home.join("inbox"), &cfg).unwrap();
+    let cents: Vec<i64> = exports.txns.iter().map(|t| t.cents).collect();
+    assert_eq!(cents, [-400, 400, -8000, 8000], "only the card check pair is dropped");
+    let _ = std::fs::remove_dir_all(home);
+}
+
+#[test]
+fn a_card_check_pair_moneywiz_holds_needs_no_bank_row() {
+    let (home, db, cfg) = setup("cardcheck");
+    let c = Connection::open(&db).unwrap();
+    for (pk, ent, amount) in [(110, 48, -1.0), (111, 38, 1.0)] {
+        c.execute(
+            "INSERT INTO ZSYNCOBJECT (Z_PK,Z_ENT,ZACCOUNT2,ZAMOUNT1,ZDATE1,ZDESC2) VALUES (?1,?2,1,?3,?4,'CARD CHECK CANARYMW9')",
+            rusqlite::params![pk, ent, amount, ts("2026-09-04")],
+        )
+        .unwrap();
+    }
+    drop(c);
+    let store = moneywiz::open(&db).unwrap();
+    let exports = inbox::load_exports(&home.join("inbox"), &cfg).unwrap();
+    let plan = moneywiz::plan(&store, &exports, cfg.moneywiz.as_ref()).unwrap();
+    let flagged: Vec<i64> = plan
+        .accounts
+        .iter()
+        .flat_map(|a| a.only_in_moneywiz.iter().chain(&a.stand_in))
+        .copied()
+        .collect();
+    assert!(!flagged.contains(&110) && !flagged.contains(&111), "{flagged:?}");
     let _ = std::fs::remove_dir_all(home);
 }

@@ -204,9 +204,39 @@ fn load(dir: &Path, cfg: &Config, with_moneywiz: bool) -> Result<Inbox, String> 
     }
     trim_pdf_overlap(&mut files);
     let mut inbox = Inbox::merge(files, failed);
+    drop_reversal_pairs(&mut inbox.txns);
     inbox.ledger_files = ledger_files;
     inbox.moneywiz_files = moneywiz_files;
     Ok(inbox)
+}
+
+/// Drops a card check: a charge of $1 or less and its reversal, two rows in
+/// one account on one day with the same text and opposite amounts. They net
+/// to zero and are not spending (owner, 2026-11-22). Larger same-day pairs
+/// stay: MoneyWiz may hold them.
+pub fn drop_reversal_pairs(txns: &mut Vec<Txn>) {
+    let mut gone = vec![false; txns.len()];
+    for i in 0..txns.len() {
+        if gone[i] || txns[i].cents == 0 || txns[i].cents.abs() > 100 || txns[i].text.is_empty() {
+            continue;
+        }
+        let pair = (i + 1..txns.len()).find(|&j| {
+            !gone[j]
+                && txns[j].account == txns[i].account
+                && txns[j].date == txns[i].date
+                && txns[j].cents == -txns[i].cents
+                && txns[j].text == txns[i].text
+        });
+        if let Some(j) = pair {
+            gone[i] = true;
+            gone[j] = true;
+        }
+    }
+    let mut n = 0;
+    txns.retain(|_| {
+        n += 1;
+        !gone[n - 1]
+    });
 }
 
 /// Renames alias export accounts to their target (`[moneywiz.export_aliases]`).

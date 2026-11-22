@@ -91,6 +91,14 @@ fn other_accounts_count_flows_in_base_currency() {
 }
 
 #[test]
+fn a_salary_deposit_under_the_floor_is_other_income() {
+    let cfg = CONFIG.replace("[pay]\n", "[pay]\nmin_salary = 2000\n");
+    let s = run(&cfg, "min-salary").unwrap();
+    assert_eq!(may(&s.flows_cents, "salary"), 0, "1,000.00 is under the floor");
+    assert_eq!(may(&s.income_cents, "other"), 100_000);
+}
+
+#[test]
 fn separate_paths_get_their_own_spending_series() {
     let s = run(CONFIG, "separate").unwrap();
     assert_eq!(may(&s.spending_cents, "Housing > Rent"), 200_000);

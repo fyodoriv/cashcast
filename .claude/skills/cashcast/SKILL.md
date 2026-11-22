@@ -125,6 +125,14 @@ consent grant and the money moves stay with the owner.
    fails with -128, a MoneyWiz window such as Preferences is open: ask the
    owner once to close it (never by keystrokes) and quit again. Reopen
    MoneyWiz at the end.
+2c. Verify with the banks before you finish the sync (owner rule,
+   2026-11-22). For every bank and card account, compare the balance the
+   sync dry run reads ("matches the bank (X)") with the balance on the live
+   site, read today in step 1. A difference means the download is old:
+   download it again, sync, and dry-run again until both agree. Transfers
+   and card payments use only the live balances, never a download's. (A plan
+   once said to pay a card in full from a 6-day-old download; the site
+   showed the card already paid.)
 3. "Not up to date" must be empty before you call the week done. For each
    item: download that export again (step 1b) or link the account
    (`[moneywiz.accounts]` in cashcast.toml), then rerun `weekly`. "MoneyWiz

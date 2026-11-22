@@ -125,6 +125,27 @@ fn categorize_writes_an_edits_file_and_never_overwrites_one() {
 }
 
 #[test]
+fn categorize_list_shows_each_guessed_row_for_the_owner_to_answer() {
+    let (home, store, exports, plan) = setup("list");
+    let (picks, _) = moneywiz_categorize::picks(&store, &exports, &plan);
+    let out = moneywiz_categorize::render_picks(&store, &picks);
+    assert!(
+        out.contains(
+            "| Day | Account | Amount | Payee and description | Suggested category | From |"
+        ),
+        "{out}"
+    );
+    assert!(out.contains("| 2026-09-02 | Chequing | -40.00 |"), "{out}");
+    assert!(out.contains("Food > Groceries"), "{out}");
+    assert_eq!(
+        out.lines().filter(|l| l.starts_with("| 20")).count(),
+        picks.len(),
+        "{out}"
+    );
+    let _ = std::fs::remove_dir_all(home);
+}
+
+#[test]
 fn categorize_parks_an_edits_file_moneywiz_already_shows() {
     let (home, store, exports, plan) = setup("applied");
     let (picks, _) = moneywiz_categorize::picks(&store, &exports, &plan);

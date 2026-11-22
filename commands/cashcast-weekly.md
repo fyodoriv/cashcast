@@ -17,9 +17,12 @@ The owner expects exactly these 7 results, in this order:
 2. **MoneyWiz matches the banks from the last analyzed row on. Write it, do not ask.** Run
    `moneywiz sync`, then `moneywiz edit --fixes` (each after its dry run) and `moneywiz categorize`.
    Done when a dry run shows 0 to add and `moneywiz diagnose` reads "Last day off: none" per account,
-   or each exception is named with its cause.
+   or each exception is named with its cause. Verify with the banks before you finish: each
+   account's balance in the dry run must equal its live site balance read today; a difference
+   means an old download, so download again and sync.
 3. **The fewest transfers, with easy-to-type amounts**, between all accounts
    (`bin/cashcast transfers --balance …`): pay cards in full, keep each bank at its keep amount.
+   Use only the live site balances read today, never a download's balance.
 4. **Charges on the wrong card**: `bin/cashcast cards missed` (totals per card and category, never one
    charge), plus the 30-day view (`--since`), so the owner learns which card to use.
 5. **Forecast and what to do next**: `forecast` and `backtest`, suggestions and pivots. Put nothing

@@ -678,6 +678,7 @@ pub fn compile(store: &Store, m: &Migration) -> Result<Compiled, String> {
                     to: None,
                     move_to: None,
                     like: like.map(|l| tree.path_by(l, true)),
+                    kind: None,
                 });
             }
             Step::Rename { path, new, .. } => {
@@ -688,6 +689,7 @@ pub fn compile(store: &Store, m: &Migration) -> Result<Compiled, String> {
                     to: new.last().cloned(),
                     move_to: None,
                     like: None,
+                    kind: None,
                 });
             }
             Step::Move { .. } => moves += 1,
@@ -738,6 +740,7 @@ pub fn compile(store: &Store, m: &Migration) -> Result<Compiled, String> {
             to: None,
             move_to: move_to.map(|m| tree.path(m)),
             like: None,
+            kind: None,
         });
     }
 

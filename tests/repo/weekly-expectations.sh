@@ -21,6 +21,8 @@ done
 has "$cmd" "Put nothing
    into Reminders or Calendar until the owner confirms" "commands/cashcast-weekly.md"
 has "$cmd" "bin/cashcast cards missed" "commands/cashcast-weekly.md"
+has "$cmd" "Verify with the banks before you finish" "commands/cashcast-weekly.md"
+has "$cmd" "Use only the live site balances read today" "commands/cashcast-weekly.md"
 has "$cmd" "Every question and every hand step explains itself" "commands/cashcast-weekly.md"
 has "$cmd" "Results first,
 improvements second" "commands/cashcast-weekly.md"
@@ -32,6 +34,7 @@ has "$skill" "never pass it before the owner confirms" "skill Weekly session"
 has "$skill" '"write away"' "skill Weekly session"
 has "$skill" "Results page first" "skill Weekly session"
 has "$skill" "cards missed" "skill Weekly session"
+has "$skill" "Verify with the banks before you finish the sync" "skill Weekly session"
 has "$skill" "Every question and every hand step explains itself" "skill Weekly session"
 grep -qF -- "bin/cashcast sync all\` so the closed checks leave Reminders" <<< "$skill" \
   && fail "skill Weekly session still syncs Reminders before the owner confirms"

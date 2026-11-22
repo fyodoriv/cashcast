@@ -152,6 +152,7 @@ Changes existing rows (amount, category, payee, memo), opening balances, whether
 
    [[category]]
    add = "Food/Coffee"
+   # kind = "expense"            # or "income": needed when the parent's name is both an income and an expense category
 
    [[category]]
    rename = "Food/Groceries"
@@ -162,12 +163,13 @@ Changes existing rows (amount, category, payee, memo), opening balances, whether
    move_to = "Food/Coffee"      # where its rows go; needed when rows use it
    ```
 
+   A `set_category` edit with no `text` that matches two rows picks the one with no category yet. `set_category_kind = "expense"` (or `"income"`) picks between two categories that share a path. To keep the edits file out of the inbox (an agent may not write there), point `CASHCAST_MONEYWIZ_EDITS=<path>` at it.
 2. Preview: `bin/cashcast moneywiz edit --dry-run`. It shows counts, and problems by edit number (no row matches, two rows match, a category does not exist).
 3. Turn it on once: add `writer = "core-data"` under `[moneywiz]` in `cashcast.toml`. The first run builds the writer (it needs `xcode-select --install`). The engine uses the writer from its own checkout, so an engine run from the sync worktree with `CASHCAST_ROOT` set never reaches an older writer.
 4. Run `bin/cashcast moneywiz edit`. It applies the edits to a copy of the database and checks the copy. The first time, it stops there and prints a `writer_checksum = "…"` line: add it under `[moneywiz]` to allow live edits for this MoneyWiz version.
 5. Run it again. It quits MoneyWiz, backs the database up to `data/moneywiz-backups/`, writes the edits, checks them, and reopens MoneyWiz.
 6. Verify: the report says "Verified N of N changes", and MoneyWiz sync shows **Up to Date**. The first time, also check one edited row on your phone.
-7. To fix wrong amounts automatically, set `fixes = "edit"`: each `moneywiz sync` then edits them in place (and a wrong opening balance) instead of adding correction rows. `bin/cashcast moneywiz edit --fixes` does the same without a sync.
+7. To fix wrong amounts automatically, set `fixes = "edit"`: each `moneywiz sync` then edits them in place (and a wrong opening balance) instead of adding correction rows. `bin/cashcast moneywiz edit --fixes` does the same without a sync. It also marks every row MoneyWiz shows as pending (status 1) cleared, and the writer saves the broker trades it adds as cleared: without a status MoneyWiz lists them in a "Pending" block at the top of All transactions (owner, 2026-11-22; test `fixes_mark_pending_rows_cleared`).
 8. `--fixes` also moves a matched row to the bank's day (`set_date = "YYYY-MM-DD"` does it by hand), folds every `cashcast fix #<row>` correction into the row it fixes and deletes it (a row with several corrections takes their sum in one run), deletes a row and its corrections when they sum to zero, and folds a `cashcast balance fix` row into the opening balance. A second run then has nothing to change (test `a_second_fix_run_changes_nothing`).
 9. **Investments.** Map a MoneyWiz investment account to its broker files in `cashcast.toml`:
 
@@ -299,6 +301,6 @@ A MoneyWiz holding can carry opening shares (`openningNumberOfShares`), which Mo
 
 ### rows-without-category
 
-`bin/cashcast moneywiz categorize --dry-run --list` also lists the synced rows with no category found (day, account, amount, payee; private, only on your screen) and each row's possible other side: a row in another account with the opposite amount (within 1 %) within 10 days. A row with an other side is a transfer and needs no category. To set a category on one of two identical rows, add `nth = 1` (or 2, …) to its `[[row]]` block in `moneywiz-edits.toml`.
+`bin/cashcast moneywiz categorize --dry-run --list` first shows each row it would categorize (day, account, amount, payee, suggested category, where the guess came from), so an agent can ask about one row at a time. It also lists the synced rows with no category found (day, account, amount, payee; private, only on your screen) and each row's possible other side: a row in another account with the opposite amount (within 1 %) within 10 days. A row with an other side is a transfer and needs no category. To set a category on one of two identical rows, add `nth = 1` (or 2, …) to its `[[row]]` block in `moneywiz-edits.toml`.
 
 When every pick is skipped (two rows that look the same, or a name like "Other" that several categories share), `categorize` writes no edits file and says so; set those rows in MoneyWiz.
