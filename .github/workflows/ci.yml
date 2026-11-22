@@ -70,3 +70,17 @@ jobs:
         env:
           NO_CACHE: "1"
         run: scripts/check.sh
+
+  # Someone else's Mac: a clean macOS runner, a fresh HOME and a missing tool,
+  # then the README one-line install and a first use (scripts/fresh-mac.sh).
+  fresh-mac:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: README one-line install and first use in a fresh HOME
+        env:
+          FRESH_MAC_REMOVE: yq
+        run: scripts/fresh-mac.sh
