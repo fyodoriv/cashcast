@@ -2641,7 +2641,7 @@
      {
       "id": "download-transactions",
       "risk": "read",
-      "title": "Download transactions (CSV or QFX)",
+      "title": "Download transactions (QFX, or CSV)",
       "via": [
        "browser"
       ]

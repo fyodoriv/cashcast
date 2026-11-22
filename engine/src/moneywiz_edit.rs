@@ -211,6 +211,8 @@ pub struct Resolved {
     pub problems: Vec<String>,
     /// Category adds that already exist.
     pub already: usize,
+    /// Row edits MoneyWiz already shows (a second run plans nothing for them).
+    pub rows_already: usize,
 }
 
 pub fn load(path: &Path) -> Result<EditsFile, String> {
@@ -249,6 +251,7 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
         ..Default::default()
     };
     let mut already = 0;
+    let mut rows_already = 0;
 
     // Categories first: rows may use a category added or renamed here.
     let mut paths: BTreeSet<Vec<String>> = store.categories.iter().cloned().collect();
@@ -324,7 +327,8 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
     for (n, spec) in file.row.iter().enumerate() {
         let n = n + 1;
         match row_edit(store, spec, &paths) {
-            Ok(edit) => {
+            Ok(None) => rows_already += 1,
+            Ok(Some(edit)) => {
                 if by_gid.contains_key(&edit.gid) {
                     problems.push(format!("row #{n}: another edit already changes this row"));
                 } else {
@@ -378,10 +382,47 @@ pub fn resolve(store: &Store, file: &EditsFile, fixes: Option<(&[Txn], &Plan)>) 
         plan,
         problems,
         already,
+        rows_already,
     }
 }
 
+/// `None` when MoneyWiz already shows every change the spec asks for.
 fn row_edit(
+    store: &Store,
+    spec: &RowSpec,
+    paths: &BTreeSet<Vec<String>>,
+) -> Result<Option<RowEdit>, String> {
+    let mut edit = row_edit_any(store, spec, paths)?;
+    if edit.delete {
+        return Ok(Some(edit));
+    }
+    let Some(t) = store.txns.iter().find(|t| t.gid == edit.gid) else {
+        return Ok(Some(edit));
+    };
+    if edit.category.as_ref().is_some_and(|c| *c == t.category)
+        && edit.category_kind.is_none_or(|k| t.category_kind == Some(k))
+    {
+        edit.category = None;
+        edit.category_kind = None;
+    }
+    if edit.amount.is_some_and(|a| cents(a) == t.cents) {
+        edit.amount = None;
+    }
+    if edit.memo.as_deref().is_some_and(|m| m == t.memo) {
+        edit.memo = None;
+    }
+    if edit.date.as_deref().is_some_and(|d| d == t.date.to_string()) {
+        edit.date = None;
+    }
+    let left = edit.amount.is_some()
+        || edit.category.is_some()
+        || edit.payee.is_some()
+        || edit.memo.is_some()
+        || edit.date.is_some();
+    Ok(left.then_some(edit))
+}
+
+fn row_edit_any(
     store: &Store,
     spec: &RowSpec,
     paths: &BTreeSet<Vec<String>>,
@@ -1148,8 +1189,12 @@ pub fn render(r: &Resolved, plan_path: &str) -> String {
     let ops = |op: &str| p.categories.iter().filter(|c| c.op == op).count();
     let mut out = String::from("# MoneyWiz edits\n\n");
     out.push_str(&format!(
-        "{} row changes: {} amounts, {} categories, {} payees, {} memos, {} dates, {} deletes{}\n",
+        "{} row changes{}: {} amounts, {} categories, {} payees, {} memos, {} dates, {} deletes{}\n",
         p.rows.len(),
+        match r.rows_already {
+            0 => String::new(),
+            n => format!(" ({n} already done)"),
+        },
         count(&|e| e.amount.is_some()),
         count(&|e| e.category.is_some()),
         count(&|e| e.payee.is_some()),

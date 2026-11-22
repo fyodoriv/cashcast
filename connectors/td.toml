@@ -12,9 +12,9 @@ how_to_export = """
 1. Sign in to EasyWeb in a web browser.
 2. Select the account.
 3. On the Account Activity page, pick the period: 30, 60, 90 or 120 days, or one month under "Search by Month".
-4. Click Download. Pick Spreadsheet (.CSV). If you prefer, pick a Quicken or Money format (QFX or OFX).
-5. Save the file (often named accountactivity.csv) into private/users/<you>/inbox/.
-6. Repeat for each account. The CSV has no header row; cashcast expects that.
+4. Click Download. Pick Quicken (QFX). Avoid the CSV: it names no account, so its rows stay out of the MoneyWiz sync.
+5. Save the file (often named accountactivity.qfx) into private/users/<you>/inbox/.
+6. Repeat for each account, or use the Download icon on Accounts Overview for one QFX of every account.
 7. Older than 120 days: open the account's Statements and save each monthly PDF statement into the inbox (playbook action download-statements).
 """
 no_export_reason = ""
@@ -27,7 +27,7 @@ auth = "none"
 base_url = ""
 read = []
 write = []
-notes = "No public API for personal accounts. The CSV option on Account Activity is reported by third-party tools, not in TD's own help. QFX/OFX download and credit card CSV are not confirmed."
+notes = "No public API for personal accounts. The CSV option on Account Activity is reported by third-party tools, not in TD's own help. QFX download of chequing and credit card confirmed on 2026-11-22 (a card asks its account type once)."
 
 [browser]
 login_url = "https://easyweb.td.com/"
@@ -35,7 +35,7 @@ playbook = "playbooks/td.md"
 
 [[actions]]
 id = "download-transactions"
-title = "Download transactions (CSV or QFX)"
+title = "Download transactions (QFX, or CSV)"
 risk = "read"
 via = ["browser"]
 

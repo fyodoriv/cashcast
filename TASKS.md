@@ -424,6 +424,85 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     name the difference in each function
   - **Anchor**: Hunt & Thomas 1999, *The Pragmatic Programmer* (DRY)
 
+- [ ] The weekly keeps the bank balances it reads until `weekly --balance` runs
+  - **ID**: weekly-balances-survive-long-run
+  - **Tags**: weekly, transfers, agent
+  - **Details**: Found 2026-11-22 in the attended Sunday run. Step 1c reads each balance in the
+    browser, but step 2 runs after every download (about 2 hours later). The agent's context was
+    compacted in between and the balances were gone, so `weekly` ran without `--balance` and made
+    no transfer plan. Options: run `bin/cashcast transfers --balance …` right after the last
+    balance read and keep only its output; or a `balances record ID=AMOUNT` command that saves
+    them to the user's private data for that day, which `weekly` reads.
+  - **Files**: `.claude/skills/cashcast/SKILL.md` (weekly steps 1c and 2), `skills/bank-balances/SKILL.md`, maybe `engine/src/transfers.rs`
+  - **Acceptance**: the Sunday run makes a transfer plan with every balance read that day, even
+    after a context compaction; no balance enters a file outside `private/`.
+  - **Hypothesis**: Sunday runs that read balances but end with no transfer plan fall from 1 of 1
+    (2026-11-22) to 0 of the next 4.
+  - **Measurement**: the "Transfers" section of `private/.../out/weekly.html` each Sunday (`bin/cashcast weekly` prints it)
+  - **Success**: 4 of 4 Sundays with balances read also show a transfer plan
+  - **Pivot**: if a stored balance goes stale in use, drop storage and run `transfers` per bank right after each read
+  - **Anchor**: Gray & Reuter 1993, *Transaction Processing*, ch. 1 (durable state across a long-running activity)
+
+- [ ] `fetch collect` unpacks a Kraken ledgers ZIP and Kraken prices have one command
+  - **ID**: kraken-zip-and-prices
+  - **Tags**: fetch, kraken, crypto
+  - **Details**: Found 2026-11-22. (1) Kraken's export is a ZIP; `fetch collect` moves only plain
+    files, so the agent unzips by hand (playbook step 6) and old ZIPs pile up in Downloads.
+    (2) The price top-up has no cashcast command: agents hand-write a script into the user's
+    prices folder each week, and its ETHW pairs fail (ETHWEUR and ETHWUSD are not valid Kraken pairs).
+  - **Files**: the `fetch collect` code in `engine/src/` (`rg -n "fn collect" engine/src`), `engine/src/api.rs` (Kraken public ticker), `connectors/playbooks/kraken.md`
+  - **Acceptance**: a synthetic ZIP with a ledgers CSV and a canary lands in the inbox as the CSV, the ZIP is parked; `bin/cashcast api prices kraken` saves today's prices for every held asset with a valid pair and names the assets it skipped.
+  - **Hypothesis**: hand steps per Sunday for Kraken fall from 2 (unzip, price script) to 0.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test fetch` plus the weekly gap log
+  - **Success**: 0 hand steps for Kraken on the next Sunday run
+  - **Pivot**: if Kraken's public ticker lacks a held asset, read its price from the ledger's last trade instead
+  - **Anchor**: Hunt & Thomas 1999, *The Pragmatic Programmer*, tip 61 ("Don't use manual procedures")
+
+- [ ] The sync worktree has one documented command to run the engine on the owner's data
+  - **ID**: sync-worktree-runner
+  - **Tags**: weekly, moneywiz, agent
+  - **Details**: Found 2026-11-22. The skill says to use `~/.local/state/cashcast/sync` when the
+    checkout is not clean `main`, but names no command; each run writes its own wrapper
+    (`CASHCAST_ROOT=$HOME/apps/cashcast <sync>/engine/target/release/cashcast-engine cli …`). The
+    scheduled run on 2026-11-22 ran some commands with the main checkout's engine (a feature
+    branch with uncommitted edits) instead.
+  - **Files**: `.claude/skills/cashcast/SKILL.md` step 0 (release-owned), `connectors/playbooks/moneywiz.md`, maybe a `scripts/sync-run.sh`
+  - **Acceptance**: the skill names one command; a test runs it on the parity fixture and checks it used the sync worktree's binary.
+  - **Hypothesis**: weekly commands run with an engine other than the sync worktree's fall from some (2026-11-22) to 0.
+  - **Measurement**: the run transcript's engine paths (`rg -c "apps/cashcast/engine/target" <transcript>`) on the next two Sundays
+  - **Success**: 0 commands on the main checkout's engine while it is not clean `main`
+  - **Pivot**: if a wrapper still drifts, make `bin/cashcast` itself refuse a dirty or non-main checkout for `weekly`
+  - **Anchor**: Humble & Farley 2010, *Continuous Delivery*, ch. 5 (one artifact, built once, run everywhere)
+
+- [ ] The scheduled Sunday run reaches the owner when Remote Control is off
+  - **ID**: sunday-run-start-push
+  - **Tags**: weekly, scheduled
+  - **Details**: Found 2026-11-22. The scheduled run waited 30 minutes for 1Password ("This tool
+    requires an attended session"), but its start push never reached the phone because Remote
+    Control was inactive. Also add the Chrome check (`tabs_context_mcp`) to the start push, so
+    the owner connects Chrome before opening the run.
+  - **Files**: `~/.claude/scheduled-tasks/cashcast-moneywiz-weekly-sync/SKILL.md`, `.claude/skills/cashcast/SKILL.md` weekly step 1
+  - **Acceptance**: the start push reaches the owner on a Sunday with Remote Control off (macOS notification or a Reminders item due now).
+  - **Hypothesis**: Sunday runs whose bank sign-ins time out unattended fall from 1 of 1 to 0 of the next 4.
+  - **Measurement**: `mcp__scheduled-tasks__list_task_runs` for `cashcast-moneywiz-weekly-sync`, plus the run's "blocked" list
+  - **Success**: 0 of 4 runs list the browser banks as blocked for want of an attended session
+  - **Pivot**: if no channel reaches the owner, move the run to a time the owner sits at the Mac
+  - **Anchor**: Forsgren, Humble & Kim 2018, *Accelerate*, ch. 13 (monitoring and alerting that reaches a person)
+
+- [ ] PayPal sign-in works with the account's passkey
+  - **ID**: paypal-passkey-signin
+  - **Tags**: fetch, paypal, owner
+  - **Details**: Found 2026-11-22. PayPal now asks for Face ID or Touch ID; "Try another way"
+    did nothing and the page hung, so the PayPal export was skipped. The owner needs to be at the
+    Mac to answer the passkey prompt, or to turn on password sign-in for PayPal.
+  - **Files**: `connectors/playbooks/paypal.md`
+  - **Acceptance**: the playbook says what to do at the passkey prompt; the next Sunday run gets a PayPal CSV.
+  - **Hypothesis**: Sunday runs with no PayPal export fall from 1 of 1 to 0 of the next 4.
+  - **Measurement**: `bin/cashcast fetch plan --all` (PayPal's last download date) each Sunday
+  - **Success**: a PayPal file under 8 days old on 4 of 4 Sundays
+  - **Pivot**: if a passkey always needs the owner, move PayPal to a monthly owner step
+  - **Anchor**: W3C 2021, *Web Authentication Level 2* (user-presence step a script cannot complete)
+
 - [ ] `sync all` restarts a hung Calendar or Reminders and retries once
   - **ID**: sync-restart-hung-app
   - **Tags**: sync, apple, weekly, unattended

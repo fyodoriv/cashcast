@@ -616,6 +616,7 @@ fn run() -> Result<(), String> {
                     let fixes = if args.iter().any(|a| a == "--fixes") {
                         exports = inbox::load_exports(&inbox_dir, &cfg)?;
                         let mut plan = moneywiz::plan(&store, &exports, cfg.moneywiz.as_ref())?;
+                        moneywiz::add_pending_trades(&mut plan, &store, &exports, &cfg, &home);
                         // Held accounts (the sync gate) get no edits either.
                         let mode = moneywiz::mode(cfg.moneywiz.as_ref())?;
                         let amounts = moneywiz::corrected_amounts(&store);

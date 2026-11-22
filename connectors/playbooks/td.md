@@ -11,9 +11,16 @@
 1. Sign in at https://easyweb.td.com/.
 2. Select the account.
 3. On **Account Activity**, pick 30, 60, 90 or 120 days, or one month under **Search by Month**.
-4. Click **Download**. Pick **Spreadsheet (.CSV)**. A Quicken or Money format (QFX/OFX) also works if offered.
-5. Save the file into `private/users/<you>/inbox/`.
-6. Repeat for each account. The CSV has no header row; that is normal.
+4. Click **Download**. Pick **Quicken (QFX)**. Do not pick the CSV: it names no
+   account, so cashcast names the account after the file (`accountactivity`) and
+   its rows stay out of the MoneyWiz sync ("Downloads that name no account").
+   The first QFX download of a card asks for the account type once ("Setup
+   Download to Quicken"): pick **Credit Card**, then **OK**.
+5. Save the file into `private/users/<you>/inbox/`. Rename each
+   `accountactivity.qfx` in `~/Downloads` before the next download, so Chrome
+   does not add " (1)".
+6. Repeat for each account. Faster: the **Download** icon on **Accounts
+   Overview** gives one QFX for every account (current statement period).
 
 ## Actions
 
@@ -22,7 +29,7 @@
 First setup: go back as far as EasyWeb lets you (18 months, checked 2026-11-17). Account Activity gives 120 days at a time, so download the newest 120 days, then each older month under **Custom** → **By month**, one file per month. Older history comes only from statements (`download-statements`). Overlapping files are fine: the import drops duplicate rows.
 
 1. Follow "Export your data".
-2. Verify: the file is `accountactivity.csv` (or `.qfx`/`.ofx`) and the period on screen matches.
+2. Verify: the file is `accountactivity.qfx` (or `.ofx`) and the period on screen matches.
 3. For older months, repeat with **Search by Month**.
 
 ### download-statements

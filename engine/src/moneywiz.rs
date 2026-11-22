@@ -980,20 +980,86 @@ fn investment_links(
 /// `[moneywiz.investments]` maps, the broker buys and sells MoneyWiz lacks
 /// (counts and symbols only). Also the names of those accounts, which the
 /// sync does not leave alone. Empty when nothing is mapped.
-fn broker_trades(store: &Store, cfg: &crate::config::Config, home: &Path) -> (Vec<String>, String) {
+fn broker_rows(
+    store: &Store,
+    cfg: &crate::config::Config,
+    home: &Path,
+) -> Vec<crate::moneywiz_invest::Row> {
     use crate::moneywiz_invest as inv;
     let Some(m) = cfg.moneywiz.as_ref().filter(|m| !m.investments.is_empty()) else {
-        return (Vec::new(), String::new());
+        return Vec::new();
     };
     let Ok(h) = crate::ledger::load_dir(&home.join("inbox"), cfg) else {
-        return (Vec::new(), String::new());
+        return Vec::new();
     };
     let (adjust, _) = inv::holding_adjustments(&h.trades, &m.investments, &m.holdings);
     let mut trades = h.trades;
     trades.extend(adjust);
     let snaps = crate::pdf::sunlife::snapshots(&home.join("inbox"));
     let _ = inv::statement_lots(store, &mut trades, &snaps, &m.investments);
-    let rows = inv::compare(store, &trades, &m.investments);
+    inv::compare(store, &trades, &m.investments)
+}
+
+/// Sets each investment account's `trades`: the cash of the broker trades
+/// MoneyWiz lacks, which `edit --fixes` adds after the sync. Only a trade
+/// whose cash leg the export holds counts (a Wealthsimple "trade buy" row):
+/// that leg is in the bank's balance, but the sync leaves it to the buy row.
+/// A plan whose export has no legs (Sun Life) keeps its balance as it is.
+pub fn add_pending_trades(
+    plan: &mut Plan,
+    store: &Store,
+    inbox: &Inbox,
+    cfg: &crate::config::Config,
+    home: &Path,
+) {
+    let rows = broker_rows(store, cfg, home);
+    for ap in &mut plan.accounts {
+        let Some(account) = store.account(ap.mw) else {
+            continue;
+        };
+        let mut legs: Vec<(NaiveDate, i64)> = inbox
+            .txns
+            .iter()
+            .filter(|t| t.account == ap.export_account && is_trade_leg(&t.text))
+            .map(|t| (t.date, t.cents))
+            .collect();
+        ap.trades = rows
+            .iter()
+            .filter(|r| r.account == account.name)
+            .flat_map(|r| &r.missing_trades)
+            .filter_map(|t| {
+                let cash = crate::moneywiz_invest::trade_cash(t, &account.currency);
+                let cents = (cash * 100.0).round() as i64;
+                if cents == 0 {
+                    return None;
+                }
+                // Settlement can date the leg a few days after the trade.
+                let leg = legs
+                    .iter()
+                    .position(|&(d, c)| c == cents && (d - t.date).num_days().abs() <= 5)?;
+                legs.swap_remove(leg);
+                Some((t.date, cents))
+            })
+            .collect();
+    }
+}
+
+impl AccountPlan {
+    /// The cash of the pending broker trades up to a day (all with None).
+    pub fn trades_upto(&self, day: Option<NaiveDate>) -> i64 {
+        self.trades
+            .iter()
+            .filter(|(d, _)| day.is_none_or(|day| *d <= day))
+            .map(|(_, c)| c)
+            .sum()
+    }
+}
+
+fn broker_trades(store: &Store, cfg: &crate::config::Config, home: &Path) -> (Vec<String>, String) {
+    let rows = broker_rows(store, cfg, home);
+    if rows.is_empty() {
+        return (Vec::new(), String::new());
+    }
     let mut names: Vec<String> = rows.iter().map(|r| r.account.clone()).collect();
     names.dedup();
     let mut missing: BTreeMap<&str, (usize, Vec<&str>)> = BTreeMap::new();
@@ -1078,6 +1144,10 @@ pub struct AccountPlan {
     /// the correction that makes MoneyWiz move across the span as the
     /// statements do. Its rows stand in and are left alone.
     pub span_fix: Vec<(NaiveDate, i64)>,
+    /// Investment account: the cash of the broker trades MoneyWiz lacks
+    /// (day, cents; below zero for a buy). `edit --fixes` adds them after
+    /// the sync, so the gate and the balance correction count them.
+    pub trades: Vec<(NaiveDate, i64)>,
     /// An account the bank gives only statements for: (day, balance)
     /// MoneyWiz must hold on each statement day (`span_fix` gets it there).
     pub statement_days: Vec<(NaiveDate, i64)>,
@@ -1184,6 +1254,9 @@ pub struct Plan {
     pub untouched: Vec<i64>,
     /// Export accounts with no MoneyWiz account.
     pub unlinked_exports: Vec<String>,
+    /// "Accounts" named after their file: a CSV with no account column (TD,
+    /// CIBC). Not real accounts, so not unlinked ones either.
+    pub file_named: Vec<String>,
 }
 
 fn words(text: &str) -> HashSet<String> {
@@ -1392,13 +1465,29 @@ pub fn plan(store: &Store, inbox: &Inbox, cfg: Option<&MoneyWiz>) -> Result<Plan
             .map(|a| a.pk)
             .filter(|pk| !links.contains_key(pk))
             .collect(),
-        unlinked_exports: export_accounts
-            .iter()
-            .filter(|e| !links.values().any(|v| v == *e))
-            .filter(|e| !cfg.is_some_and(|c| c.not_tracked.contains_key(e.as_str())))
-            .cloned()
-            .collect(),
+        unlinked_exports: Vec::new(),
+        file_named: Vec::new(),
     };
+    let stems: HashSet<&str> = inbox
+        .files
+        .iter()
+        .map(|f| {
+            f.file_name
+                .rsplit_once('.')
+                .map_or(f.file_name.as_str(), |(s, _)| s)
+        })
+        .collect();
+    for e in export_accounts
+        .iter()
+        .filter(|e| !links.values().any(|v| v == *e))
+        .filter(|e| !cfg.is_some_and(|c| c.not_tracked.contains_key(e.as_str())))
+    {
+        if stems.contains(e.as_str()) {
+            plan.file_named.push(e.clone());
+        } else {
+            plan.unlinked_exports.push(e.clone());
+        }
+    }
     for (&mw, export_account) in &links {
         let account = store.account(mw).expect("linked account exists");
         let mut ap = AccountPlan {
@@ -2086,7 +2175,8 @@ fn balance_link(
     if day < from {
         return None;
     }
-    let gap = bank.cents - (store.balance_on(ap.mw, day) + added + diff);
+    let gap =
+        bank.cents - (store.balance_on(ap.mw, day) + added + diff + ap.trades_upto(Some(day)));
     if gap == 0 {
         return None;
     }
@@ -2601,7 +2691,8 @@ pub(crate) fn balance_check(
     diff: i64,
     added: i64,
 ) -> String {
-    let change = added + if mode == "list" { 0 } else { diff };
+    // Broker trades `edit --fixes` adds after the sync move the cash too.
+    let change = added + if mode == "list" { 0 } else { diff } + ap.trades_upto(None);
     let after = store.balance(ap.mw) + change;
     match (&ap.note, &ap.bank_balance) {
         (Some(n), _) => n.clone(),
@@ -2610,7 +2701,10 @@ pub(crate) fn balance_check(
         (None, Some(b)) if change == 0 || b.as_of.is_none_or(|d| Some(d) >= ap.to) => {
             // Compared on the bank's day, like the balance correction.
             let after = match b.as_of.or(ap.to) {
-                Some(day) => store.balance_on(ap.mw, day) + change,
+                Some(day) => {
+                    store.balance_on(ap.mw, day) + change - ap.trades_upto(None)
+                        + ap.trades_upto(Some(day))
+                }
                 None => after,
             };
             if after == b.cents {
@@ -2685,7 +2779,8 @@ pub fn sync(
         }
     }
     let store = open(db)?;
-    let plan = plan(&store, inbox, mw)?;
+    let mut plan = plan(&store, inbox, mw)?;
+    add_pending_trades(&mut plan, &store, inbox, cfg, home);
     let links = links_for(&store, inbox, &plan, mode);
     let amounts = corrected(&store);
     let held: HashMap<i64, String> = plan
@@ -2813,7 +2908,7 @@ pub fn sync(
                 sent.write(&data)?;
                 std::thread::sleep(Duration::from_millis(delay));
             }
-            let (saved, _, missing) = confirm(db, inbox, mw, &ids, mode)?;
+            let (saved, _, missing) = confirm(db, inbox, cfg, home, &ids, mode)?;
             sent.mark_saved(&missing);
             saved_total += saved;
             sent_ids.extend(ids);
@@ -2943,6 +3038,12 @@ pub fn sync(
         out.push_str(&format!(
             "\nExport accounts with no MoneyWiz account: {}. Link one in cashcast.toml: [moneywiz.accounts] \"MoneyWiz name\" = \"export name\".\n",
             plan.unlinked_exports.join(", ")
+        ));
+    }
+    if !plan.file_named.is_empty() {
+        out.push_str(&format!(
+            "\nDownloads that name no account (a TD or CIBC CSV; their rows stay out of the sync): {}. Download that bank as QFX instead, then move these files out of the inbox.\n",
+            plan.file_named.join(", ")
         ));
     }
     let transfers = links.iter().filter(|l| l.kind == "transfer").count();
@@ -3224,7 +3325,8 @@ fn guess_counts(rows: &[(&MwTxn, i64)]) -> String {
 fn confirm(
     db: &Path,
     inbox: &Inbox,
-    cfg: Option<&MoneyWiz>,
+    cfg: &crate::config::Config,
+    home: &Path,
     sent: &HashSet<String>,
     mode: &str,
 ) -> Result<(usize, usize, Vec<Link>), String> {
@@ -3236,7 +3338,9 @@ fn confirm(
     let start = std::time::Instant::now();
     loop {
         let store = open(db)?;
-        let plan = plan(&store, inbox, cfg)?;
+        let mut plan = plan(&store, inbox, cfg.moneywiz.as_ref())?;
+        // The same trades as the sent plan, so balance link ids match.
+        add_pending_trades(&mut plan, &store, inbox, cfg, home);
         let missing = links_for(&store, inbox, &plan, mode);
         let left = missing.iter().filter(|l| sent.contains(&l.id)).count();
         if left == 0 || start.elapsed().as_secs() >= wait {
@@ -3608,6 +3712,7 @@ mod tests {
             ],
             untouched: Vec::new(),
             unlinked_exports: Vec::new(),
+            file_named: Vec::new(),
         };
         let pks: Vec<i64> = uncategorized(&store, &plan)
             .iter()

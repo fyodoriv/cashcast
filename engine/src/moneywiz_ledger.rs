@@ -281,6 +281,8 @@ pub fn hold_reason(
                 Some(d) => store.balance_on(ap.mw, d),
                 None => store.balance(ap.mw),
             };
+            // Broker trades `edit --fixes` adds after the sync move the cash too.
+            let change = change + ap.trades_upto(day);
             let (gap_before, gap_after) =
                 ((before - b.cents).abs(), (before + change - b.cents).abs());
             // A right fix can move away a little (a wrong opening balance is fixed

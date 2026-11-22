@@ -4143,3 +4143,86 @@ fn sync_warns_when_links_go_to_an_archived_account() {
     assert!(!r.report.contains("Archived in MoneyWiz"));
     let _ = std::fs::remove_dir_all(home);
 }
+
+#[test]
+fn a_download_that_names_no_account_is_not_an_unlinked_account() {
+    // 2026-11-22: CSVs with no account column (TD, CIBC) took the file name
+    // as the account, so "Download (1)" and "accountactivity" showed up in
+    // `weekly` "Not up to date" as exports with no MoneyWiz account.
+    let (home, db, cfg) = setup("file-named");
+    std::fs::write(
+        home.join("inbox").join("Download (1).csv"),
+        "Date,Description,Amount\n2026-09-04,SHOP CANARYFN1,-60.00\n",
+    )
+    .unwrap();
+    let store = moneywiz::open(&db).unwrap();
+    let exports = inbox::load_exports(&home.join("inbox"), &cfg).unwrap();
+    let plan = moneywiz::plan(&store, &exports, cfg.moneywiz.as_ref()).unwrap();
+    assert!(
+        !plan.unlinked_exports.contains(&"Download (1)".to_string()),
+        "{:?}",
+        plan.unlinked_exports
+    );
+    assert_eq!(plan.file_named, ["Download (1)"]);
+    let today = NaiveDate::from_ymd_opt(2026, 10, 1).unwrap();
+    let r = moneywiz::sync(&db, &exports, &cfg, &home, today, false, false).unwrap();
+    assert!(
+        r.report.contains("Downloads that name no account"),
+        "{}",
+        r.report
+    );
+    assert!(!r.report.contains("CANARYFN1"));
+    let _ = std::fs::remove_dir_all(home);
+}
+
+/// Money moved into an investment account and spent on a buy the same week:
+/// the sync adds the deposit, and `edit --fixes` adds the buy. Counted
+/// together they reach the bank's cash, so the sync is not held and no
+/// balance correction undoes the buy (found 2026-11-22: the sync held the
+/// deposit because the buy was missing, and `edit --fixes` held the buy
+/// because the sync was held).
+#[test]
+fn a_deposit_spent_on_a_buy_the_edit_adds_is_not_held() {
+    let home = scratch("ws-deposit-buy");
+    let db = home.join("ipadMoneyWiz.sqlite");
+    make_db(&db);
+    let c = Connection::open(&db).unwrap();
+    c.execute_batch(
+        "ALTER TABLE ZSYNCOBJECT ADD COLUMN ZSYMBOL VARCHAR;
+         ALTER TABLE ZSYNCOBJECT ADD COLUMN ZNUMBEROFSHARES FLOAT;
+         ALTER TABLE ZSYNCOBJECT ADD COLUMN ZPRICEPERSHARE FLOAT;
+         INSERT INTO Z_PRIMARYKEY VALUES (16,'InvestmentAccount',10,0),(60,'InvestmentBuyTransaction',37,0);
+         INSERT INTO ZSYNCOBJECT (Z_PK,Z_ENT,ZNAME,ZCURRENCYNAME,ZOPENINGBALANCE) VALUES
+           (12,16,'Taxable CANARYMW12','CAD',0.0);",
+    )
+    .unwrap();
+    drop(c);
+    std::fs::write(
+        home.join("inbox").join("activity.csv"),
+        "transaction_date,settlement_date,account_id,account_type,activity_type,activity_sub_type,direction,symbol,name,currency,quantity,unit_price,commission,net_cash_amount
+2026-11-19,2026-11-19,CANARYZ36CAD,Non-registered,MoneyMovement,TRANSFER,,,,CAD,,,,1000.00
+2026-11-19,2026-11-20,CANARYZ36CAD,Non-registered,Trade,BUY,LONG,XEQT,CANARY-WSN4,CAD,20,30.00,0,-600.00
+",
+    )
+    .unwrap();
+    let cfg = config::parse(&format!(
+        "[moneywiz]\ndb = \"{}\"\nmatch = \"loose\"\nbank_wins = true\n[moneywiz.balances]\n\"Taxable CANARYMW12\" = \"400.00@2026-11-20\"\n[moneywiz.investments]\n\"Taxable CANARYMW12\" = \"wealthsimple-activity-csv:non-registered:Z36CAD\"\n",
+        db.display()
+    ))
+    .unwrap();
+    let exports = inbox::load_exports(&home.join("inbox"), &cfg).unwrap();
+    let today = NaiveDate::from_ymd_opt(2026, 11, 22).unwrap();
+    let report = moneywiz::sync(&db, &exports, &cfg, &home, today, false, false)
+        .unwrap()
+        .report;
+    assert!(
+        report.contains("| Taxable CANARYMW12 | 1 | XEQT |"),
+        "{report}"
+    );
+    assert!(!report.contains("moves MoneyWiz away"), "{report}");
+    assert!(!report.contains("balance corrections"), "{report}");
+    assert!(!report.contains("CANARYZ36CAD"), "{report}");
+    // The balance column counts the buy too, so it shows no false mismatch.
+    assert!(report.contains("matches the bank (400.00)"), "{report}");
+    let _ = std::fs::remove_dir_all(home);
+}

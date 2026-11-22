@@ -55,9 +55,18 @@ consent grant and the money moves stay with the owner.
 0. Engine: when the checkout is on `main` with a clean tree, `git pull --ff-only`
    (`bin/cashcast` rebuilds the engine). Otherwise use the clean sync worktree
    (`~/.local/state/cashcast/sync`, see the MoneyWiz playbook) and say why.
-1. Sign-ins: one `request_credentials` call that names every browser service in
-   `bin/cashcast fetch plan --all`, so 1Password asks once. Never type a password
-   or code yourself; a 2FA field goes through `enter_verification_code`.
+1. Chrome first: call `tabs_context_mcp`. Only when it says Claude in Chrome is
+   not connected, ask the owner in one line to click the Claude icon in Chrome's
+   toolbar and sign in (a scheduled run puts this ask in its start push). Never
+   ask when it is connected (owner rule, 2026-11-22).
+   Sign-ins: `request_credentials` for every browser service in
+   `bin/cashcast fetch plan --all`, at most 4 logins per call (8 in one call
+   fails as "invalid schema"). Sun Life signs in on `https://www.sunnet.sunlife.com`,
+   so request that site, not mysunlife.ca. Never type a password
+   or code yourself; a 2FA field goes through `enter_verification_code`. When
+   that tool is denied or 1Password says `rate_limited`, ask the owner to type
+   the code in that tab, and do another bank meanwhile. `autosubmit_failed`
+   often still signed in: take a screenshot before retrying.
    1Password works only while a person has the run open ("This tool requires
    an attended session"). A scheduled run first sends a push notification
    ("Sunday cashcast run: open it in Claude to approve the bank sign-ins"),
@@ -68,8 +77,14 @@ consent grant and the money moves stay with the owner.
    when `fetch plan` calls one "fresh" (`skills/fetch-exports`
    step 3, each service's playbook): Wealthsimple (chequing, card, investments),
    Scotiabank, TD, CIBC, Wise (`api`), E*TRADE, Sun Life, Kraken, Casa, PayPal
-   last. Then `bin/cashcast fetch collect`. TD: download the card as QFX (its CSVs
-   are all named `accountactivity`, so the card and the chequing collide).
+   last. Then `bin/cashcast fetch collect`. TD and CIBC: always QFX, never CSV.
+   Their CSVs hold no account, so cashcast names the account after the file
+   (`accountactivity`, `Download (1)`), and each one shows up in "Not up to
+   date" as an export with no MoneyWiz account. TD's Accounts Overview
+   **Download** icon gives one QFX for the chequing and the card (current
+   statement period); the card page's own download gives older statements.
+   Rename each `accountactivity.qfx` in `~/Downloads` before the next download,
+   so Chrome does not add " (1)".
    History: also download every range that last week's "MoneyWiz history gaps
    since …" line (or `bin/cashcast moneywiz coverage`) names, such as "download
    2023-09-30 to 2024-11-03". Use the site's custom date range, in the longest
