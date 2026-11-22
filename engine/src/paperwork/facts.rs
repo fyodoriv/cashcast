@@ -63,7 +63,7 @@ pub struct Process {
     pub steps: Vec<Step>,
 }
 
-pub const CHECKED: &str = "2026-11-01";
+pub const CHECKED: &str = "2026-11-22";
 pub const CITIZENSHIP_ID: &str = "ca-citizenship-adult";
 
 macro_rules! cit {

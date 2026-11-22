@@ -1143,3 +1143,14 @@ fn doctor_on_a_new_user_makes_nothing() {
     assert!(found.iter().any(|(_, m)| m.contains("test key")));
     assert!(!u.join("paperwork").exists());
 }
+
+/// canada.ca resets any request with a custom User-Agent (2026-11-22); curl's
+/// own default gets the page. The live check must send none of its own.
+#[test]
+fn live_check_sends_curls_own_user_agent() {
+    let h = store::page_headers();
+    assert!(
+        !h.iter().any(|(k, _)| k.eq_ignore_ascii_case("user-agent")),
+        "custom User-Agent sent: {h:?}"
+    );
+}

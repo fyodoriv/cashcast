@@ -24,6 +24,7 @@ One row per doc: the question it answers and who reads it.
 | [decisions/0015](decisions/0015-reuse-expert-sources-live-facts.md) | Which expert sources does investment advice reuse, and how do live rates stay current? | both |
 | [decisions/0016](decisions/0016-pdf-statements.md) | How are bank PDF statements read, and why can a misread never reach MoneyWiz? | both |
 | [decisions/0017](decisions/0017-paperwork-local-encrypted.md) | Why does paperwork live in cashcast, sealed, with no web route? | both |
+| [paperwork.md](paperwork.md) | How do I use the citizenship paperwork and application, step by step? | owner |
 | [paperwork-threat-model.md](paperwork-threat-model.md) | What does paperwork protect, from whom, and what not? | both |
 | [optimize.md](optimize.md) | How does the stock optimizer decide where new money goes? | both |
 | [design.md](design.md) | Which apps does the web UI learn from, and what rules does it follow? | both |

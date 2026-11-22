@@ -1185,15 +1185,14 @@ pub type Fetch<'a> = &'a dyn Fn(&str) -> Result<(u16, String), String>;
 
 /// The real fetcher: one plain GET of a public page through `core::http`. A
 /// PDF is never read as a page: its raw bytes may hold a quote by chance.
+/// Headers for the live check. No User-Agent of our own: canada.ca resets any
+/// custom one (2026-11-22) and accepts curl's default.
+pub fn page_headers() -> Vec<(String, String)> {
+    vec![("Accept".to_string(), "text/html,*/*".to_string())]
+}
+
 pub fn fetch_page(url: &str) -> Result<(u16, String), String> {
-    let headers = [
-        (
-            "User-Agent".to_string(),
-            "Mozilla/5.0 cashcast-paperwork-facts".to_string(),
-        ),
-        ("Accept".to_string(), "text/html,*/*".to_string()),
-    ];
-    let r = crate::core::http::send("GET", url, &headers, None, 20).map_err(|e| e.message)?;
+    let r = crate::core::http::send("GET", url, &page_headers(), None, 20).map_err(|e| e.message)?;
     let pdf = url.to_ascii_lowercase().ends_with(".pdf") || r.body.starts_with(b"%PDF");
     Ok((r.status, if pdf { String::new() } else { r.text() }))
 }
