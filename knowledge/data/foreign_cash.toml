@@ -1,0 +1,112 @@
+# Foreign-currency cash (Wise USD and other balances) for people in Canada.
+# Education, not personal advice. The assistant is not a licensed advisor.
+#
+# Rates: a dated fact here is the offline fallback. The once-a-day
+# `knowledge refresh` (decision 0015) saves the Bank of Canada USD rate; while
+# that saved rate is newer than the one here and at most 10 days old, it
+# converts USD instead. EUR has no live series and always uses this file.
+# The strategy shows each rate's date and warns when it is older than
+# `max_age_days`. Refresh: open the source URL, copy the latest daily rates,
+# and move `as_of` and `review_by`.
+# A user can pin their own rates in <user>/knowledge/foreign_cash.toml.
+
+max_age_days = 45
+# Crypto prices are saved with the balances (`bin/cashcast api balances kraken`);
+# the strategy warns when they are older than this.
+crypto_max_age_days = 7
+# Investment values recorded in the browser (`bin/cashcast api record`).
+investments_max_age_days = 31
+
+[meta]
+title = "Foreign cash: exchange rates, conversion, T1135 and interest"
+as_of = 2026-11-14
+review_by = 2026-12-31
+sources = [
+  "https://www.bankofcanada.ca/valet/observations/FXUSDCAD,FXEURCAD/json?recent=3",
+  "https://www.questrade.com/learning/Norberts-Gambit-Currency-conversion",
+  "https://canadiancouchpotato.com/2013/12/03/norberts-gambit-the-complete-guide/",
+  "https://www.questrade.com/learning/accounts-taxes/rrsp-foreign-withholding-tax",
+  "https://www.canada.ca/en/revenue-agency/services/tax/international-non-residents/information-been-moved/foreign-reporting/questions-answers-about-form-t1135.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12100-interest-other-investment-income.html",
+  "https://wise.com/ca/interest/",
+]
+
+# What each service's saved balances hold: "cash" (every balance is a currency),
+# "exchange" (currencies are cash; other assets are crypto) or "investments"
+# (each balance is an account's market value, named TFSA, RRSP, crypto, ...).
+# Services with no API save balances read in the browser: `bin/cashcast api record`.
+[api_services]
+wise = "cash"
+paypal = "cash"
+kraken = "exchange"
+casa = "exchange"
+wealthsimple = "investments"
+sunlife = "investments"
+etrade = "investments"
+
+# ------------------------------------------------------------ rates
+# cad_per_unit: Bank of Canada daily average, Canadian dollars per 1 unit.
+
+[[rates]]
+id = "USD"
+cad_per_unit = 1.4257
+date = 2026-11-13
+source = "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?recent=1"
+confidence = "verified"
+
+[[rates]]
+id = "EUR"
+cad_per_unit = 1.5734
+date = 2026-11-13
+source = "https://www.bankofcanada.ca/valet/observations/FXEURCAD/json?recent=1"
+confidence = "verified"
+
+# ------------------------------------------------------------ interest on cash
+# Annual rate per currency on balances at a service (decimal). A service or a
+# currency not listed earns 0. CAD at Wise is also banks.toml `wise-cad`;
+# tests/unit/test_interest.py keeps the two equal.
+
+[interest.wise]
+CAD = 0.0222
+USD = 0.034
+EUR = 0.012
+GBP = 0.0221
+why = "Wise Interest: variable rates, paid monthly, after you opt in in the Wise app. Wise keeps a portion of the interest to cover costs. Rates as of 2026-02-25 on the issuer page."
+source = "https://wise.com/ca/interest/"
+confidence = "estimate"
+
+# ------------------------------------------------------------ advice facts
+
+[keep_usd]
+why = "Every conversion costs a fee or a spread, so money that will be spent in US dollars, or invested in US-listed ETFs, stays in US dollars."
+source = "https://www.questrade.com/learning/Norberts-Gambit-Currency-conversion"
+confidence = "heuristic"
+
+[rrsp_us_withholding]
+rate = 0.15
+why = "The Canada-US tax treaty exempts dividends from US-listed ETFs held directly in an RRSP or RRIF from the 15% US withholding tax. A TFSA and Canadian-listed funds of US stocks do not get this exemption."
+source = "https://www.questrade.com/learning/accounts-taxes/rrsp-foreign-withholding-tax"
+confidence = "estimate"
+
+[norbert]
+# Buy DLR in CAD, journal it to DLR.U, sell for USD (or the reverse).
+# Cost = two trades and a journal fee (fixed, broker-dependent) plus the bid-ask spread.
+fixed_cad = 20
+spread_rate = 0.0005
+days = 3
+why = "Buy DLR in Canadian dollars, ask the broker to journal it to DLR.U, then sell it for US dollars (reverse it for USD to CAD). The cost is mostly fixed (trades and a journal fee), so it wins on larger amounts."
+source = "https://canadiancouchpotato.com/2013/12/03/norberts-gambit-the-complete-guide/"
+confidence = "estimate"
+
+[t1135]
+threshold_cad = 100000
+why = "File Form T1135 when the total cost of specified foreign property is more than $100,000 CAD at any time in the year. Foreign bank deposits and US shares in non-registered accounts count. RRSP, RRIF and TFSA holdings do not."
+check = "Ask Wise which entity holds your balance and where: funds held outside Canada count toward the threshold. When in doubt, count them."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/international-non-residents/information-been-moved/foreign-reporting/questions-answers-about-form-t1135.html"
+confidence = "verified"
+
+[foreign_interest]
+line = "12100"
+why = "Interest earned on a foreign-currency balance (for example Wise Interest on USD) is taxable in Canada. Report it in Canadian dollars on line 12100, converted at the Bank of Canada rate on the day it was paid."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12100-interest-other-investment-income.html"
+confidence = "verified"

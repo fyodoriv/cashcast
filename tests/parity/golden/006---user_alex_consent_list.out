@@ -1,0 +1,916 @@
+- agent:aggregates: granted until 2099-01-01. Shares reports with totals, account and category names (never single transactions) → the AI agent you run and its model provider.
+- agent:raw-row: not granted. Shares one raw export row, to debug an unreadable file → the AI agent and its model provider.
+- agent:strategy: granted until 2099-01-01. Shares your strategy report: card routing, targets, balances, room and dated checklist → the AI agent and its model provider.
+- cloud:sheets: not granted. Shares the forecast table you choose to sync → Google Sheets (your spreadsheet).
+- cloud:notion: not granted. Shares task titles with every amount removed, due dates, the kind of task and whether it is done → Notion (your own tasks database).
+- net:market-data: not granted. Shares ticker symbols from your watchlist (no amounts, no balances) → the market-data provider you configure.
+- net:usage-counts: not granted. Shares anonymous usage counts: command names, ok or failed, durations and counts (never amounts, names, payees, services or paths) → PostHog EU (product analytics of the cashcast author), only once a key is set.
+- local:reminders: not granted. Shares task titles with amounts and due dates → Apple Reminders on this Mac, and iCloud if you sync Reminders.
+- local:calendar: not granted. Shares dated task titles with amounts and due dates → Apple Calendar on this Mac, and iCloud if you sync Calendar.
+- local:moneywiz: not granted. Shares transactions from your exports (dates, amounts, payees, categories) written into MoneyWiz → MoneyWiz on this Mac, and the MoneyWiz cloud if you turned on its sync.
+- actions:browser: not granted. Shares on-screen account pages while an agent performs an approved action → the AI agent and its model provider.
+- agent:browser-read: not granted. Shares finance site pages an agent reads to check a task, and statements it saves to your private inbox → the AI agent and its model provider (files stay on this Mac).
+- actions:api: not granted. Shares API responses (balances, statements) fetched with your token → stays local; reports follow agent:aggregates.
+exit 0
+== users/alex/data/api-balances.json
+{
+  "wise": {"balances": {"USD": 1234.5, "EUR": 0, "CAD": 75.25}, "fetched_on": "2026-10-17"},
+  "kraken": {
+    "balances": {"CAD": 12.0, "BTC": 0.0123, "ZZCANARY": 3.0},
+    "prices": {"BTC": {"price": 90000, "currency": "USD"}},
+    "fetched_on": "2026-10-16"
+  },
+  "wealthsimple": {"balances": {"TFSA": 21000.0, "RRSP (USD)": 400.0}, "fetched_on": "2026-10-15"}
+}
+== users/alex/data/review.md
+# Cashcast review (private)
+
+For your eyes only. It shows short payee samples so you can tell the
+deposit groups and recurring payments apart. It stays in private/ and the app never sends it anywhere.
+
+## Deposit groups
+
+
+## Recurring payments
+
+- Payments #1: RENT CANARY03
+- Payments #2: GROCER CANARY02
+- Payments #3: RESTAURANT CANARY05
+- Payments #4: PHONE CO CANARY04
+== users/alex/data/summary.json
+{
+  "generated_on": "2026-10-18",
+  "base_currency": "",
+  "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "files": [
+    {
+      "name": "bank.csv",
+      "format": "CSV",
+      "transactions": 75,
+      "errors": 0,
+      "date_min": "2025-10-01",
+      "date_max": "2026-10-02",
+      "notes": [],
+      "accounts": [
+        "bank"
+      ],
+      "error": null,
+      "ledger": false
+    }
+  ],
+  "accounts": [
+    {
+      "name": "bank",
+      "class": "cash",
+      "guessed": true,
+      "class_reason": "bank-like name",
+      "currency": "",
+      "rows": 75,
+      "last_date": "2026-10-02",
+      "balance_cents": 7160000,
+      "balance_source": "running balance",
+      "sum_balance_cents": 5160000
+    }
+  ],
+  "pay": {
+    "schedule": "biweekly",
+    "source": "Income > Salary",
+    "anchor": "2026-09-18",
+    "cycles": [
+      {
+        "nominal": "2025-10-03",
+        "paid_on": "2025-10-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-17",
+        "paid_on": "2025-10-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-31",
+        "paid_on": "2025-10-31",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-14",
+        "paid_on": "2025-11-14",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-28",
+        "paid_on": "2025-11-28",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-12",
+        "paid_on": "2025-12-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-26",
+        "paid_on": "2025-12-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-09",
+        "paid_on": "2026-01-09",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-23",
+        "paid_on": "2026-01-23",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-06",
+        "paid_on": "2026-02-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-20",
+        "paid_on": "2026-02-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-06",
+        "paid_on": "2026-03-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-20",
+        "paid_on": "2026-03-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-03",
+        "paid_on": "2026-04-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-17",
+        "paid_on": "2026-04-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-01",
+        "paid_on": "2026-05-01",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-15",
+        "paid_on": "2026-05-15",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-29",
+        "paid_on": "2026-05-29",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-12",
+        "paid_on": "2026-06-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-26",
+        "paid_on": "2026-06-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-10",
+        "paid_on": "2026-07-10",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-24",
+        "paid_on": "2026-07-24",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-07",
+        "paid_on": "2026-08-07",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-21",
+        "paid_on": "2026-08-21",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-04",
+        "paid_on": "2026-09-04",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-18",
+        "paid_on": "2026-09-18",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      }
+    ],
+    "half_years": [
+      {
+        "period": "2025-H2",
+        "cheques": 7,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H1",
+        "cheques": 13,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H2",
+        "cheques": 6,
+        "median_cents": 300000,
+        "off_median": 0
+      }
+    ],
+    "gap_days": {
+      "14": 25
+    },
+    "off_cycle_deposits": 0,
+    "deposit_accounts": {
+      "bank": 26
+    },
+    "cycles_per_month": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "income_cents": {},
+  "income_by_category_cents": {},
+  "spending_cents": {
+    "Bills": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000
+    ],
+    "Food": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000
+    ],
+    "Housing": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000
+    ]
+  },
+  "flows_cents": {
+    "card_payments": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "card_spend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "income_tax": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "invested": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "salary": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000
+    ],
+    "salary_off_cycle": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "transfer_unknown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "uncategorized_in": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "suggested_extra_income": [],
+  "recurring_payments": [
+    {
+      "label": "Payments #1",
+      "cadence": "monthly",
+      "category": "Housing",
+      "median_cents": 180000,
+      "count": 12,
+      "last_seen": "2026-09-01",
+      "yearly_cents": 2160000
+    },
+    {
+      "label": "Payments #2",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 45000,
+      "count": 12,
+      "last_seen": "2026-09-02",
+      "yearly_cents": 540000
+    },
+    {
+      "label": "Payments #3",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 12000,
+      "count": 12,
+      "last_seen": "2026-09-09",
+      "yearly_cents": 144000
+    },
+    {
+      "label": "Payments #4",
+      "cadence": "monthly",
+      "category": "Bills",
+      "median_cents": 8000,
+      "count": 12,
+      "last_seen": "2026-09-05",
+      "yearly_cents": 96000
+    }
+  ],
+  "category_roles": {
+    "Income > Salary": "income (other)"
+  },
+  "checks": [
+    {
+      "name": "unreadable rows (run first-error to see the first one)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "files that could not be read",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows dropped as duplicates of another file",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "future-dated rows skipped",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows before the window",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "possible duplicate groups inside one file",
+      "count": 0,
+      "detail": "months: "
+    },
+    {
+      "name": "rows left uncategorized (no category, no rule, no keyword)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows matched as own-account transfers",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "transfers to accounts missing from the export",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "own-account transfer pairs that do not net to zero",
+      "count": 0,
+      "detail": "total gap 0.00"
+    },
+    {
+      "name": "salary rows outside cash accounts (income type salary_other_accounts)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows converted to the base currency",
+      "count": 0,
+      "detail": "{\"(none)\": 75}"
+    },
+    {
+      "name": "split-transaction candidates",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "config account names not found in the data",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "accounts with a guessed class",
+      "count": 1,
+      "detail": ""
+    }
+  ]
+}
+== users/alex/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}
+{"command": "import", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "import", "event": "command", "result": "ok"}
+{"command": "consent", "event": "command", "result": "ok"}
+== users/sam/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}

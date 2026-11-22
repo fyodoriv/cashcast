@@ -1,0 +1,3 @@
+web /api/docs?user=sam
+200 application/json
+[{"path": "notion/Finances/Budget.md", "title": "Budget", "folder": "notion/Finances"}, {"path": "notion/Finances/Sub/Note.md", "title": "Note", "folder": "notion/Finances/Sub"}, {"path": "notion/Finances/Taxes.md", "title": "Taxes", "folder": "notion/Finances"}, {"path": "notion/Finances/taxes (2).md", "title": "taxes", "folder": "notion/Finances"}, {"path": "notion/Finances.md", "title": "Finances", "folder": "notion"}]

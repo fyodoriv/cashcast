@@ -1,0 +1,54 @@
+# Cashcast settings. `bin/cashcast init` copies this to private/cashcast.toml.
+# Everything is optional: the app detects what it can and uses defaults for
+# the rest. `bin/cashcast status` lists what is still worth answering.
+# This file stays in private/, which git never tracks.
+
+[forecast]
+# start_month = "2026-10"         # default: this month
+# horizon_months = 15
+# method = "trailing-12 average"  # or "trailing-12 median", "same month last year", "flat baseline"
+# baseline = 0                    # your own monthly spending estimate; 0 = none
+# floor = 10000                   # cash to keep untouched; default: 3 months of spending
+# use_suggestions = true          # add the recurring extra income the import found
+
+[accounts]
+# Override a guessed account type: "cash", "card", "other" or "excluded".
+# "Everyday Chequing" = "cash"
+# "Visa" = "card"
+# "Travel wallet" = "other"        # spending counts, balance is not opening cash
+# "TFSA" = "excluded"              # investments: money moved in counts as invested
+# "chequing-activities*" = "excluded"  # a key ending in * covers every dated download; an exact key wins
+
+[balances]
+# Current balance of each cash account, when the export has none.
+# "Everyday Chequing" = 2500.00
+
+[pay]
+# Detected from your deposits. Set these to correct it.
+# schedule = "biweekly"            # weekly, biweekly, semimonthly, monthly or none
+# anchor = "2026-09-25"            # a recent payday (weekly and biweekly)
+# net_h1 = 3000.00                 # net pay per cheque, January to June
+# net_h2 = 3100.00                 # net pay per cheque, July to December
+
+# [pay.holidays]                   # a weekly or biweekly payday on one moves earlier
+# "New Year 2027" = "2027-01-01"
+
+# [rent]                           # optional: a fixed rent that replaces the history
+# category = "Housing"
+# charged = 2000.00
+
+# [extra_income."Annual bonus"]    # recurring income besides pay
+# months = [3]
+# amount = 5000.00
+
+# [taxes]                          # "YYYY-MM" = refund (+) or balance owing (-)
+# "2027-04" = 0
+
+# [currencies]
+# base = "CAD"
+# rates = { USD = 1.38 }           # base units per 1 unit
+
+# [files."bank.csv"]               # only for unusual exports
+# account = "Everyday Chequing"
+# date_format = "%m/%d/%Y"
+# invert = true                    # purchases exported as positive amounts

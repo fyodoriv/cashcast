@@ -1,0 +1,110 @@
+id = "sunlife"
+name = "Sun Life (group retirement)"
+kinds = ["retirement"]
+website = "https://www.mysunlife.ca"
+available_in_canada = true
+
+[import]
+formats = ["sunlife-transactions-csv", "sunlife-statement-pdf"]
+how_to_export = """
+Transaction history (the file cashcast reads):
+1. Sign in at mysunlife.ca, or at your plan's own link (mysunlife.ca/<plan>). You sign in yourself.
+2. Open the plan's transaction history. Older menus: my financial centre > Accounts > Transaction history > Details.
+   Newer menus: Investments > Manage plan > my plan > Check on account > View transaction history.
+3. Pick the widest date range the page allows.
+4. If the page offers a download (CSV or Excel), use it. Keep an .xlsx as it is; cashcast reads it.
+5. If there is no download, copy the table into a spreadsheet with one row per fund per transaction and
+   these columns: Date, Transaction type, Fund name, Units, Unit price, Amount (add Plan if you hold more
+   than the RRSP). Save it as CSV.
+6. Save the file into private/users/<you>/inbox/ with "sunlife" in its name (for example sunlife-2026.csv).
+   Without a plan column, only a file named for Sun Life counts as your group RRSP.
+
+Statements (PDF, for your records):
+1. Open my financial centre > Accounts > Statements (or Documents > Statements).
+2. Open each statement by its date and save the PDF into the inbox (sunlife-statement-<date>.pdf).
+   cashcast reads each statement's units per fund (sunlife-statement-pdf, needs pdftotext): they check
+   MoneyWiz's units on that day (moneywiz diagnose), and a match covers the rows before it (moneywiz coverage).
+   The transaction history covers 12 months only; the statements reach back further.
+"""
+no_export_reason = ""
+history_limit = "Statements stay online for up to seven years (one plan's FAQ). Sun Life does not document a transaction download or its date range; the CSV layout cashcast reads is an estimate."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for plan members. Menus differ by plan and by site version. RRSP receipts (one plan's FAQ): Sun Life mails them in early January for March to December contributions, and in March for contributions in the first 60 days of the year; they are under Requests > Tax slips & RRSP info > Tax slips. Employer contributions are tracked apart from yours: the change-investments flow sets their funds separately, and statements split them. Fund management fees (FMFs) are built into each fund's unit price, so they never show as a transaction; recordkeeping fees are taken from the account. Moving money into a fund and out again within 30 days may cost a 2% short-term trading fee. Contribution rate: some plans change it online (Requests > Payroll contributions), others only through the employer's HR or payroll."
+
+[browser]
+login_url = "https://www.mysunlife.ca"
+playbook = "playbooks/sunlife.md"
+
+[[actions]]
+id = "download-transaction-history"
+title = "Download the transaction history"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "download-statements"
+title = "Download statements (PDF)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-rrsp-contributions"
+title = "Check RRSP contributions and receipts this year"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-funds-and-fees"
+title = "Check the plan's funds and fees"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "change-future-investments"
+title = "Change how future contributions are invested"
+risk = "settings"
+via = ["browser"]
+
+[[actions]]
+id = "change-contribution-rate"
+title = "Change the payroll contribution rate (often through the employer)"
+risk = "settings"
+via = ["browser", "human"]
+
+[[actions]]
+id = "rebalance-existing-money"
+title = "Move existing money between funds (rebalance)"
+risk = "money"  # sells and buys fund units
+via = ["human"]
+
+[[actions]]
+id = "read-balances"
+title = "Read each plan account's value and record it (bin/cashcast api record sunlife)"
+risk = "read"
+via = ["browser"]
+
+[meta]
+as_of = 2026-10-21
+review_by = 2027-04-21
+sources = [
+  "https://www.sunnet.sunlife.com/content/dam/sunlife/regional/canada/documents/grs/UBC_online_roadmap_E.pdf",
+  "https://www.sunnet.sunlife.com/content/dam/sunlife/regional/canada/documents/grs/UBC_Change_investments_1220_E.pdf",
+  "https://www.sunnet.sunlife.com/content/dam/sunlife/legacy/assets/canada/signin/csi/shaw/files/Shaw_RRSP_FAQ_E.pdf",
+  "https://www.sunnet.sunlife.com/content/dam/sunlife/regional/canada/documents/grs/Purolator_Know%20your%20statement_E.pdf",
+  "https://www.unbc.ca/sites/default/files/sections/human-resources/sunlifehowtoreadyourstatement.pdf",
+  "https://faculty.pensions.ubc.ca/2018/08/view-your-transaction-details-online",
+  "https://faculty.pensions.ubc.ca/investments/managing/",
+  "https://www.mcgill.ca/hr/files/hr/final_-_mupp_-_sun_life_transition_guide_-_terminated_members.pdf",
+  "https://www.smu.ca/about/sun-life-details.html",
+]
+# Sources are plan-specific Sun Life guides (2018 to 2020); sunlife.ca help pages
+# refused automated reads. No source documents a CSV or Excel download, so the
+# export steps and the column layout are estimates.
+confidence = "estimate"

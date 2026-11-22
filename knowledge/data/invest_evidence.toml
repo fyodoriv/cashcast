@@ -1,0 +1,310 @@
+# Evidence behind the investment recommender (`bin/cashcast invest-plan`).
+# Education, not personal advice. The assistant is not a licensed advisor.
+#
+# Every move the recommender ranks cites facts from this file by `id`. Each fact
+# carries its own `source`, `as_of`, `review_by` and `confidence`, and the
+# recommender prints them next to the move. Rules (decision 0013):
+# - Only facts here (or in investing.toml / corporate_stock.toml) back a move.
+# - A return assumption is a long-run planning number, never a forecast. It is
+#   shown as a range, with `band` as the width of that range.
+# - `estimate` and `heuristic` facts are labelled as such wherever they show up.
+# A user can replace a value privately in <user>/knowledge/invest_evidence.toml
+# (same `id`), for example after a challenge where their evidence holds.
+
+[meta]
+title = "Investment recommender: evidence, assumptions and their limits"
+as_of = 2026-11-01
+review_by = 2027-04-30
+sources = [
+  "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners",
+  "https://www.spglobal.com/spdji/en/spiva/article/spiva-canada-year-end-2025/",
+  "https://www.wealthsimple.com/legal/fees/trade",
+  "https://econpapers.repec.org/RePEc:eee:jfinec:v:129:y:2018:i:3:p:440-457",
+  "https://www.vanguard.ca/en/investor/insights/when_and_how_to_rebalance",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12700-capital-gains/capital-losses-deductions/what-a-superficial-loss.html",
+]
+
+# ------------------------------------------------------------ long-run assumptions
+
+[[facts]]
+id = "pag-equity"
+value = 0.065
+text = "Long-run planning assumption for a global all-equity mix: about 6.5% a year before fees. By region: Canadian stocks 6.3%, US stocks 6.4%, international developed stocks 6.6%, emerging-market stocks 7.5%. A mix like VEQT (about 46% US, 30% Canada, 18% international developed, 7% emerging, Sep 30 2026) blends to 6.5%. For projections of 10+ years, not a forecast for any one year."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-11-14
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "pag-fixed-income"
+value = 0.032
+text = "Long-run planning assumption for bonds: 3.2% a year before fees."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-04-16
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "pag-short-term"
+value = 0.024
+text = "Long-run planning assumption for cash and short-term deposits: 2.4% a year."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-04-16
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "pag-inflation"
+value = 0.021
+text = "Long-run planning assumption for inflation: 2.1% a year."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-04-16
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "return-band"
+judgment = true
+value = 0.02
+text = "Width of the range around each return assumption: plus or minus 2 points a year. Nobody knows long-run returns; this wide band is a judgment call to keep ranges honest, not a sourced number."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "one-year-drop"
+value = -0.42
+text = "Global stocks can fall about 40% in one calendar year: the MSCI ACWI lost about 42% (net, USD) in 2008. Money you need within a few years does not belong in stocks."
+source = "https://www.msci.com/documents/1296102/1636401/ACWI+factsheet/d5d4e6b0-3957-4938-a4aa-dbc956ae93af"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "estimate"
+notes = "The 2008 figure is from memory of the factsheet's annual table; the factsheet page shown in a search did not include the 2008 row. Verify before quoting it."
+
+[[facts]]
+id = "crypto-drawdown"
+value = -0.7
+text = "Bitcoin has fallen 70% or more from a peak within about a year more than once (2018 and 2022). Crypto above your own cap can fall much further than stocks."
+source = "https://en.wikipedia.org/wiki/History_of_bitcoin"
+as_of = 2026-11-09
+review_by = 2027-05-31
+confidence = "estimate"
+notes = "Peak-to-trough falls of about 84% (Dec 2017 to Dec 2018) and about 77% (Nov 2021 to Nov 2022) from general price history; verify against an exchange price series before quoting exact figures."
+
+# ------------------------------------------------------------ why no picks or timing
+
+[[facts]]
+id = "spiva-canada"
+value = 0.988
+text = "98.8% of Canadian equity funds trailed their benchmark over 10 years to the end of 2025. Professional stock picking rarely beats the index after fees, so this tool does not pick stocks."
+source = "https://www.spglobal.com/spdji/en/spiva/article/spiva-canada-year-end-2025/"
+as_of = 2026-03-31
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "fees-predict"
+text = "Fees are one of the most reliable predictors of fund results: in Morningstar's 2016 study the cheapest fifth of US equity funds succeeded 62% of the time, the priciest fifth 20%. A fee saved is the one return you can count on."
+source = "https://www.prnewswire.com/news-releases/study-by-morningstars-russel-kinnel-shows-fund-fees-are-proven-predictors-of-future-success-300263655.html"
+as_of = 2016-08-01
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "single-stock-risk"
+text = "Most single stocks lose to Treasury bills over their life: in US data from 1926 to 2016, about 58% did, and the best 4% of companies made all the net gain. One stock is a much wider bet than an index with the same expected return."
+source = "https://econpapers.repec.org/RePEc:eee:jfinec:v:129:y:2018:i:3:p:440-457"
+as_of = 2018-06-01
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "concentration-limit"
+value = 0.10
+text = "Keep any one stock, your employer's included, to about 10% of investments. Your job already depends on the same company."
+source = "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/diversify-your-investments"
+as_of = 2026-10-19
+review_by = 2027-04-30
+confidence = "heuristic"
+notes = "The SEC page warns about concentration but gives no number; 10% is a common planner rule of thumb, set as CONCENTRATION in strategy/invest.py."
+
+[[facts]]
+id = "rebalance"
+value = 0.05
+text = "Rebalance about once a year, or when the stock share drifts more than about 5 points from the target. Rebalancing controls risk; it is not expected to add return. New money is the cheapest way to do it."
+source = "https://www.vanguard.ca/en/investor/insights/when_and_how_to_rebalance"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "heuristic"
+notes = "Vanguard's 2022 study favours yearly rebalancing; the 5-point threshold comes from its older 1926-2009 study as quoted by secondary sources."
+
+# ------------------------------------------------------------ costs and tax
+
+[[facts]]
+id = "us-withholding"
+value = 0.15
+text = "US dividends lose 15% to US withholding tax in a TFSA, FHSA or RESP. A US-listed fund held directly in an RRSP is exempt under the Canada-US treaty; in a non-registered account the foreign tax credit gets it back."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-40500-federal-foreign-tax-credit.html"
+as_of = 2026-10-19
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "us-dividend-yield"
+value = 0.012
+low = 0.010
+high = 0.015
+text = "Dividend yield of the broad US stock market: about 1.0-1.5% a year. It changes with prices."
+source = "https://investor.vanguard.com/investment-products/etfs/profile/vti"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "estimate"
+
+[[facts]]
+id = "broker-fx-fee"
+value = 0.015
+text = "Wealthsimple charges 1.5% to convert CAD and USD when you trade a US-listed security from a CAD account. A USD account avoids the fee on later trades."
+source = "https://www.wealthsimple.com/legal/fees/trade"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "norbert"
+value = 0.001
+text = "Norbert's gambit (buy a dual-listed ETF in CAD, journal it, sell in USD) costs about 0.1% or less at brokers that allow journaling, versus about 1.5-2.5% for a plain conversion. Not every broker allows it."
+source = "https://www.questrade.com/learning/Norberts-Gambit-Currency-conversion"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "estimate"
+
+[[facts]]
+id = "superficial-loss"
+value = 30
+text = "A capital loss is denied when you, your spouse or a company you control buy the same or an identical property within 30 days before or after the sale and still hold it 30 days after. RSU vests, ESPP purchases, DRIP buys and buys in your own TFSA or RRSP count."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12700-capital-gains/capital-losses-deductions/what-a-superficial-loss.html"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "verified"
+notes = "Whether your own registered plans are 'affiliated' is debated in advisor guides; a buy there within the window is treated as caught either way, and a loss denied that way never comes back."
+
+[[facts]]
+id = "harvest-defers"
+text = "Tax-loss harvesting usually defers tax rather than erasing it: the replacement fund starts with a lower cost base, so the tax comes back when you sell it. The gain is the time value of the deferred tax."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12700-capital-gains.html"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "tfsa-shelter"
+text = "Growth in a TFSA is never taxed. In a non-registered account, half of each realized gain is taxed at your marginal rate and interest is fully taxed every year."
+source = "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4466/tax-free-savings-account-tfsa-guide-individuals.html"
+as_of = 2026-10-19
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "in-kind-loss"
+text = "Moving a fund that is below its cost into a TFSA or RRSP in kind denies the loss for good. Sell it in the taxable account first, then contribute the cash."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account/contributions.html"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "short-horizon"
+value = 60
+text = "Money you need within about 5 years (a down payment, say) stays in safe places: high-interest savings, GICs or cash ETFs. Stocks can take years to recover from a fall."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/savings-investments/investing-basics.html"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "heuristic"
+notes = "FCAC ties the choice of investment to when you need the money but gives no cut-off; 5 years is a common planner rule of thumb. investing.toml and reserve.py already keep down-payment money within about 2 years in cash or GICs."
+
+[[facts]]
+id = "fhsa"
+value = 8000
+text = "A First Home Savings Account gives a first-time home buyer $8,000 of room in the first year, then $8,000 a year; unused room carries forward, but only up to $8,000, so the most you can add in one year is $16,000, up to $40,000 for life. Room starts only once the account is open. Contributions are generally deductible, and a qualifying withdrawal to buy a first home is tax-free when all its conditions are met."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account.html"
+as_of = 2026-11-09
+review_by = 2027-04-30
+confidence = "verified"
+notes = "Checked 2026-11-09 on the CRA FHSA pages: contributing-your-fhsa (room formula, $40,000 lifetime) and withdrawals-transfers-out-your-fhsas (qualifying withdrawal conditions, Form RC725)."
+
+[[facts]]
+id = "etf-mers"
+value = 0.0019
+text = "Fund fees (MERs) for the core ETFs come from each provider's fund page and are copied into knowledge/data/investing.toml; the cheapest all-in-one equity ETF there charges 0.19%."
+source = "https://www.blackrock.com/ca/investors/en/products/309480/ishares-core-equity-etf-portfolio"
+as_of = 2026-10-19
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "broker-trade-fee"
+value = 0.0
+text = "Wealthsimple charges no commission to buy or sell Canadian-listed stocks and ETFs."
+source = "https://www.wealthsimple.com/legal/fees/trade"
+as_of = 2026-11-01
+review_by = 2027-04-30
+confidence = "verified"
+
+[[facts]]
+id = "single-stock-drop"
+value = 0.5
+text = "A planning stress test for one stock: a 50% fall. Single stocks spread far wider than an index; most lose to Treasury bills over their life, so a fall of half is a plausible bad case, not a forecast."
+source = "https://econpapers.repec.org/RePEc:eee:jfinec:v:129:y:2018:i:3:p:440-457"
+as_of = 2018-06-01
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "risk-equity-shares"
+value = 0.8
+text = "Stock share by risk level, a rule of thumb that matches the common asset-allocation ETF lineup: conservative 40%, balanced 60%, growth 80%, all-equity 100%."
+shares = { conservative = 0.4, balanced = 0.6, growth = 0.8, all-equity = 1.0 }
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VBAL"
+as_of = 2026-11-09
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "cash-rate-capture"
+judgment = true
+value = 0.5
+text = "Low end of the gain from a safe account: assume you capture only half the gap between the best safe rate and your current rate (rates change, money moves late). A rule of thumb used only for the low end of a range."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-11-09
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "gain-deferral-share"
+judgment = true
+value = 0.5
+text = "Low end of yearly tax drag on stock gains in a taxable account: about half of the gains are taxed each year when most gains are deferred for years. A rule of thumb used only for the low end of a range."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-11-09
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "mer-lag"
+judgment = true
+value = 0.8
+text = "Low end of a fee saving: assume 80% of the fee gap is saved, since fund fees change and a swap can lag. A rule of thumb used only for the low end of a range."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-11-09
+review_by = 2027-04-30
+confidence = "heuristic"
+
+[[facts]]
+id = "high-interest-debt-rate"
+value = 0.08
+text = "Debt at about 8% a year or more is paid before investing: paying it is a sure return that beats expected market returns. FCAC confirms paying the highest-interest debt first saves the most; the 8% cut-off is a rule of thumb."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/debt/paying-debt.html"
+as_of = 2026-11-09
+review_by = 2027-04-30
+confidence = "heuristic"

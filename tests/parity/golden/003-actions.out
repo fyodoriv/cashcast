@@ -1,0 +1,953 @@
+# cashcast actions (run each as `bin/cashcast …`; `--json` for the arguments)
+
+- `bin/cashcast start`: set up, start the web app, refresh, and print what matters now (also: no command) (terminal only: it starts the web app you are using; run `bin/cashcast` in a terminal)
+- `bin/cashcast stop`: stop the web app that `bin/cashcast` started (terminal only: it stops the web app you are using; run `bin/cashcast stop` in a terminal)
+- `bin/cashcast weekly [--dry-run] [--balance BALANCE]`: the Sunday session in one run: fresh data, MoneyWiz, forecast, transfers, cards, charges, investing, tasks, and this week's moves (confirm: adds and fixes MoneyWiz rows, marks resolved tasks done and writes them to Reminders, Calendar and Notion (--dry-run changes nothing))
+- `bin/cashcast help`: print the command overview
+- `bin/cashcast init`: create your data folder
+- `bin/cashcast import`: read the exports in your inbox
+- `bin/cashcast status`: import, then the forecast summary
+- `bin/cashcast forecast`: import, then the month-by-month forecast
+- `bin/cashcast backtest`: import, then the last forecast vs actual, a backtest per line, and the spending methods learned
+- `bin/cashcast numbers`: make an Apple Numbers copy of the forecast workbook
+- `bin/cashcast totals`: totals per category and month
+- `bin/cashcast first-error`: print the first unreadable export row (confirm: shows one raw row of your data on screen; agents: only with the owner's OK in chat and the agent:raw-row scope)
+- `bin/cashcast columns`: header names and masked cell shapes of each inbox file (no values)
+- `bin/cashcast holdings`: investments and crypto: quantity, cost base (ACB) and gains
+- `bin/cashcast actions [--json]`: list every action with its arguments (for agents: --json)
+- `bin/cashcast config {show|set}? KEY? VALUE?`: show the settings and where each value comes from, or set one
+- `bin/cashcast users {list|add|adopt} NAME? [--province PROVINCE] [--display DISPLAY]`: list, add or adopt people (add: confirm (creates a person's data folder); adopt: confirm (moves the single-user data folder into a person's folder))
+- `bin/cashcast consent {list|grant|revoke} {agent:aggregates|agent:raw-row|agent:strategy|cloud:sheets|cloud:notion|net:market-data|net:usage-counts|local:reminders|local:calendar|local:moneywiz|actions:browser|agent:browser-read|actions:api}?`: list, grant or revoke what may leave this computer (grant: terminal only; revoke: confirm (turns off a consent you granted); agents: never grant; give the owner the `consent grant SCOPE` command to run in a terminal)
+- `bin/cashcast telemetry {status|on|off|send}? [--dry-run]`: opt-in anonymous usage counts to PostHog EU: status, on, off, send (--dry-run shows the body) (send: confirm (sends anonymous usage counts to PostHog EU (with consent net:usage-counts and a key)); agents: ask the owner in chat before `telemetry send` (without --dry-run) or `telemetry on`)
+- `bin/cashcast strategy [--section SECTION] [--market]`: the full money plan (saved to out/strategy.md)
+- `bin/cashcast net-total`: your net total (all you have minus all you owe), its trend, and the options ranked by what they add, inside your boundaries
+- `bin/cashcast review`: the monthly review and checklist
+- `bin/cashcast budget`: the budget section
+- `bin/cashcast tax`: rates, room and tax moves
+- `bin/cashcast rrsp`: this year's RRSP contributions (Sun Life and others) against your deduction limit
+- `bin/cashcast alternatives`: cheaper cards, banks and services
+- `bin/cashcast payments`: fees, interest and recurring payments
+- `bin/cashcast spending`: spending checkup: more than usual, spend vs earn, interest and fees paid
+- `bin/cashcast invest-plan`: ranked investment moves: gain ranges, evidence, risk, cost and do-nothing (override in [invest])
+- `bin/cashcast invest [--market]`: long-term investing: core, placement and watchlist screen
+- `bin/cashcast reminders {preview|sync}`: preview or sync your tasks to one Apple Reminders list (sync: confirm (writes your tasks to Apple Reminders); agents: preview here; the owner runs `sync` in Terminal (the sandbox blocks osascript))
+- `bin/cashcast calendar {preview|sync}`: preview or sync your dated deadlines to one Apple Calendar (sync: confirm (writes your dated deadlines to Apple Calendar); agents: preview here; the owner runs `sync` in Terminal (the sandbox blocks osascript))
+- `bin/cashcast tasks {list|resolve|verdict}? ID? {pass|fail}? [--reason REASON] [--source SOURCE] [--json]`: your open finance tasks: who does each (list), resolve what cashcast can and name every blocker (resolve), or record an agent check (verdict) (resolve: confirm (marks due tasks done that cashcast resolved itself (undo: changes undo ID)); agents: use /cashcast-tasks; report every BLOCKED task to the owner, never call it done)
+- `bin/cashcast changes {list|show|done|undo}? ID?`: bank and card settings to change, ready for a browser session (agents: follow skills/bank-change; ask for a yes in chat right before each final click)
+- `bin/cashcast transfers [--balance BALANCE]`: e-Transfers that bring each bank to its keep amount, from balances you read (daily limit, amounts quick to type)
+- `bin/cashcast charges {check|find}? WORD?`: unexpected charges on every account: duplicate subscriptions, new recurring charges, price rises, charges after a pause; find WORD lists one merchant's charges
+- `bin/cashcast cards {now}? [--balance BALANCE]`: which card to use now per spending category: cap used and left, reset date, rent charges, credit left
+- `bin/cashcast optimize [--input INPUT]`: where new money goes to reach your target weights (you place the trades) (agents: show the plan; the owner places every trade)
+- `bin/cashcast connectors {list|show} SERVICE?`: the services cashcast knows, and how to export from each
+- `bin/cashcast action SERVICE ACTION_ID`: the safe steps for one service action, by risk (agents: money actions become reminders; never move money)
+- `bin/cashcast api {balances|download|etrade-auth|record} SERVICE? TARGET? GID? [--set SET] [--currency CURRENCY]`: read balances or download exports through a service's API, or record balances read in the browser (etrade-auth: terminal only)
+- `bin/cashcast fetch {plan|collect} [--all] [--minutes MINUTES]`: which exports are stale and how to get each (plan), or move new downloads into the inbox unopened (collect)
+- `bin/cashcast sync {all|status|install|uninstall|sheets} DEST? [--allow-removals] RANGE?`: keep Reminders, Calendar and Notion in step (all, status, install hourly), or write the forecast to a Google Sheet (all: confirm (writes your tasks to Reminders, Calendar and Notion, and records the ones you ticked done); install: confirm (adds a LaunchAgent that runs sync all every hour); uninstall: confirm (removes the hourly sync); sheets: confirm (writes the forecast to your Google Sheet); agents: run `sync status`; the owner runs `sync all` and `sync install` in Terminal (the sandbox blocks osascript and launchctl))
+- `bin/cashcast moneywiz {status|coverage|diagnose|categorize|sync|weekly|resync|edit|probe|categories} [--dry-run] {list|suggest|new|migrate|rollback}? [--name NAME] [--ops OPS] [--yes] [--ui] [--fixes] [--no-download] [--account ACCOUNT] [--archived ARCHIVED] [--from FROM] [--to TO] [--check] [--list] [--resend] [--record-since RECORD_SINCE]`: compare, sync and fix MoneyWiz against your exports (sync: confirm (adds rows to MoneyWiz); edit: confirm (changes rows in MoneyWiz))
+- `bin/cashcast notion {import} SOURCE [--delete-source]`: import a Notion Markdown & CSV export, offline (import: confirm (imports documents (with delete_source it deletes the export)))
+- `bin/cashcast web [--port PORT]`: run the web app in this terminal (terminal only: it is the web app itself)
+- `bin/cashcast knowledge {check|list|propose|refresh} FILE?`: check, list, propose or refresh (live rates) the sourced facts
+- `bin/cashcast paperwork VERB?`: citizenship steps, presence count and official sources, sealed on this Mac (terminal only) (terminal only: paperwork is private: run `bin/cashcast paperwork` in Terminal on this Mac)
+- `bin/cashcast citizenship VERB?`: the guided citizenship application: answers, judges, proofs and the local evidence page (terminal only) (terminal only: the application holds ID numbers: run `bin/cashcast citizenship` in Terminal on this Mac)
+exit 0
+== users/alex/data/api-balances.json
+{
+  "wise": {"balances": {"USD": 1234.5, "EUR": 0, "CAD": 75.25}, "fetched_on": "2026-10-17"},
+  "kraken": {
+    "balances": {"CAD": 12.0, "BTC": 0.0123, "ZZCANARY": 3.0},
+    "prices": {"BTC": {"price": 90000, "currency": "USD"}},
+    "fetched_on": "2026-10-16"
+  },
+  "wealthsimple": {"balances": {"TFSA": 21000.0, "RRSP (USD)": 400.0}, "fetched_on": "2026-10-15"}
+}
+== users/alex/data/review.md
+# Cashcast review (private)
+
+For your eyes only. It shows short payee samples so you can tell the
+deposit groups and recurring payments apart. It stays in private/ and the app never sends it anywhere.
+
+## Deposit groups
+
+
+## Recurring payments
+
+- Payments #1: RENT CANARY03
+- Payments #2: GROCER CANARY02
+- Payments #3: RESTAURANT CANARY05
+- Payments #4: PHONE CO CANARY04
+== users/alex/data/summary.json
+{
+  "generated_on": "2026-10-18",
+  "base_currency": "",
+  "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "files": [
+    {
+      "name": "bank.csv",
+      "format": "CSV",
+      "transactions": 75,
+      "errors": 0,
+      "date_min": "2025-10-01",
+      "date_max": "2026-10-02",
+      "notes": [],
+      "accounts": [
+        "bank"
+      ],
+      "error": null,
+      "ledger": false
+    }
+  ],
+  "accounts": [
+    {
+      "name": "bank",
+      "class": "cash",
+      "guessed": true,
+      "class_reason": "bank-like name",
+      "currency": "",
+      "rows": 75,
+      "last_date": "2026-10-02",
+      "balance_cents": 7160000,
+      "balance_source": "running balance",
+      "sum_balance_cents": 5160000
+    }
+  ],
+  "pay": {
+    "schedule": "biweekly",
+    "source": "Income > Salary",
+    "anchor": "2026-09-18",
+    "cycles": [
+      {
+        "nominal": "2025-10-03",
+        "paid_on": "2025-10-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-17",
+        "paid_on": "2025-10-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-31",
+        "paid_on": "2025-10-31",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-14",
+        "paid_on": "2025-11-14",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-28",
+        "paid_on": "2025-11-28",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-12",
+        "paid_on": "2025-12-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-26",
+        "paid_on": "2025-12-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-09",
+        "paid_on": "2026-01-09",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-23",
+        "paid_on": "2026-01-23",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-06",
+        "paid_on": "2026-02-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-20",
+        "paid_on": "2026-02-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-06",
+        "paid_on": "2026-03-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-20",
+        "paid_on": "2026-03-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-03",
+        "paid_on": "2026-04-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-17",
+        "paid_on": "2026-04-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-01",
+        "paid_on": "2026-05-01",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-15",
+        "paid_on": "2026-05-15",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-29",
+        "paid_on": "2026-05-29",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-12",
+        "paid_on": "2026-06-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-26",
+        "paid_on": "2026-06-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-10",
+        "paid_on": "2026-07-10",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-24",
+        "paid_on": "2026-07-24",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-07",
+        "paid_on": "2026-08-07",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-21",
+        "paid_on": "2026-08-21",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-04",
+        "paid_on": "2026-09-04",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-18",
+        "paid_on": "2026-09-18",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      }
+    ],
+    "half_years": [
+      {
+        "period": "2025-H2",
+        "cheques": 7,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H1",
+        "cheques": 13,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H2",
+        "cheques": 6,
+        "median_cents": 300000,
+        "off_median": 0
+      }
+    ],
+    "gap_days": {
+      "14": 25
+    },
+    "off_cycle_deposits": 0,
+    "deposit_accounts": {
+      "bank": 26
+    },
+    "cycles_per_month": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "income_cents": {},
+  "income_by_category_cents": {},
+  "spending_cents": {
+    "Bills": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000
+    ],
+    "Food": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000
+    ],
+    "Housing": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000
+    ]
+  },
+  "flows_cents": {
+    "card_payments": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "card_spend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "income_tax": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "invested": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "salary": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000
+    ],
+    "salary_off_cycle": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "transfer_unknown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "uncategorized_in": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "suggested_extra_income": [],
+  "recurring_payments": [
+    {
+      "label": "Payments #1",
+      "cadence": "monthly",
+      "category": "Housing",
+      "median_cents": 180000,
+      "count": 12,
+      "last_seen": "2026-09-01",
+      "yearly_cents": 2160000
+    },
+    {
+      "label": "Payments #2",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 45000,
+      "count": 12,
+      "last_seen": "2026-09-02",
+      "yearly_cents": 540000
+    },
+    {
+      "label": "Payments #3",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 12000,
+      "count": 12,
+      "last_seen": "2026-09-09",
+      "yearly_cents": 144000
+    },
+    {
+      "label": "Payments #4",
+      "cadence": "monthly",
+      "category": "Bills",
+      "median_cents": 8000,
+      "count": 12,
+      "last_seen": "2026-09-05",
+      "yearly_cents": 96000
+    }
+  ],
+  "category_roles": {
+    "Income > Salary": "income (other)"
+  },
+  "checks": [
+    {
+      "name": "unreadable rows (run first-error to see the first one)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "files that could not be read",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows dropped as duplicates of another file",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "future-dated rows skipped",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows before the window",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "possible duplicate groups inside one file",
+      "count": 0,
+      "detail": "months: "
+    },
+    {
+      "name": "rows left uncategorized (no category, no rule, no keyword)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows matched as own-account transfers",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "transfers to accounts missing from the export",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "own-account transfer pairs that do not net to zero",
+      "count": 0,
+      "detail": "total gap 0.00"
+    },
+    {
+      "name": "salary rows outside cash accounts (income type salary_other_accounts)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows converted to the base currency",
+      "count": 0,
+      "detail": "{\"(none)\": 75}"
+    },
+    {
+      "name": "split-transaction candidates",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "config account names not found in the data",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "accounts with a guessed class",
+      "count": 1,
+      "detail": ""
+    }
+  ]
+}
+== users/alex/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}
+{"command": "import", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "import", "event": "command", "result": "ok"}
+== users/sam/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}

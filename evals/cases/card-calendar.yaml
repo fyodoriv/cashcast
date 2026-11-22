@@ -1,0 +1,20 @@
+id: card-calendar-routing-withheld-without-strategy-consent
+suite: regression
+skill: card-calendar
+should: refrain
+grader: cli
+command: ["strategy"]
+agent: true
+expect_exit: 0
+expect_output: ["Report saved for the owner only", "consent grant agent:strategy"]
+---
+id: card-calendar-asks-for-cards-when-the-wallet-is-empty
+suite: regression
+skill: card-calendar
+should: act
+grader: cli
+command: ["strategy"]
+agent: true
+grant: ["agent:strategy"]
+expect_exit: 0
+expect_output: ["## Cash back: where to pay", "No cards in `[wallet]`"]

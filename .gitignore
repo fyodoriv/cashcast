@@ -1,0 +1,82 @@
+# Allowlist: only code, docs and shared knowledge are tracked. Exports,
+# profiles, consent, aggregates, logs and outputs live in private/, which is
+# never tracked. Every new top-level path needs a `!` line here.
+/*
+!/.gitignore
+!/README.md
+!/AGENTS.md
+!/CLAUDE.md
+!/CONTRIBUTING.md
+!/LICENSE
+!/SECURITY.md
+!/INSTALL.md
+!/TASKS.md
+!/RECURRING.md
+!/Agentfile.yaml
+!/lefthook.yml
+!/.env.example
+!/.gitleaksignore
+!/.agents/
+!/bin/
+!/.github/
+!/.claude/
+!/engine/
+!/forecast/
+!/tests/
+!/scripts/
+!/docs/
+!/connectors/
+!/knowledge/
+!/profile/
+!/config/
+!/prompts/
+!/skills/
+!/commands/
+!/evals/
+!/memory/
+!/web/
+
+# Secrets: real values never enter git. .env.example holds names only.
+.env
+.env.*
+!.env.example
+
+# Build output and caches
+engine/target/
+engine/moneywiz-writer/build/
+.metrics/
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
+
+# Data files are private unless listed: synthetic fixtures and shared specs only.
+*.csv
+!engine/tests/fixtures/*
+!tests/parity/fixture/*
+!tests/parity/fixture/notion-export/**
+*.pdf
+*.json
+!.claude/settings.json
+!web/package.json
+!web/tsconfig.json
+!web/biome.json
+!web/src/test/fixture.json
+!tests/parity/fixture/api-balances.json
+!docs/proof/metrics.json
+!engine/tests/fixtures/ledger-etrade-api.json
+!engine/data/*.js
+*.toml
+!engine/Cargo.toml
+!forecast/*.example.toml
+!connectors/*.toml
+!knowledge/data/*.toml
+!tests/parity/fixture/*.toml
+!profile/*.example.toml
+*.xlsx
+!engine/tests/fixtures/*.xlsx
+*.numbers
+.DS_Store
+.claude/settings.local.json
+
+# Explicit, in case the allowlist above is ever loosened.
+/private/

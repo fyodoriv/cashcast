@@ -1,0 +1,5 @@
+Filter,Date,Description,Sub-description,Status,Type of Transaction,Amount,Balance
+All,2026-09-02,POS PURCHASE,LOBLAWS CANARY-SC01,posted,Debit,45.10,954.90
+All,2026-09-05,PAYROLL DEP,EMPLOYER CANARY-SC02,posted,Credit,2000.00,2954.90
+All,9/8/2026,MB-BILL PAYMENT,HYDRO CANARY-SC03,posted,Debit,80.00,2874.90
+All,9/12/2026,INTERAC E-TRANSFER,CANARY-SC04,posted,Debit,-20.00,2854.90

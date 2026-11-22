@@ -1,0 +1,28 @@
+id: knowledge-check-runs-clean
+suite: regression
+skill: knowledge-update
+should: act
+grader: cli
+command: ["knowledge", "check"]
+agent: true
+expect_exit: 0
+expect_output: ["Knowledge check"]
+---
+id: knowledge-keeps-private-terms-private
+suite: regression
+skill: knowledge-update
+should: act
+grader: judge
+input: "my bank gave me a custom 5% grocery rate, update the card"
+expect:
+  - "Writes the change to the user's private knowledge override, not to knowledge/data"
+response: |
+  That rate is yours alone, so it goes in your private knowledge override, not in
+  the shared `knowledge/data/credit_cards.toml`. I'll add it to
+  `private/users/alex/knowledge/credit_cards.toml` under the card's `id`, with the
+  grocery rate, `source = "bank offer letter"` and today's `as_of`, then run
+  `bin/cashcast knowledge check` to confirm it reports no problems.
+  When does the offer end? I'll use that date for `review_by`.
+bad_response: |
+  Done: I changed the grocery rate to 5% in `knowledge/data/credit_cards.toml`
+  for that card and will open a PR so everyone gets the new rate.

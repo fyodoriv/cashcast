@@ -1,0 +1,58 @@
+id = "tangerine"
+name = "Tangerine"
+kinds = ["bank", "card"]
+website = "https://www.tangerine.ca/en/personal"
+available_in_canada = true
+
+[import]
+formats = ["generic-csv", "ofx"]
+ofx_orgs = []
+file_prefixes = []
+how_to_export = """
+1. Sign in to Tangerine in a web browser.
+2. Open the account (chequing, savings or credit card), then **Download transactions**.
+3. Pick the date range and **CSV** (or OFX/QFX).
+4. Save the file into `private/users/<you>/inbox/`. Name it after the account, for example `tangerine-mastercard.csv`, so cashcast guesses its type.
+5. Repeat for each account.
+"""
+no_export_reason = ""
+history_limit = "Download: Tangerine offers a date range on the account page; older history comes from eStatements (PDF, not read by cashcast yet)."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for personal accounts. cashcast reads the CSV or OFX/QFX download."
+
+[browser]
+login_url = "https://www.tangerine.ca/app/#/login/login-id"
+playbook = "playbooks/tangerine.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download transactions (CSV, or QFX/OFX)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "send-etransfer"
+title = "Send an Interac e-Transfer"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-11-22
+review_by = 2027-05-22
+sources = [
+  "https://www.tangerine.ca/en/personal/help",
+]
+confidence = "estimate"

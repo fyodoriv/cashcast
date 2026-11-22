@@ -1,0 +1,33 @@
+# Synthetic optimizer inputs for the parity harness: whole units, named and unknown accounts.
+[optimize]
+min_trade = 25
+
+[optimize.cash]
+TFSA = 6000.5
+rrsp = 4000
+"Cash account" = 1234.56
+lira = 900
+
+[optimize.prices]
+equs = 61.37
+
+[[optimize.targets]]
+symbol = "eqca"
+weight = 0.45
+listing = "CA"
+price = 33.21
+
+[[optimize.targets]]
+symbol = "EQUS"
+weight = 0.3
+listing = "US"
+
+[[optimize.targets]]
+symbol = "BOND"
+weight = 0.2
+asset_class = "bond"
+
+[[optimize.targets]]
+symbol = "ZZCANARY"
+weight = 0.05
+accounts = ["fhsa"]

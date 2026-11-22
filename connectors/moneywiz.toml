@@ -1,0 +1,100 @@
+id = "moneywiz"
+name = "MoneyWiz"
+kinds = ["budgeting"]
+website = "https://wiz.money"
+available_in_canada = true
+
+[import]
+formats = ["moneywiz-database", "moneywiz-csv"]
+how_to_export = """
+No export needed: with a [moneywiz] section in cashcast.toml, `bin/cashcast import`
+reads the accounts you record by hand (cash) straight from the MoneyWiz database,
+and `bin/cashcast moneywiz sync` adds the bank and card rows to MoneyWiz.
+
+For a CSV export instead:
+1. Open MoneyWiz on your Mac (the desktop app, not the phone app).
+2. Click the Bank (Accounts) icon.
+3. Choose File > Export.
+4. Select the accounts and the date range. Pick CSV.
+5. Keep the default date format and encoding.
+6. Keep the app language in English, so the column headers are in English.
+7. Save the file into private/users/<you>/inbox/.
+"""
+no_export_reason = ""
+history_limit = "Everything stored in MoneyWiz. How far back bank sync goes depends on the data provider (not confirmed)."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = """No public API. cashcast reads a copy of the local MoneyWiz database (Core Data SQLite) and never writes it with SQL: raw SQL writes break MoneyWiz's Core Data and iCloud sync. New rows go in through MoneyWiz's URL scheme (moneywiz://expense|income|transfer?...&save=true), which can create but not edit or delete. Edits to existing rows and categories go through a Core Data writer that loads MoneyWiz's own model (`moneywiz edit`, or [moneywiz] fixes = "edit"); it tests each run on a copy, needs an allowed model checksum and keeps a backup (docs/decisions/0007-moneywiz-edits.md). `moneywiz probe` checks the app for other ways in (AppleScript, Shortcuts, the window through Accessibility)."""
+
+[browser]
+login_url = "https://wiz.money"
+playbook = "playbooks/moneywiz.md"
+
+[[actions]]
+id = "sync-from-exports"
+title = "Add the missing bank and card rows to MoneyWiz (bin/cashcast moneywiz sync)"
+risk = "settings"
+via = ["api"]
+
+[[actions]]
+id = "fix-listed-rows"
+title = "Check the rows listed in out/moneywiz-fixes.md (duplicates, or not posted yet)"
+risk = "read"
+via = ["human"]
+
+[[actions]]
+id = "export-csv"
+title = "Export transactions as CSV"
+risk = "read"
+via = ["human"]
+
+[[actions]]
+id = "export-report-csv"
+title = "Export a saved report as CSV"
+risk = "read"
+via = ["human"]
+
+[[actions]]
+id = "refresh-bank-sync"
+title = "Refresh bank sync before an export"
+risk = "read"
+via = ["human"]
+
+[[actions]]
+id = "edit-in-place"
+title = "Change existing MoneyWiz rows and categories in place (bin/cashcast moneywiz edit)"
+risk = "settings"
+via = ["api"]
+
+[[actions]]
+id = "probe-edit-paths"
+title = "Find which ways in can edit MoneyWiz rows and categories (bin/cashcast moneywiz probe --ui)"
+risk = "read"
+via = ["human"]
+
+[[actions]]
+id = "check-account-balances"
+title = "Check that account balances match the banks"
+risk = "read"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-19
+review_by = 2027-04-19
+sources = [
+  "https://help.wiz.money/en/articles/4525440-url-schemas",
+  "https://help.wiz.money/en/articles/5816620-moving-data-files-between-moneywiz-versions",
+  "https://github.com/ileodo/moneywiz-api",
+  "https://github.com/marcomc/moneywiz-tools",
+  "https://help.wiz.money/en/articles/5338397-about-manual-data-import",
+  "https://help.wiz.money/en/articles/4440644",
+  "https://learn.pocketsmith.com/article/761-importing-accounts-and-transactions-from-moneywiz",
+  "https://wiz.money/",
+]
+confidence = "estimate"

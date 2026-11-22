@@ -1,0 +1,72 @@
+name: ci
+
+# The hosted copy of the local gate: the same `scripts/check.sh` a contributor
+# runs. Standard GitHub runners are free for a public repository.
+#
+# Safety (SECURITY.md; `scripts/public-readiness.sh` checks the first four):
+# - The token is read-only, and a fork pull request gets a read-only token.
+# - No secrets are used. Never change the trigger to `pull_request_target`.
+# - Every action is pinned to a full commit SHA; downloads are checked by SHA-256.
+# - No `private/` data and no real `.env` exist on a runner. Tests use synthetic data.
+# - No artifact is uploaded: a log or trace would be a public download.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  GITLEAKS_VERSION: "8.30.1"
+  GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+  # No PostHog key exists here, so telemetry cannot send; CI also never asks.
+  CASHCAST_POSTHOG_KEY: ""
+
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 25
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@39008827e6b4319a349e9a42dfc90579dd25f1ca # stable
+        with:
+          toolchain: stable
+          components: rustfmt
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+        with:
+          version: 9.12.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: gitleaks (pinned release, checked SHA-256)
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin" "$RUNNER_TEMP/gl"
+          file="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/gl/$file" "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/$file"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/gl/$file" | shasum -a 256 -c -
+          tar -xzf "$RUNNER_TEMP/gl/$file" -C "$RUNNER_TEMP/gl" gitleaks
+          mv "$RUNNER_TEMP/gl/gitleaks" "$RUNNER_TEMP/bin/gitleaks"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - name: Install web packages
+        run: cd web && pnpm install --frozen-lockfile
+      - name: Shell test tools (jq, yq v4 and sqlite3 ship with the runner)
+        run: jq --version && yq --version && sqlite3 --version
+      - name: Build the engine
+        run: cargo build --release --quiet --manifest-path engine/Cargo.toml
+      - name: Full gate (readiness, docs, tasks, web, engine, repo, knowledge, e2e, parity)
+        env:
+          NO_CACHE: "1"
+        run: scripts/check.sh

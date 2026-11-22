@@ -1,0 +1,103 @@
+# Payment and money-movement services and their costs.
+# fee_rate: percent fee as a decimal. fee_flat: CAD per transaction.
+# membership_fee: CAD per year (0 = none). membership_rate: fee_rate with membership.
+# codes_as: how a credit card usually categorizes the charge, using a
+#   credit_cards.toml earn key, "cash_like" (may be a cash advance), or "none".
+
+[meta]
+title = "Payment services: rent by card, FX, transfers, crypto funding"
+as_of = 2026-10-19
+review_by = 2027-01-31
+sources = [
+  "https://milesopedia.com/en/reviews/products/chexy-earn-rewards-rent-payments/",
+  "https://www.neobanc.com/articles/chexy-alternatives",
+  "https://wise.com/ca/pricing/",
+  "https://www.paypal.com/ca/for-you/fees",
+  "https://support.kraken.com/articles/360000381846-cad-funding-options",
+  "https://ndax.io/fees",
+  "https://www.finder.com/ca/international-money-transfers/paysend-money-transfers",
+]
+
+[[services]]
+id = "chexy"
+name = "Chexy (rent by credit card)"
+fee_rate = 0.0175
+fee_flat = 0
+membership_fee = 200
+membership_rate = 0.015
+codes_as = "other"
+notes = "Checked 2026-10-19 in a browser on the issuer page. Chexy help centre (updated 2026-09-16): domestic credit card 1.75% standard; Plus annual $200/yr lowers it to 1.5% (Plus monthly $20/month keeps 1.75%); Essential annual $90/yr gives 1.65%. Debit is free with a membership. Credit Builder is Plus-only (legacy access before 2026-06-19 excepted). Existing members may keep an older price; put yours in your private profile."
+source = "https://intercom.help/chexy/en/articles/15581136-chexy-membership-what-s-included-and-how-much-it-costs"
+confidence = "verified"
+
+[[services]]
+id = "paysend"
+name = "Paysend (card-funded transfers)"
+fee_rate = 0
+fee_flat = 3
+membership_fee = 0
+membership_rate = 0
+codes_as = "cash_like"
+notes = "Checked 2026-10-19: Paysend publishes no fee schedule; its site says the rate and fee are always shown before you confirm each transfer. fee_rate 0 here means 'not published', not 'free'. Some card issuers code it as cash-like and charge a cash-advance fee."
+source = "https://paysend.com/en-ca"
+confidence = "verified"
+
+[[services]]
+id = "wise"
+name = "Wise (currency conversion)"
+fee_rate = 0.0046
+fee_flat = 0
+membership_fee = 0
+membership_rate = 0
+codes_as = "none"
+notes = "Checked 2026-10-19 in a browser on the issuer page. Wise's CAD to USD average fee is 0.46% (volume discounts from 35,000 CAD a month)."
+source = "https://wise.com/ca/pricing/send-money?source=CAD&target=USD&amount=1000"
+confidence = "verified"
+
+[[services]]
+id = "paypal"
+name = "PayPal (currency conversion)"
+fee_rate = 0.03
+fee_flat = 0
+membership_fee = 0
+membership_rate = 0
+codes_as = "none"
+notes = "Conversion spread: minimum 3.00% for purchases and other conversions; minimum 4.00% for personal payments, commercial transactions and payouts. Avoid by paying in the card's currency on a 0% FX card (choose 'convert with card issuer' where offered)."
+source = "https://www.paypal.com/ca/for-you/fees"
+confidence = "verified"
+
+[[services]]
+id = "interac-etransfer"
+name = "Interac e-Transfer"
+fee_rate = 0
+fee_flat = 0
+membership_fee = 0
+membership_rate = 0
+codes_as = "none"
+notes = "Usually free with chequing packages; any fee is set by your bank. Interac says transaction limits are set by your financial institution and are typically 2,000 to 3,000 per transaction (verified 2026-10-19); daily and 7-day caps vary by bank. Some crypto platforms and payees cap e-Transfer at 10,000 per transaction. Check your bank's limits before large moves."
+source = "https://interac.ca/en/?p=139502"
+confidence = "verified"
+
+[[services]]
+id = "kraken-cad-funding"
+name = "Kraken CAD funding and withdrawal"
+fee_rate = 0
+fee_flat = 0
+membership_fee = 0
+membership_rate = 0
+codes_as = "none"
+notes = "Deposits: e-Transfer free (min 5), domestic wire free (min 100; intermediary bank charges about 13.74), debit card 0.25 + 3.75%, Apaylo bill pay 0.25% capped at 30. Withdrawal fees are not on the funding page; EFT withdrawals take 2-5 business days. Trading fees are separate (see crypto_exchanges.toml)."
+source = "https://support.kraken.com/articles/360000381846-cad-funding-options"
+confidence = "verified"
+
+[[services]]
+id = "ndax-cad-funding"
+name = "NDAX CAD funding and withdrawal"
+fee_rate = 0
+fee_flat = 1.50
+membership_fee = 0
+membership_rate = 0
+codes_as = "none"
+notes = "Deposits by e-Transfer or wire are free. Withdrawals: e-Transfer 1.50 (max 10,000 per transaction), EFT 4.99. fee_flat is the e-Transfer withdrawal fee."
+source = "https://ndax.io/fees"
+confidence = "verified"

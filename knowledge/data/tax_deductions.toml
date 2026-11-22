@@ -1,0 +1,209 @@
+# Common Canadian deductions, credits and benefits for individuals (2026 tax year).
+# kind: deduction (reduces taxable income), credit (reduces tax), benefit (paid to you).
+# Federal non-refundable credits are worth 14% of the amount in 2026 (lowest rate)
+# unless noted. Provinces add their own credit at their lowest rate.
+
+[meta]
+title = "Canadian deductions and credits checklist (2026)"
+as_of = 2026-10-19
+review_by = 2027-01-31
+sources = [
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-22900-other-employment-expenses/work-space-home-expenses.html",
+  "https://www.canada.ca/en/revenue-agency/services/child-family-benefits/canada-carbon-rebate/what-changed.html",
+]
+
+[[items]]
+id = "rrsp-deduction"
+name = "RRSP deduction"
+kind = "deduction"
+who = "Anyone with RRSP room (18% of prior-year earned income, max 33,810 for 2026, plus carry-forward)."
+how = "Line 20800, Schedule 7. Contributions up to 60 days into the next year (March 1, 2027 for 2026) can count."
+records = "RRSP contribution receipts; Notice of Assessment showing room."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-20800-rrsp-deduction.html"
+confidence = "verified"
+
+[[items]]
+id = "fhsa-deduction"
+name = "FHSA deduction"
+kind = "deduction"
+who = "First-time home buyers with an open FHSA (8,000/yr, 40,000 lifetime). The deduction can be carried forward to a higher-income year."
+how = "Line 20805, Schedule 15."
+records = "FHSA contribution slips (T4FHSA)."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account/contributing-your-fhsa.html"
+confidence = "verified"
+
+[[items]]
+id = "union-professional-dues"
+name = "Union, professional or like dues"
+kind = "deduction"
+who = "Employees paying union dues or professional membership dues required to keep a professional status."
+how = "Line 21200. Often shown in box 44 of the T4."
+records = "T4 box 44 or receipts."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-21200-annual-union-professional-like-dues.html"
+confidence = "verified"
+
+[[items]]
+id = "child-care"
+name = "Child care expenses"
+kind = "deduction"
+who = "Usually the lower-income spouse, for care that lets a parent work or study (daycare, day camps, nannies). Limits: 8,000 per child under 7, 5,000 for ages 7-16, 11,000 if eligible for the disability tax credit."
+how = "Line 21400, Form T778."
+records = "Receipts with provider name and SIN/business number."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/technical-information/income-tax/income-tax-folios-index/series-1-individuals/folio-3-family-unit-issues/income-tax-folio-s1-f3-c1-child-care-expense-deduction.html"
+confidence = "verified"
+notes = "CRA folio S1-F3-C1: $8,000 per child under 7, $5,000 ages 7-16, $11,000 if the disability tax credit applies. Claimed on line 21400 with Form T778."
+
+[[items]]
+id = "moving-expenses"
+name = "Moving expenses"
+kind = "deduction"
+who = "You moved for a job, business or full-time post-secondary study and your new home is at least 40 km closer (by the shortest public route) to the new work or school."
+how = "Line 21900, Form T1-M. Deduct only against income earned at the new location; carry forward any excess."
+records = "Receipts for movers, travel, temporary lodging (up to 15 days), lease-break and selling costs; distance proof."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-21900-moving-expenses.html"
+confidence = "verified"
+
+[[items]]
+id = "carrying-charges"
+name = "Carrying charges and interest expenses"
+kind = "deduction"
+who = "Investors who borrow to earn income from non-registered investments; also some advisory fees for non-registered accounts."
+how = "Line 22100, Schedule 4."
+records = "Loan statements showing interest; proof the borrowed money went into income-producing investments."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-22100-carrying-charges-interest-expenses.html"
+confidence = "verified"
+
+[[items]]
+id = "employment-expenses-home-office"
+name = "Employment expenses incl. home office (detailed method)"
+kind = "deduction"
+who = "Employees required by contract to pay their own expenses, with a signed T2200 from the employer. Home office: work space used more than 50% of the time for at least 4 weeks in a row, or used only for work and regularly for meetings."
+how = "Line 22900, Form T777. Only the detailed method is allowed; the temporary flat-rate method (2 per day) ended after 2022."
+records = "Signed T2200; receipts for utilities, rent, internet, supplies; floor-area calculation."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-22900-other-employment-expenses/work-space-home-expenses.html"
+confidence = "verified"
+
+[[items]]
+id = "self-employed-expenses"
+name = "Self-employed business expenses (T2125)"
+kind = "deduction"
+who = "Sole proprietors and freelancers. Deduct reasonable expenses to earn business income: business-use share of home (rent, utilities, insurance, property tax, mortgage interest), vehicle (business km / total km), phone and internet share, supplies, professional fees, software; equipment through capital cost allowance (CCA classes)."
+how = "Form T2125; net income on line 13500 (business) or 13700 (professional). Home office can only reduce business income to zero; carry forward the rest."
+records = "Receipts for 6 years; vehicle logbook; home floor-area calc; CCA schedule; invoices."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/sole-proprietorships-partnerships/report-business-income-expenses/completing-form-t2125/business-use-home-expenses.html"
+confidence = "verified"
+notes = "CRA T2125 guidance: business-use-of-home expenses cannot create or increase a business loss; the unused part carries forward (Part 7, line 9945)."
+
+[[items]]
+id = "medical-expenses"
+name = "Medical expenses"
+kind = "credit"
+who = "Any taxpayer; claim on the lower-income spouse's return for a bigger credit. Amount above the lesser of 3% of net income or 2,890 (2026)."
+how = "Lines 33099 (you, spouse, minor children) and 33199 (other dependants). Any 12-month period ending in the year."
+records = "Receipts (prescriptions, dental, vision, therapy, private health premiums you paid)."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html"
+confidence = "verified"
+
+[[items]]
+id = "charitable-donations"
+name = "Charitable donations and gifts"
+kind = "credit"
+who = "Donors to registered charities. Federal credit: lowest rate on the first $200 (14.5% for 2025; it follows the lowest tax bracket, 14% for 2026), 29% above $200, and 33% on the part given from income in the top bracket. Claims up to 75% of net income; unclaimed gifts carry forward 5 years. Spouses can pool receipts."
+how = "Line 34900, Schedule 9."
+records = "Official donation receipts with charity registration number."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-34900-donations-gifts/how-much-claim.html"
+confidence = "verified"
+notes = "CRA 'How much you can claim' page (2025 table: 14.5% / 29% / 33%, 75% of net income). Was recorded as 15% on the first $200."
+
+[[items]]
+id = "canada-workers-benefit"
+name = "Canada Workers Benefit (CWB)"
+kind = "benefit"
+who = "Low-income workers 19+. Max 1,665 single / 2,869 family (2026), plus a disability supplement. Reduced as income rises."
+how = "Line 45300, Schedule 6. Advance payments are made automatically to eligible filers."
+records = "Employment or self-employment income slips."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html"
+confidence = "verified"
+
+[[items]]
+id = "canada-employment-amount"
+name = "Canada employment amount"
+kind = "credit"
+who = "Employees with employment income; up to 1,501 (2026)."
+how = "Line 31260 (automatic in most software)."
+records = "T4 slips."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html"
+confidence = "verified"
+
+[[items]]
+id = "tuition"
+name = "Tuition amount"
+kind = "credit"
+who = "Students at eligible post-secondary institutions (over 100 in fees per institution). Unused amounts carry forward, or up to 5,000 can transfer to a parent, grandparent or spouse."
+how = "Line 32300, Schedule 11."
+records = "T2202 from the school."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-32400-tuition-education-textbook-amounts-transferred-a-child.html"
+confidence = "verified"
+notes = "CRA: fees per institution must be more than $100 (line 32300 page). Up to $5,000 of the current year's amount, minus what the student uses, can transfer to a parent or grandparent (line 32400 page); carried-forward amounts cannot be transferred."
+
+[[items]]
+id = "student-loan-interest"
+name = "Interest paid on student loans"
+kind = "credit"
+who = "Interest on government student loans (not bank lines of credit). Carry forward 5 years."
+how = "Line 31900."
+records = "Student-loan interest statements."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-31900-interest-paid-on-your-student-loans.html"
+confidence = "verified"
+
+[[items]]
+id = "disability-tax-credit"
+name = "Disability tax credit (DTC)"
+kind = "credit"
+who = "People with a severe and prolonged impairment certified by a medical practitioner (disability amount 10,341 for 2026). Unused amount can transfer to a supporting relative. Unlocks the RDSP and other benefits."
+how = "Line 31600; Form T2201 must be approved by CRA first."
+records = "Approved T2201."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html"
+confidence = "verified"
+
+[[items]]
+id = "home-accessibility"
+name = "Home accessibility expenses"
+kind = "credit"
+who = "Seniors 65+ or people eligible for the DTC (or those who support them) who renovate to make a home safer or more accessible. Up to 20,000 of expenses per year at 15%."
+how = "Line 31285."
+records = "Contractor invoices and receipts."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-31285-home-accessibility-expenses.html"
+confidence = "verified"
+
+[[items]]
+id = "first-time-home-buyers"
+name = "First-time home buyers' amount"
+kind = "credit"
+who = "First-time buyers (no owned home lived in this year or the prior 4 years) or buyers with a disability. 10,000 amount = 1,500 federal credit (at 15%). Non-refundable. Spouses can split it."
+how = "Line 31270."
+records = "Purchase agreement and closing documents."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-31270-home-buyers-amount.html"
+confidence = "verified"
+
+[[items]]
+id = "digital-news-subscription"
+name = "Digital news subscription credit"
+kind = "credit"
+who = "Nobody for 2026. CRA says the credit (15% of up to 500) was only available for tax years 2020 to 2024."
+how = "Line 31350."
+records = "Subscription receipts showing the qualifying organization."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-31350-digital-news-subscription-expenses.html"
+confidence = "verified"
+
+[[items]]
+id = "canada-carbon-rebate"
+name = "Canada Carbon Rebate (formerly Climate Action Incentive)"
+kind = "benefit"
+who = "Nobody for 2026. The consumer fuel charge ended April 1, 2025; the final individual payment went out from April 22, 2025. No quarterly payments after April 2025."
+how = "None. Do not budget for it."
+records = "None."
+source = "https://www.canada.ca/en/revenue-agency/services/child-family-benefits/canada-carbon-rebate/what-changed.html"
+confidence = "verified"

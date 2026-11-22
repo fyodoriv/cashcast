@@ -1,0 +1,130 @@
+# A person's profile. `bin/cashcast users add NAME --province XX` copies this
+# to private/users/NAME/profile.toml (mode 600, never tracked). Every value
+# below is an example: replace it with your own or delete the line.
+
+display_name = "Alex"
+country = "CA"                 # this app supports Canadian residents only
+province = "ON"                # AB BC MB NB NL NS NT NU ON PE QC SK YT
+
+[income]                       # gross yearly amounts, for tax rates
+employment = 0
+self_employment = 0
+other = 0
+
+[room]                         # from your latest CRA Notice of Assessment / My Account
+# rrsp: the "RRSP deduction limit" for rrsp_limit_year; `bin/cashcast rrsp` checks this year's
+# contributions against it. rrsp_unused: unused contributions the notice still lists.
+# rrsp_other: this window's RRSP contributions that no export shows.
+rrsp = 0
+rrsp_limit_year = 0
+rrsp_unused = 0
+rrsp_other = 0
+tfsa = 0
+fhsa = 0
+
+[goals]
+emergency_months = 3           # months of spending kept as an emergency fund
+risk = "growth"                # conservative | balanced | growth | all-equity
+first_time_home_buyer = false
+# mortgage_in_months = 12      # set when you plan a mortgage: no new credit before it
+no_new_credit = false
+# cash_rate = 0.02             # what spare cash earns (fee-vs-minimum math); default: the best rate among your accounts
+simplicity_threshold = 50      # ignore changes worth less than this per year
+# monthly_spending = 4000      # your own estimate, instead of the history
+
+# Net total: everything you have minus everything you owe. Higher is better.
+# Every option that raises it is checked against these limits first; one that
+# breaks a limit shows as refused, with the reason. Remove the "# " before a
+# line to set it. Check with: bin/cashcast net-total
+# [boundaries]
+# work_hours_week = 40         # the hours you work now; extra work is refused while it is unset
+# max_work_hours_week = 45     # no burnout: never more than this in total
+# min_cash = 15000             # cash you always keep; default: your reserve floor
+# margin = 5                   # % kept on top of min_cash, 0 to 20
+# max_risk = "growth"          # none | conservative | balanced | growth | all-equity | speculative
+# max_new_debt = 0             # new loans or credit you accept, in dollars
+# keep_home = true             # never sell the home you live in
+# refuse = ["leverage"]        # tags of moves you never want (leverage, crypto, invest, ...)
+
+# Things the exports do not see (a car, a loan from family). A debt is subtracted.
+# [[net_total.items]]
+# label = "Car"
+# kind = "other"               # cash | investment | crypto | other | debt
+# cad = 8000
+
+# Your own ideas to raise the net total; they are checked against [boundaries] too.
+# [[net_total.ideas]]
+# id = "evening-course"
+# title = "Evening course for a raise"
+# effect_year = 4000           # dollars a year it adds
+# cost_once = 1500             # one-time cost, taken off the first year
+# work_hours_week = 4          # extra hours a week it needs
+
+# [spending]                   # monthly estimates per reward category, when you have no exports yet
+# groceries = 600
+# dining = 300
+# recurring = 150
+
+[rent]
+# monthly = 2000               # rent before any service fee
+# service = "chexy"            # pay rent by card through a service (ids in knowledge/data/payment_services.toml)
+
+# One block per card you hold. `id` comes from knowledge/data/credit_cards.toml;
+# any field here overrides the catalog (for example your real caps).
+# [[wallet.cards]]
+# id = "td-cash-back-visa-infinite"
+# limit = 10000
+# statement_close_day = 18
+# fee_rebated = true           # a bank package rebates the annual fee
+# paydown_days_before = 2
+# accounts = ["Visa"]          # export account names with this card's rows (for `cards now`)
+# cap_reset = "02-01"          # the day the card's cash back year starts (its caps reset)
+# rent_max = 4                 # your rent rule: at most this many rent charges per year on it
+# rent_year_start = "02-01"    # when that count starts over (default: cap_reset)
+
+# [[banking.accounts]]
+# id = "td-all-inclusive"      # ids in knowledge/data/banks.toml
+# keep = 6500                  # what you keep in it (default: minimum + 500)
+
+[strategy.categories]          # map your own category names to reward categories
+# "Food & Dining > Groceries" = "groceries"
+
+[budget]                       # monthly budget per category path
+# "Food & Dining" = 800
+
+[employer_stock]
+# symbol = "ACME"              # flags concentration above 10% of investments
+
+# [invest]                     # the investment recommender (`bin/cashcast invest-plan`)
+# target_equity = 0.8          # your own stock share (needs target_reason); default: from goals.risk
+# target_reason = "30-year horizon"
+# horizon_years = 3            # when you need this money; under 5 keeps spare cash out of stocks
+# high_interest_debt = 0      # dollars of debt at 8%+ a year; above 0 blocks investing moves
+# crypto_max = 0.05            # largest crypto share of investments you accept; above it you get a risk move
+# [invest.classes]             # the kind of a holding the plan cannot tell: equity, bond, balanced, cash, crypto, gold
+# AAPL = "equity"
+# "TDAM CDN EQUITY INDEX FND" = "equity"
+# [invest.prices]              # CAD price per holding, so fee, tax and loss moves use market value
+# XEQT = 35.20
+# [[invest.overrides]]         # skip a move: its id, a kind ("fee") or a symbol (a risk move: its exact id only); the plan shows its cost once
+# move = "concentration:ACME"
+# reason = "selling after next month's vest"   # a risk move hides only with a reason
+# until = "2026-12-31"          # optional: after this date the move comes back
+
+[watchlist]
+symbols = []                   # tickers you want screened, e.g. ["XEQT.TO", "VFV.TO"]
+
+[reminders]
+# list = "Money"               # default: "Cashcast · <display_name>"
+
+# Your own finance tasks: they sync to Reminders, Calendar and Notion like cashcast's, and a
+# tick anywhere closes them for good. One-time actions only, never a daily duty.
+# An entry with a cashcast task's id (see `bin/cashcast changes`) only moves its date, renames it or adds notes;
+# `id = "paydown-td-*"` matches every month's copy (title and notes only).
+# [[tasks]]
+# id = "chexy-switch-back"
+# title = "Chexy: switch the rent card back"
+# due = 2026-11-16
+# kind = "settings"            # read | settings | money
+# every = "month"              # optional: week | 2 weeks | month | year; each date is its own task
+# notes = "your checklist"     # goes to Reminders and Calendar, never to Notion

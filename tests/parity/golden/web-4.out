@@ -1,0 +1,3 @@
+web /api/plan?user=nobody
+400 application/json
+{"error": "no profile for user 'nobody'. Run: bin/cashcast users add nobody --province XX"}

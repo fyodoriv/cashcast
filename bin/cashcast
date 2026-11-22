@@ -1,0 +1,107 @@
+#!/bin/bash
+# cashcast: a private, local-first financial assistant for people in Canada.
+# Your data stays in private/ (one folder per user). See README.md.
+# Every command runs in the Rust engine (decision 0010).
+set -euo pipefail
+
+SELF="$0"
+while [ -L "$SELF" ]; do  # `cashcast` on the PATH is a link to this file
+  LINK="$(readlink "$SELF")"
+  case "$LINK" in /*) SELF="$LINK" ;; *) SELF="$(dirname "$SELF")/$LINK" ;; esac
+done
+ROOT="$(cd "$(dirname "$SELF")/.." && pwd)"
+DATA="${CASHCAST_HOME:-$ROOT/private}"
+ENGINE="$ROOT/engine/target/release/cashcast-engine"
+
+build() {
+  [ -x "$ENGINE" ] || echo "… Building the engine. The first build takes a few minutes."
+  cargo build --release --quiet --manifest-path "$ROOT/engine/Cargo.toml"
+}
+
+doctor() {
+  if command -v cargo >/dev/null; then
+    echo "✓ Rust: $(cargo --version)"
+  else
+    echo "✗ Rust is missing. Install it from https://rustup.rs (or: brew install rust)."; return 1
+  fi
+  if build; then
+    echo "✓ Engine built"
+  else
+    echo "✗ The engine did not build"; return 1
+  fi
+  if ls -d /Applications/Numbers*.app >/dev/null 2>&1; then
+    echo "✓ Apple Numbers found: 'bin/cashcast numbers' can make a .numbers copy"
+  else
+    echo "· Apple Numbers not found: open private/out/Cashcast.xlsx in Excel, Numbers or Google Sheets"
+  fi
+  if [ -d "$DATA" ]; then
+    echo "✓ Data folder: $DATA"
+  else
+    echo "· No data folder yet. Run: bin/cashcast init"
+  fi
+}
+
+update() {
+  # Fast-forward a clean checkout to its upstream (origin/main), like careerbrew's
+  # `day start --update-only`. Leaves alone: local changes, local commits, a
+  # detached HEAD, no upstream, CI, CASHCAST_AUTO_UPDATE=0. At most once an hour
+  # unless forced. Prints one line; never fails the command it runs before.
+  local force="${1:-}" stamp="${CASHCAST_PRIVATE:-$DATA}/.update-checked" up before after
+  [ -d "$ROOT/.git" ] || [ -f "$ROOT/.git" ] || return 0
+  if [ -z "$force" ]; then
+    [ "${CASHCAST_AUTO_UPDATE:-1}" != 0 ] || return 0
+    case "${CI:-}" in "" | 0 | false) ;; *) return 0 ;; esac
+    [ -z "$(find "$stamp" -mmin -60 2>/dev/null)" ] || return 0
+  fi
+  mkdir -p "$(dirname "$stamp")" 2>/dev/null && touch "$stamp" 2>/dev/null || true
+  up="$(git -C "$ROOT" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null)" \
+    || return 0 # a feature branch: nothing to update
+  if [ -n "$(git -C "$ROOT" status --porcelain --untracked-files=no 2>/dev/null)" ]; then
+    echo "· Update skipped: this checkout has local changes." >&2; return 0
+  fi
+  GIT_TERMINAL_PROMPT=0 GIT_HTTP_LOW_SPEED_LIMIT=1000 GIT_HTTP_LOW_SPEED_TIME=15 \
+    git -C "$ROOT" fetch --quiet --no-tags 2>/dev/null \
+    || { echo "· Update skipped: could not reach $up (offline?)." >&2; return 0; }
+  before="$(git -C "$ROOT" rev-parse HEAD)"
+  if [ "$(git -C "$ROOT" rev-list --count '@{u}..HEAD' 2>/dev/null)" != 0 ]; then
+    echo "· Update skipped: this checkout has commits that $up lacks." >&2; return 0
+  fi
+  git -C "$ROOT" merge --ff-only --quiet '@{u}' >/dev/null 2>&1 \
+    || { echo "· Update skipped: could not fast-forward to $up." >&2; return 0; }
+  after="$(git -C "$ROOT" rev-parse HEAD)"
+  if [ "$before" != "$after" ]; then
+    echo "✓ Updated cashcast to $(git -C "$ROOT" rev-parse --short HEAD) ($(git -C "$ROOT" rev-list --count "$before..$after") new commit(s)). Agents: re-read AGENTS.md." >&2
+  elif [ -n "$force" ]; then
+    echo "✓ cashcast is up to date ($(git -C "$ROOT" rev-parse --short HEAD))." >&2
+  fi
+}
+
+case "${1:-}" in
+  "") update ;;
+  update) update force; exit 0 ;;
+esac
+
+case "${1:-help}" in
+  doctor)
+    doctor
+    CASHCAST_ROOT="$ROOT" exec "$ENGINE" health
+    ;;
+  *)
+    if [ ! -x "$ENGINE" ]; then
+      command -v cargo >/dev/null || { echo "Rust is missing. Install it from https://rustup.rs, then run: bin/cashcast doctor" >&2; exit 1; }
+      build >&2
+    elif [ ! -L "$ROOT/engine/target" ] && command -v cargo >/dev/null \
+      && [ -n "$(find "$ROOT/engine/src" "$ROOT/engine/data" "$ROOT/engine/Cargo.toml" "$ROOT/engine/Cargo.lock" -newer "$ENGINE" -print -quit 2>/dev/null)" ]; then
+      # Sources changed since the build (a `git pull`): rebuild. engine/data
+      # holds scripts built into the engine. A linked engine/target belongs
+      # to another checkout. When the build fails, the previous engine runs.
+      echo "… Rebuilding the engine: its sources changed." >&2
+      if build >&2; then
+        touch "$ENGINE"
+      else
+        echo "✗ The engine did not build; using the previous one. Run: bin/cashcast doctor" >&2
+      fi
+    fi
+    CASHCAST_ROOT="$ROOT" exec "$ENGINE" cli "$@"
+    ;;
+esac

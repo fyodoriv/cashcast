@@ -1,0 +1,73 @@
+id = "wise"
+name = "Wise"
+kinds = ["bank", "fx", "payments"]
+website = "https://wise.com"
+available_in_canada = true
+
+[import]
+formats = ["wise-statement-csv"]
+how_to_export = """
+1. Sign in to wise.com in a web browser.
+2. Click your initials in the top corner.
+3. Select "Statements and reports", then "Statements".
+4. Select "Create a statement".
+5. Pick the currency balance (or Jar), the period (365 days at most), CSV as the format, and English.
+6. Enter your Wise password if asked (you type it, not the agent).
+7. Save the file into private/users/<you>/inbox/.
+8. Repeat for each currency balance, and for each 365-day window.
+"""
+no_export_reason = ""
+history_limit = "365 days per statement on the web; download several for longer. API: up to 469 days per request."
+
+[api]
+available = true
+docs = "https://docs.wise.com/guides/developer/auth-and-security/personal-api-token"
+auth = "personal_token"
+base_url = "https://api.wise.com"
+read = ["profiles", "balances", "balance_statements"]
+write = []
+notes = "Wise docs say balance statements via a personal token work only for accounts based in the US, Canada, Australia, New Zealand, Singapore and Malaysia, so Canadian users are covered. Statements may ask for strong customer authentication (SCA). Wise's docs describe personal tokens on business accounts; whether a personal account can create one, and whether a read-only token type exists, is not confirmed in official docs. Store the token as CASHCAST_WISE_TOKEN."
+
+[browser]
+login_url = "https://wise.com/login"
+playbook = "playbooks/wise.md"
+
+[[actions]]
+id = "download-statement"
+title = "Download a statement as CSV"
+risk = "read"
+via = ["browser", "api"]
+
+[[actions]]
+id = "check-balances"
+title = "Check balances in each currency"
+risk = "read"
+via = ["browser", "api"]
+
+[[actions]]
+id = "check-transfer-status"
+title = "Check the status of a transfer"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "convert-currency"
+title = "Convert money between currency balances"
+risk = "money"
+via = ["human"]
+
+[[actions]]
+id = "send-transfer"
+title = "Send money to someone"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://wise.com/help/articles/2736049/how-do-i-download-a-statement",
+  "https://docs.wise.com/guides/developer/auth-and-security/personal-api-token",
+  "https://docs.wise.com/api-reference/balance-statement/balancestatementget",
+]
+confidence = "verified"

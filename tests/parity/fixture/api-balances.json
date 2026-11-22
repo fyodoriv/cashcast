@@ -1,0 +1,9 @@
+{
+  "wise": {"balances": {"USD": 1234.5, "EUR": 0, "CAD": 75.25}, "fetched_on": "2026-10-17"},
+  "kraken": {
+    "balances": {"CAD": 12.0, "BTC": 0.0123, "ZZCANARY": 3.0},
+    "prices": {"BTC": {"price": 90000, "currency": "USD"}},
+    "fetched_on": "2026-10-16"
+  },
+  "wealthsimple": {"balances": {"TFSA": 21000.0, "RRSP (USD)": 400.0}, "fetched_on": "2026-10-15"}
+}

@@ -1,0 +1,161 @@
+# A person's profile. `bin/cashcast users add NAME --province XX` copies this
+# to private/users/NAME/profile.toml (mode 600, never tracked). Every value
+# below is an example: replace it with your own or delete the line.
+
+display_name = "alex"
+country = "CA"                 # this app supports Canadian residents only
+province = "ON"                # AB BC MB NB NL NS NT NU ON PE QC SK YT
+
+[income]                       # gross yearly amounts, for tax rates
+employment = 120000
+self_employment = 0
+other = 0
+
+[room]                         # from your latest CRA Notice of Assessment / My Account
+# rrsp: the "RRSP deduction limit" for rrsp_limit_year; `bin/cashcast rrsp` checks this year's
+# contributions against it. rrsp_unused: unused contributions the notice still lists.
+# rrsp_other: this window's RRSP contributions that no export shows.
+rrsp = 20000
+rrsp_limit_year = 2026
+rrsp_unused = 0
+rrsp_other = 0
+tfsa = 7000
+fhsa = 8000
+
+[goals]
+emergency_months = 3           # months of spending kept as an emergency fund
+risk = "growth"                # conservative | balanced | growth | all-equity
+first_time_home_buyer = true
+mortgage_in_months = 10
+# mortgage_in_months = 12      # set when you plan a mortgage: no new credit before it
+no_new_credit = false
+cash_rate = 0.02               # what spare cash earns, used for fee-vs-minimum math
+simplicity_threshold = 50      # ignore changes worth less than this per year
+# monthly_spending = 4000      # your own estimate, instead of the history
+
+# [spending]                   # monthly estimates per reward category, when you have no exports yet
+# groceries = 600
+# dining = 300
+# recurring = 150
+
+[rent]
+monthly = 3000               # rent before any service fee
+service = "test-rent"
+fee_rate = 0.015
+membership_fee = 150
+membership_rate = 0.015
+codes_as = "recurring"            # pay rent by card through a service (ids in knowledge/data/payment_services.toml)
+
+[[tasks]]
+id = "zz-confirm-td"
+title = "Confirm the TD rent charge landed"
+due = 2026-10-15
+notes = "  rent site says passed  "
+
+[[tasks]]
+id = "zz-check-later"
+title = "Check the ZZCANARY statement"
+due = 2026-12-01
+
+[[tasks]]
+id = "zz-setting"
+title = "Turn on card alerts"
+kind = "settings"
+
+[[tasks]]
+id = "zz-pay"
+title = "Pay the canary card"
+kind = "money"
+due = 2026-10-20
+
+[[tasks]]
+id = "use-cashcast"
+title = "Use cashcast for the month"
+due = 2026-10-19
+
+[[tasks]]
+id = "zz-every"
+title = "Verify the monthly transfer"
+due = 2026-08-05
+every = "month"
+
+# One block per card you hold. `id` comes from knowledge/data/credit_cards.toml;
+# any field here overrides the catalog (for example your real caps).
+# [[wallet.cards]]
+# id = "td-cash-back-visa-infinite"
+# limit = 10000
+# statement_close_day = 18
+# fee_rebated = true           # a bank package rebates the annual fee
+# paydown_days_before = 2
+
+# [[banking.accounts]]
+# id = "td-all-inclusive"      # ids in knowledge/data/banks.toml
+# keep = 6500                  # what you keep in it (default: minimum + 500)
+
+[strategy.categories]          # map your own category names to reward categories
+# "Food & Dining > Groceries" = "groceries"
+
+[budget]                       # monthly budget per category path
+"Food" = 700
+
+[employer_stock]
+symbol = "EMPL"              # flags concentration above 10% of investments
+
+[watchlist]
+symbols = ["EMPL", "XEQT"]
+metrics = { EMPL = { pe = 22.0, profit_margin = 0.2, roe = 0.3, revenue_growth = 0.05, beta = 1.1 } }                   # tickers you want screened, e.g. ["XEQT.TO", "VFV.TO"]
+
+[reminders]
+# list = "Money"               # default: "Cashcast · <display_name>"
+
+# Your own finance tasks: they sync to Reminders, Calendar and Notion like cashcast's, and a
+# tick anywhere closes them for good. One-time actions only, never a daily duty.
+# An entry with a cashcast task's id (see `bin/cashcast changes`) only moves its date, renames it or adds notes;
+# `id = "paydown-td-*"` matches every month's copy (title and notes only).
+# [[tasks]]
+# id = "chexy-switch-back"
+# title = "Chexy: switch the rent card back"
+# due = 2026-11-16
+# kind = "settings"            # read | settings | money
+# every = "month"              # optional: week | 2 weeks | month | year; each date is its own task
+# notes = "your checklist"     # goes to Reminders and Calendar, never to Notion
+
+[[wallet.cards]]
+id = "test-flat"
+name = "Test Flat 2%"
+earn = { other = 0.02 }
+fx_fee = 0.0
+limit = 25000
+statement_close_day = 24
+paydown_days_before = 1
+
+[[wallet.cards]]
+id = "test-grocery"
+name = "Test Grocery 4%"
+earn = { groceries = 0.04, recurring = 0.04, gas = 0.02, other = 0.01 }
+caps = [{ categories = ["groceries", "recurring"], limit = 25000, period = "card_year", after_rate = 0.01 }]
+annual_fee = 120
+fee_rebated = true
+fx_fee = 0.025
+limit = 15000
+statement_close_day = 25
+
+[[wallet.cards]]
+id = "test-costly"
+name = "Test Costly"
+earn = { dining = 0.021, other = 0.005 }
+annual_fee = 150
+fx_fee = 0.025
+limit = 5000
+statement_close_day = 18
+
+[[banking.accounts]]
+id = "test-package"
+bank = "Test Bank"
+name = "Package"
+monthly_fee = 30.95
+waive_min_balance = 6000
+card_fee_rebate = 120
+keep = 6500
+source = "https://example.com"
+confidence = "estimate"

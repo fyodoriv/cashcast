@@ -1,0 +1,87 @@
+id = "etrade"
+name = "E*TRADE from Morgan Stanley"
+kinds = ["broker"]
+website = "https://us.etrade.com"
+available_in_canada = true
+
+[import]
+formats = ["etrade-transactions-csv", "etrade-stockplan-csv", "etrade-benefit-rs", "etrade-benefit-espp", "etrade-gains-losses", "etrade-stockplan-pdf"]
+how_to_export = """
+Brokerage transactions:
+1. Sign in to etrade.com.
+2. Go to Accounts > Transactions.
+3. Set a custom date range (one calendar year per file is safest).
+4. Click the download icon and pick the spreadsheet (CSV) format. The file is often DownloadTxnHistory.csv.
+5. Save it into private/users/<you>/inbox/.
+
+Stock plan (Morgan Stanley at Work):
+1. Go to the stock plan account (At Work / Stock Plan menu).
+2. Download both: My Account > Benefit History (vests and ESPP purchases, the buys) and
+   Gains & Losses for each tax year with sales (the sales). Pick Download Expanded.
+3. Keep the .xlsx files as they are; cashcast reads them. The holdings report
+   checks the result against the sellable shares E*TRADE reports.
+4. Save it into private/users/<you>/inbox/.
+
+Stock plan cash (sales, wires, fees, dividends), when Activity never loads:
+1. Open https://us.etrade.com/etx/pxy/accountdocs#/documents and pick Statements.
+2. Tick each statement since your history starts and download them (a ClientStatements .zip).
+3. Unzip the PDFs into private/users/<you>/inbox/. Reading them needs pdftotext (brew install poppler).
+"""
+no_export_reason = ""
+history_limit = "Web: pick any range; one calendar year per file is safest. API: two years of transactions (one page of the docs says three)."
+
+[api]
+available = true
+docs = "https://apisb.etrade.com/docs/api/account/api-transaction-v1.html"
+auth = "oauth1"
+base_url = "https://api.etrade.com"
+read = ["accounts_list", "balances", "portfolio", "transactions"]
+write = []
+notes = "OAuth 1.0a, three-legged. Request a consumer key at developer.etrade.com; Use a LIVE Individual key (the API Agreement is required for it); a sandbox key fails against api.etrade.com. cashcast never trades. Stock plan pages have no API that we found. available_in_canada is true for stock plan participants; opening a new retail account as a Canadian resident is not confirmed. Store as CASHCAST_ETRADE_KEY and CASHCAST_ETRADE_SECRET."
+
+[browser]
+login_url = "https://us.etrade.com/home"
+playbook = "playbooks/etrade.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download brokerage transactions"
+risk = "read"
+via = ["browser", "api"]
+
+[[actions]]
+id = "download-stockplan-gains-losses"
+title = "Download stock plan gains and losses"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "download-benefit-history"
+title = "Download stock plan benefit history"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-upcoming-vests"
+title = "Check upcoming vests"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "sell-shares"
+title = "Sell shares"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://apisb.etrade.com/docs/api/account/api-transaction-v1.html",
+  "https://developer.etrade.com/getting-started",
+  "https://developer.etrade.com/support/frequently-asked-questions",
+  "https://apisb.etrade.com/docs/api/authorization/authorize.html",
+  "https://us.etrade.com/stock-plans",
+  "https://traderfyles.helpscoutdocs.com/article/4-how-to-export-trade-history-from-e-trade",
+]
+confidence = "estimate"

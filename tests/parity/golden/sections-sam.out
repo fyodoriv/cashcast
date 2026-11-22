@@ -1,0 +1,170 @@
+strategy sections sam
+=== cashback
+## Cash back: where to pay
+
+- No cards in `[wallet]` of profile.toml yet. Add the cards you hold (catalog ids are in `knowledge/data/credit_cards.toml`).
+
+=== banking
+## Bank accounts: hold the minimum or pay the fee
+
+- Add your chequing packages to `[[banking.accounts]]` in profile.toml (ids from knowledge/data/banks.toml).
+
+=== credit
+## Credit score: statement targets and pay-down dates
+
+- Add `limit` and `statement_close_day` to each card in profile.toml to get targets and dates.
+
+=== tax
+## Tax: rates and moves
+
+- Add `[income]` (gross employment and other income) to profile.toml to see your rates.
+
+=== reserve
+## Cash reserve and where new money goes
+
+- Spending unknown yet: import exports or set `goals.monthly_spending`.
+
+=== foreign
+## Foreign cash: Wise USD and other currencies
+
+- No foreign-currency cash found. Run `bin/cashcast api balances wise` to read your Wise balances.
+
+=== interest
+## Interest on cash: what each balance earns
+
+- No cash places yet: add `[[banking.accounts]]` with a `keep` to profile.toml, or run `bin/cashcast api balances wise`.
+
+=== crypto
+## Crypto: market value from your exchanges
+
+- No crypto balances found. Run `bin/cashcast api balances kraken` to read your Kraken balances.
+
+=== invest
+## Long-term investing: core, placement and screen
+
+*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. Check facts marked 'estimate' before you act.*
+
+**Core (growth, about 80% stocks):** one diversified, low-fee fund does most of the work.
+- XIC: iShares Core S&P/TSX Capped Composite Index ETF, MER 0.06%. Broad Canadian stocks at very low cost. Eligible dividends get the dividend tax credit in a taxable account.
+- XUU: iShares Core S&P U.S. Total Market Index ETF, MER 0.07%. Whole US market in CAD. Holds US-listed ETFs, so two layers of withholding issue in RRSP; fine in TFSA.
+- VFV: Vanguard S&P 500 Index ETF, MER 0.08%. Cheap S&P 500 in CAD. Holds US shares directly, so 15% US withholding is lost in TFSA/RRSP (recoverable only in non-registered).
+
+**Where each asset goes:**
+- US-listed US equity ETFs (VTI, SCHD, VYM) → RRSP: The Canada-US treaty exempts RRSPs from the 15% US dividend withholding. TFSAs and RESPs are not exempt.
+- Canadian-listed US equity ETFs (VFV, XUU, VUN) → TFSA: Withholding is lost in TFSA and RRSP alike; the cost is small (about 0.2%/yr). In non-registered you can claim the foreign tax credit.
+- Canadian equity (XIC, VDY) → non_registered: Eligible Canadian dividends get the dividend tax credit only in a taxable account. Also fine in a TFSA.
+- Bonds and GICs (ZAG, XBB) → RRSP: Interest is taxed at your full marginal rate; shelter it first.
+- Highest expected growth (all-equity ETFs) → TFSA: Tax-free growth compounds best on the assets that grow most.
+- All-in-one ETFs (XEQT, VEQT, XGRO, VGRO) → any: Simplicity beats small location gains for most people. Hold the same fund everywhere and rebalance by contribution.
+- Short-term cash (CASH, ZMMK, HISA) → TFSA: Interest is fully taxable; a TFSA shelters it and keeps it withdrawable.
+
+- Market value of your accounts: not recorded yet. Read them in the browser (playbook `read-investment-balances`), then `bin/cashcast api record wealthsimple --set TFSA=…,RRSP=…`.
+
+=== invest_plan
+## Investment moves: ranked, with evidence
+
+**Answer: no move needed now.** No move clears your simplicity threshold after its costs. That is a fine result if nothing is listed under what this plan does not know. Look again when new cash arrives, when your mix drifts past its band, or in a year.
+
+*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. No stock picks, no market timing: every gain below is a range from long-run planning assumptions, not a forecast. No provider pays for any recommendation. The ranking is fixed rules in code; chat explanations come from an AI model and can be wrong.*
+
+Question any move: say "challenge `<id>`" (skill `invest-challenge`). Override one in profile.toml under `[[invest.overrides]]` with `move`, `reason` and an optional `until` date; the plan respects it.
+
+| # | Move | Long-run average gain a year (range, not next year) | One-time cost | Task |
+|---|---|---|---|---|
+| 1 | Do nothing (`do-nothing`) | $0 (baseline) | — | no |
+
+### 1. Do nothing (`do-nothing`)
+
+- **Gain vs. doing nothing:** $0 (baseline).
+- **Why:** Zero effort, zero trading cost, no new tax. It is the baseline every move must beat.
+- **Risk:** None beyond the markets you already hold.
+- **Strongest objection:** Idle cash and drift compound quietly; doing nothing for years has a real cost.
+- **Evidence:**
+  - `pag-inflation` (verified): Long-run planning assumption for inflation: 2.1% a year. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-04-16, review by 2027-04-30.
+
+## What this plan does not know
+
+- Your stock/bond mix: only 0% of your investments have a known asset class, so drift from your 80% target is not checked.
+- Today's Bank of Canada rates: none is fresh, so safe-rate and inflation numbers use the yearly planning assumptions. Run `bin/cashcast knowledge refresh`.
+- Cash above your reserve: not checked, because your cash balance or reserve is missing. Import your bank exports and check the reserve section.
+- Debt at 8% a year or more: not recorded, so the debt-first rule is not checked. Set `high_interest_debt` under [invest] in profile.toml (0 when you have none).
+- Your marginal tax rate: add [income] to profile.toml, so tax-based moves can be sized.
+
+Target mix: 80% stocks, from your risk level (growth, a rule of thumb from `risk-equity-shares`). Agents never move money: each task is yours to do.
+Made on 2026-10-18; oldest evidence as of 2016-08-01.
+
+=== forecast
+## Balance forecast
+
+- No imported data yet: put exports in your inbox and run `bin/cashcast import`.
+
+=== payments
+## Payments analysis
+
+- No imported data yet.
+
+=== spending
+## Spending checkup
+
+- No imported data yet.
+
+=== budget
+## Budget vs actual
+
+- No imported data yet.
+
+=== alternatives
+## Alternatives finder
+
+- Needs spending data or `[spending]` estimates.
+
+=== review
+## Monthly review (5 minutes)
+
+Next review: **Mon, Nov 2**.
+
+1. Import: add last month's exports to your inbox, run `bin/cashcast import`.
+2. Statements: every card closed at or under its target and was paid in full.
+3. Bank minimums: no monthly fee was charged; top accounts back up to their keep amounts.
+4. Rent charges: count this cap year's charges per card; switch the rent card when a count is used up.
+5. Credit scores: check Equifax and TransUnion; any drop → find the cause.
+6. Cash sweep: invest cash above the reserve, in the account order of your strategy.
+7. Cash back: redeem balances of $25+ as a statement credit.
+8. Budget: look at the categories over budget; adjust the budget or the habit.
+
+task monthly-review-2026-11 | Monthly money review (5 minutes) | 2026-11-02 | Run: bin/cashcast review. Import: add last month's exports to your inbox, run `bin/cashcast import`. Statements: every card closed at or under its target and was paid in full. Bank minimums: no monthly fee was charged; top accounts back up to their keep amounts. | read |  | 
+=== net_total
+## Net total: $0
+
+Everything you have minus everything you owe. Higher is better. Every option below is ranked by what it adds to this number, inside your boundaries.
+
+- Trend: first point saved today. The change shows after 30 days.
+
+| Part | CAD |
+|---|---|
+| **Net total** | **$0** |
+
+<details><summary>Each source</summary>
+
+| Source | Part | CAD | Oldest reading |
+|---|---|---|---|
+
+</details>
+- Not counted yet: investments: record them with `bin/cashcast api record SERVICE --set NAME=AMOUNT`.
+- Not counted yet: bank and card balances: import your exports (`bin/cashcast import`).
+
+### Your boundaries
+
+- Work: at most 45 hours a week (now: unknown).
+- Cash floor: unknown + 5 % margin, from unknown: set [boundaries] min_cash.
+- Risk: at most growth.
+- New debt: at most $0.
+- Home: kept, never sold.
+- Change them in `[boundaries]` of your profile.toml.
+
+### Options, best first
+
+Each option's net total is a long-run planning estimate, not a forecast; investing can lose money. Education and arithmetic on your own data, not personal financial advice.
+
+- No option inside your boundaries adds to the net total right now.
+

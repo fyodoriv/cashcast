@@ -1,0 +1,196 @@
+# Insurance heuristics and gap checks for a Canadian household.
+# Rules of thumb are education, not advice. A licensed advisor sets real coverage.
+
+[meta]
+title = "Insurance rules of thumb and gap checks"
+as_of = 2026-10-19
+review_by = 2027-10-31
+sources = [
+  "https://www.canada.ca/en/financial-consumer-agency/services/insurance/determining-insurance-needs.html",
+  "https://www.canada.ca/en/financial-consumer-agency/services/insurance/disability.html",
+  "https://www.canada.ca/en/financial-consumer-agency/services/insurance/life.html",
+  "https://www.ibc.ca/insurance-basics/home",
+  "https://ibc.ca/ab/home/rental-properties/tenant-insurance",
+  "https://travel.gc.ca/travelling/documents/travel-insurance",
+]
+
+[[rules]]
+id = "life-term-need"
+topic = "term life"
+rule = "Need = (years of income your dependants need x after-tax income) + debts (mortgage, loans) + final expenses + future goals (for example education) - existing coverage and savings. Common shortcut: 7-10x gross income for a parent with young children. No dependants and no co-signed debt: usually little or no life insurance needed."
+why = "Life insurance replaces income and pays debts for people who depend on you. Term is the cheapest way to cover a temporary need such as a mortgage or raising children."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/insurance/life.html"
+confidence = "heuristic"
+notes = "FCAC lists the uses (replace income, pay debts, funeral costs, dependants) but gives no formula or income multiple. The 7-10x shortcut is a rule of thumb, no official source."
+
+[[rules]]
+id = "life-term-length"
+topic = "term life"
+rule = "Match the term to the need: until the youngest child is independent or the mortgage is paid (often 20-25 years). Group life through work is usually 1-2x salary and ends when you leave."
+why = "Group cover disappears with a job change and may not be enough; a personal term policy is portable."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/insurance/life.html"
+confidence = "heuristic"
+notes = "Rule of thumb, no official source. FCAC life page names 10- and 20-year terms but does not tie term length to the need, and does not state group life amounts."
+
+[[rules]]
+id = "disability-income"
+topic = "disability"
+rule = "Aim to replace 60-70% of gross income (benefits paid from individual premiums you pay are tax-free; employer-paid group benefits are taxable). Check group LTD first, then top up with an individual policy if group cover is low, taxable, or 'any occupation' after 2 years."
+why = "Disability is more likely than death during working years. FCAC notes disability insurance generally replaces 60-85% of income."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/insurance/disability.html"
+confidence = "verified"
+
+[[rules]]
+id = "disability-self-employed"
+topic = "disability"
+rule = "Self-employed people have no group LTD and no EI sickness benefits unless they opted in to EI special benefits. Price an individual disability policy."
+why = "Income stops completely if you cannot work."
+source = "https://www.canada.ca/en/employment-social-development/programs/ei/ei-list/reports/self-employed-special-benefits.html"
+confidence = "verified"
+
+[[rules]]
+id = "tenant-insurance"
+topic = "tenant"
+rule = "Renters should carry tenant insurance: contents (replacement cost), personal liability (at least 1-2 million) and additional living expenses. Typical cost is low (often 15-40/month)."
+why = "The landlord's policy does not cover your belongings or your liability; IBC says liability insurance is typically a lease condition. Standard liability is 1 million, often raisable to 2 million."
+source = "https://ibc.ca/ab/home/rental-properties/tenant-insurance"
+confidence = "verified"
+
+[[rules]]
+id = "home-insurance"
+topic = "home"
+rule = "Insure the home for full rebuild (replacement) cost, not market value. Add sewer backup and overland water cover where available. Keep liability at 1-2 million+. Review yearly and after renovations."
+why = "Water damage is a leading claim cause and is often excluded by default; FCAC warns policies may exclude some water damage."
+source = "https://www.ibc.ca/insurance-basics/home/types-of-home-insurance-coverage"
+confidence = "verified"
+notes = "IBC confirms the building limit is rebuild (replacement) cost, which can differ from market value, and that sewer backup and overland flood are optional add-ons. The 1-2 million liability level is judgment (IBC tenant page: standard 1 million, often raisable to 2 million)."
+
+[[rules]]
+id = "auto-insurance"
+topic = "auto"
+rule = "Carry third-party liability well above the provincial minimum (1-2 million). Drop collision on an old, low-value car when premium x 2-3 years > car value. Rules differ by province (public insurers in BC, SK, MB, QC base cover)."
+why = "Liability claims can exceed minimums; collision on a cheap car can cost more than it pays."
+source = "https://www.ibc.ca/insurance-basics/auto"
+confidence = "heuristic"
+notes = "FSRA (Ontario) confirms a legal minimum of 200,000 third-party liability and the option to raise it to 1-2 million or more. The collision drop-off rule is a rule of thumb, no official source. IBC auto page gives no amounts."
+
+[[rules]]
+id = "travel-medical-card"
+topic = "travel medical"
+rule = "Before any trip outside your province, check card travel-medical limits: trip length (for example 15 days Scotia Momentum, 10 days TD Cash Back VI, 21 days MBNA, 60 days NBC World Elite under 55) and age cuts (often 65+). Most cover only trips you paid for with the card if the card says so. Buy a top-up or annual plan if the trip is longer or you are older."
+why = "Provincial health plans pay little outside Canada; a US hospital stay can cost tens of thousands. Canada advises buying travel insurance before you leave."
+source = "https://travel.gc.ca/travelling/documents/travel-insurance"
+confidence = "verified"
+
+[[rules]]
+id = "trip-cancellation-card"
+topic = "travel"
+rule = "Trip cancellation, interruption, flight delay and baggage cover on cards usually need 75-100% of the fare charged to the card."
+why = "Paying with the wrong card voids the benefit."
+source = "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html"
+confidence = "verified"
+
+[[rules]]
+id = "critical-illness"
+topic = "critical illness"
+rule = "Optional. Consider a lump sum of about 1 year of expenses if you have no disability cover, are self-employed, or want funds for treatment and recovery. Lower priority than term life (with dependants) and disability."
+why = "Pays a lump sum on diagnosis of listed conditions; overlaps with disability insurance."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/insurance/determining-insurance-needs.html"
+confidence = "heuristic"
+notes = "Rule of thumb, no official source. FCAC insurance-needs page does not cover critical illness."
+
+[[rules]]
+id = "umbrella"
+topic = "umbrella"
+rule = "Consider 1-2 million umbrella liability when net worth is high, you own rental property, have a pool, or a teen driver."
+why = "Extends liability past home and auto limits at low cost."
+source = "https://www.ibc.ca/insurance-basics/home"
+confidence = "heuristic"
+notes = "Rule of thumb, no official source. IBC home pages do not mention umbrella liability."
+
+[[rules]]
+id = "mobile-device"
+topic = "mobile device"
+rule = "Many premium cards include mobile device insurance (often up to 1,000-1,500) if you buy the phone or pay its contract with the card. Skip carrier device insurance when a card covers you."
+why = "Avoids paying twice for the same cover."
+source = "https://www.desjardins.com/en/credit-cards/cash-back-world-elite-mastercard.html"
+confidence = "verified"
+
+[[rules]]
+id = "credit-loan-insurance"
+topic = "creditor insurance"
+rule = "Usually decline credit-card balance protection and mortgage creditor insurance from the lender; a personal term policy is often cheaper and stays with you."
+why = "FCAC says to compare loan insurance with coverage you already hold, which may already pay on death, illness or job loss."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/insurance/credit-loan.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ gap checks
+
+[[gaps]]
+id = "renting-no-tenant"
+topic = "tenant"
+rule = "Rent payments seen but no tenant/home insurance premium seen."
+why = "Contents and liability are unprotected."
+source = "https://ibc.ca/ab/home/rental-properties/tenant-insurance"
+confidence = "verified"
+notes = "IBC tenant page: the landlord's policy does not cover tenant belongings or liability."
+
+[[gaps]]
+id = "mortgage-no-home"
+topic = "home"
+rule = "Mortgage payments seen but no home insurance premium seen."
+why = "Lenders require it; a lapse is a serious risk."
+source = "https://www.ibc.ca/insurance-basics/home"
+confidence = "heuristic"
+notes = "Lender requirement not found on FCAC or IBC pages; it is standard in mortgage contracts. Detection rule, keep as estimate."
+
+[[gaps]]
+id = "travel-no-medical"
+topic = "travel medical"
+rule = "Airline or hotel spend seen, and no card in the wallet has travel_medical in insurance, and no travel-insurance premium seen."
+why = "Out-of-country medical costs can be ruinous."
+source = "https://travel.gc.ca/travelling/documents/travel-insurance"
+confidence = "verified"
+
+[[gaps]]
+id = "travel-wrong-card"
+topic = "travel"
+rule = "Flights or hotels charged to a card without trip_cancellation or travel_medical while another held card has them."
+why = "Moving the charge to the right card adds free cover."
+source = "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html"
+confidence = "verified"
+
+[[gaps]]
+id = "dependants-no-life"
+topic = "term life"
+rule = "Profile lists dependants or a co-borrower, and no life-insurance premium or group life is recorded."
+why = "Dependants lose income if you die."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/insurance/life.html"
+confidence = "verified"
+notes = "FCAC life page: a death benefit can replace your income so your family keeps its standard of living."
+
+[[gaps]]
+id = "self-employed-no-disability"
+topic = "disability"
+rule = "Self-employed income seen and no disability premium seen."
+why = "No group LTD or default EI sickness cover."
+source = "https://www.canada.ca/en/employment-social-development/programs/ei/ei-list/reports/self-employed-special-benefits.html"
+confidence = "verified"
+notes = "ESDC page: EI special benefits for self-employed people need opt-in registration."
+
+[[gaps]]
+id = "car-no-auto"
+topic = "auto"
+rule = "Fuel, EV charging, parking or car payments seen but no auto insurance premium seen."
+why = "Driving uninsured is illegal and uncapped liability."
+source = "https://www.fsrao.ca/consumers/auto-insurance/purchasing-your-policy/customize-your-liability-and-accident-benefits-coverage"
+confidence = "verified"
+notes = "FSRA (Ontario regulator): by law you must carry at least 200,000 third-party liability. Other provinces also require it; amounts differ."
+
+[[gaps]]
+id = "rental-car-no-cdw"
+topic = "rental car"
+rule = "Car-rental charge on a card without rental_car insurance."
+why = "You may pay the rental company's collision waiver or be exposed to damage costs."
+source = "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-infinite-card"
+confidence = "verified"

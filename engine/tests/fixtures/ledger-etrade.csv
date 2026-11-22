@@ -1,0 +1,7 @@
+For Account:,####CANARY-ET00
+
+TransactionDate,TransactionType,SecurityType,Symbol,Quantity,Amount,Price,Commission,Description
+03/20/25,Sold,EQ,ACME,-10,1495.00,150.00,5.00,CANARY-ET01 SOLD
+02/14/25,Dividend,EQ,ACME,0,12.50,0,0,CANARY-ET02 DIVIDEND
+01/10/25,Bought,EQ,ACME,20,-2005.00,100.00,5.00,CANARY-ET03 BOUGHT
+01/09/25,Transfer,EQ,ACME,5,0,0,0,CANARY-ET04 TRANSFER

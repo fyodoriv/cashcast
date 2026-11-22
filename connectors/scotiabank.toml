@@ -1,0 +1,100 @@
+id = "scotiabank"
+name = "Scotiabank"
+kinds = ["bank", "card"]
+website = "https://www.scotiabank.com/ca/en/personal.html"
+available_in_canada = true
+
+[import]
+formats = ["scotiabank-csv", "scotiabank-legacy-csv", "ofx", "scotiabank-visa-pdf", "scotiabank-chequing-pdf", "scotiabank-ssi-pdf"]
+ofx_orgs = ["Scotiabank", "BNS"]
+how_to_export = """
+1. Sign in to Scotia OnLine in a web browser. The mobile app cannot download transactions.
+2. On the Accounts page, select the account.
+3. Pick the statement period from the dropdown.
+4. Scroll down. Click "Load more" until the "Current statement period total" line shows.
+5. Click the download icon at the top of the screen.
+6. Pick CSV if it is offered. If not, pick Quicken (QFX).
+7. Save the file into private/users/<you>/inbox/.
+8. Repeat for each account and each statement period you need.
+9. Older periods: open the account's Statements tab, pick the year, open each month with "View PDF" and save it into the inbox (playbook action download-statements). "Download all as PDF" saves a broken zip.
+"""
+no_export_reason = ""
+history_limit = "The web filter goes back to November 2024. Older months are monthly PDF statements under each account's Statements tab; cashcast reads them (scotiabank-visa-pdf, scotiabank-chequing-pdf)."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for personal accounts. ScotiaConnect (business) has file exports but is out of scope. Scotiabank's help confirms accounting-software and Quicken (QFX) downloads for personal accounts; CSV for personal accounts is seen by users but not confirmed in official help. scotiabank-legacy-csv covers files from the older online banking layout."
+
+[browser]
+login_url = "https://www.scotiaonline.scotiabank.com/"
+playbook = "playbooks/scotiabank.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download transactions (CSV or QFX)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "download-statements"
+title = "Download PDF statements for months older than the CSV reaches"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-statement-close-date"
+title = "Check the credit card statement close date and due date"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "change-chequing-package"
+title = "Change the chequing account package"
+risk = "settings"
+via = ["browser", "human"]
+
+[[actions]]
+id = "set-card-autopay-full-balance"
+title = "Set credit card autopay to the full statement balance"
+risk = "money"  # commits future payments or fees
+via = ["human"]
+
+[[actions]]
+id = "redeem-scene-points-statement-credit"
+title = "Redeem Scene+ points as a statement credit"
+risk = "settings"
+via = ["browser"]
+
+[[actions]]
+id = "product-change-card"
+title = "Product-change a credit card"
+risk = "settings"
+via = ["human"]
+
+[[actions]]
+id = "send-etransfer"
+title = "Send an Interac e-Transfer"
+risk = "money"
+via = ["human"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://help.scotiabank.com/article/how-can-i-download-transactions-to-ms-money?origin=dotcom-help",
+  "https://help.scotiabank.com/article/can-i-download-my-transaction-history-in-the-app?origin=neo",
+  "https://scotiabank.com/ca/en/personal/bank-your-way/digital-banking-guide/credit-cards/redeem-points-for-credit.html",
+  "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/scene-card/welcome-kit/redeeming-sceneplus-points.html",
+]
+confidence = "estimate"

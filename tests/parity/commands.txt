@@ -1,0 +1,202 @@
+# Commands the parity harness (scripts/rust-parity.sh) runs on both sides.
+# One command line per row, after `bin/cashcast --today 2026-10-18`.
+# Only commands that stay on this computer: no network, no osascript, no browser.
+# Add a row for every command a port touches.
+help
+actions --json
+actions
+users list
+config show
+--user alex consent list
+--user alex telemetry status
+--user alex telemetry send --dry-run
+--user alex status
+--user alex import
+--user alex init
+stop
+--user alex totals
+--user alex columns
+--user alex forecast
+--user alex backtest
+--user sam forecast
+--user sam backtest
+--user alex holdings
+--user alex cards now
+--user alex cards --balance amex-cobalt=120.5 --balance amex-cobalt=99
+--user alex transfers
+--user alex transfers --balance chequing=1000
+--user alex first-error
+--user alex api record wealthsimple --set TFSA=1000,RRSP=2_500.5,TFSA=7
+--user alex api record wealthsimple --set USD=10 --currency usd
+--user alex api record wealthsimple --set acct12345=1
+--user alex api record nope --set A=1
+--user alex api record wealthsimple
+--user alex api record --set TFSA=5
+--user alex api balances wise
+--user alex api download nope
+--user alex api download google-sheets
+--user alex telemetry send
+--user alex strategy
+--user alex strategy --section cashback
+--user alex strategy --section credit
+--user alex strategy --section tax
+--user alex review
+--user alex budget
+--user alex tax
+--user alex rrsp
+--user alex invest
+--user alex alternatives
+--user alex payments
+--user alex net-total
+--user alex invest-plan
+--user alex strategy --section net_total --section budget
+--user alex strategy --market
+--user alex invest --market
+--user alex reminders preview
+--user alex calendar preview
+--user alex changes list
+--user alex tasks list
+--user alex tasks list --json
+--user alex fetch plan
+--user alex fetch plan --all
+--user alex moneywiz status
+--user alex moneywiz coverage
+--user alex moneywiz sync --dry-run
+--user sam moneywiz status
+--user alex sync status
+--user alex sync all
+--user sam sync all --allow-removals
+--user sam sync --allow-removals all
+--user alex sync sheets
+--user alex sync sheets sheet-canary Cashcast!A1
+--user sam status
+--user sam strategy
+--user sam review
+--user sam rrsp
+--user sam net-total
+--user sam tasks list
+connectors list
+connectors show wealthsimple
+connectors show
+connectors show nosuch
+--user alex action cibc download-transactions
+--user alex action cibc product-change-card
+--user alex action cibc send-etransfer
+--user alex action cibc send-etransfer
+--user alex action cibc nosuch
+--user sam fetch plan
+knowledge list
+knowledge check
+--user alex consent revoke cloud:sheets
+--user alex consent revoke agent:aggregates
+--user alex consent list
+--user alex telemetry off
+--user alex telemetry status
+--user alex telemetry on
+config set web.port nope
+config set nope 1
+config set web.port 9000
+config show
+--user Bad! consent list
+users add alex --province ON
+users add zed --province XX
+knowledge propose tests/parity/fixture/knowledge/credit_cards.toml
+knowledge propose knowledge/data/banks.toml
+knowledge propose
+knowledge propose tests/parity/fixture/missing.toml
+knowledge check --today 2030-01-01
+--user sam optimize
+--user alex optimize --input tests/parity/fixture/optimize.toml
+--user alex optimize --input tests/parity/fixture/optimize-sell.toml
+--user alex optimize --input tests/parity/fixture/missing.toml
+--user alex changes show
+--user alex changes show nosuch
+--user alex tasks resolve
+--user alex tasks verdict nosuch pass --reason showed
+--user alex tasks verdict
+--user alex tasks verdict zz-confirm-td pass --reason paid_$5
+--user alex tasks verdict zz-check-later pass --reason seen
+--user alex tasks verdict zz-confirm-td fail --reason missing --source browser
+--user alex tasks verdict zz-confirm-td fail --reason not_there_in_2026
+--user alex tasks verdict zz-confirm-td pass --reason landed
+--user alex tasks list
+--user alex changes done
+--user alex changes done zz-test
+--user alex changes undo zz-test
+--user alex changes undo zz-test
+--user sam changes list
+--user sam reminders preview
+--user sam calendar preview
+--user sam sync status
+config set web.autostart false
+start
+--user alex start
+--user sam start
+config set start.tasks 0
+--user alex start
+--user sam notion import tests/parity/fixture/notion-export
+--user alex notion import tests/parity/fixture/notion-export.zip
+--user sam notion import tests/parity/fixture/nosuch.zip
+--user sam notion import tests/parity/fixture/bank.csv
+--user alex moneywiz probe
+--user alex moneywiz edit --dry-run
+--user alex moneywiz edit --dry-run --fixes
+--user alex moneywiz categories
+--user alex moneywiz categories suggest
+--user alex moneywiz categories migrate --dry-run
+--user alex moneywiz categories rollback
+--user alex moneywiz sync
+--user sam moneywiz sync --no-download
+# Argument shapes argparse owned until step 9, part 10: help, usage errors,
+# prefixes, `--name=value`, `--` and unknown words (Rust parses them now).
+users -h
+help --help
+--user alex moneywiz --help
+--user alex tasks -h
+nosuch
+--user alex users nosuch
+--user alex fetch collect --minutes x
+--user alex fetch nosuch --all
+--user alex totals extra
+--user alex --user sam totals
+--user=alex consent list
+--user alex consent list --us sam
+--user alex -x totals
+--user alex strategy --sec budget --sec tax
+--user alex tasks --js
+--user alex tasks --json=1
+--user alex tasks -hx
+--user alex config set
+--user alex api
+--user alex web --port x
+--user alex notion
+--user alex changes -- list
+--user alex telemetry send --dry
+--user alex cards now --balance=amex-cobalt=5
+--user alex action
+--user alex action td
+--user alex connectors show
+--user alex sync
+--user alex sync sheets
+--user alex knowledge propose
+--user alex moneywiz categories --d
+--user
+--today x --user alex review
+--today x users list
+--today 20261018 --user alex tax
+--today 2026-W42-7 --user alex budget
+--today 2026-02-30 --user alex review
+--user alex web --port 70000
+--user alex knowledge propose tests/parity/fixture
+--today 20261018 --user alex import
+--today 2026-W42-7 --user alex forecast
+--today x --user alex import
+--today x --user alex cards now
+--today 0000-W01-1 --user alex review
+--user alex web --port 99999999999999999999
+--today 20261018 --user alex moneywiz coverage
+--today x --user alex moneywiz coverage
+--today x --user alex moneywiz status
+--user alex charges
+--user alex charges find anthropic
+--user alex spending

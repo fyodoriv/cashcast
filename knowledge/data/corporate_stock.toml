@@ -1,0 +1,141 @@
+# Employer equity rules for Canadian residents (RSUs, ESPP, options, US-listed shares).
+# Education, not tax advice. Complex cases need a cross-border tax professional.
+
+[meta]
+title = "Employer stock: RSUs, ESPP, options, US-listed shares"
+as_of = 2026-10-19
+review_by = 2027-04-30
+sources = [
+  "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/international-non-residents/information-been-moved/foreign-reporting/questions-answers-about-form-t1135.html",
+  "https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12700-capital-gains/definitions-capital-gains.html",
+]
+
+[[rules]]
+id = "rsu-vest-income"
+topic = "RSU"
+rule = "RSUs are employment income at vest: the fair market value of the shares on the vest date, converted to CAD at that day's Bank of Canada rate, goes on your T4 (box 14). Payroll withholds tax, often by selling shares (sell-to-cover)."
+why = "Vest-day value is salary, not a capital gain; under-withholding is common at high vest values, so plan for a balance owing."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+confidence = "verified"
+
+[[rules]]
+id = "rsu-acb"
+topic = "RSU"
+rule = "ACB of vested RSU shares = FMV at vest in CAD (the amount already taxed). Shares of the same class are identical property, so ACB is averaged across all lots you hold, including ESPP shares."
+why = "Using the wrong ACB double-taxes income or understates gains. Averaging is required for identical properties."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12700-capital-gains/definitions-capital-gains.html"
+confidence = "verified"
+
+[[rules]]
+id = "rsu-sell-at-vest"
+topic = "RSU"
+rule = "Selling right after vest gives a tiny gain or loss; holding is the same as buying your employer's stock with cash. Ask: 'Would I buy this much with a cash bonus?'"
+why = "Removes the anchoring bias that keeps vested shares concentrated."
+source = "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/diversify-your-investments"
+confidence = "heuristic"
+notes = "Rule of thumb, no official source. FINRA and SEC pages warn about concentration but do not compare holding with buying for cash."
+
+[[rules]]
+id = "sell-to-cover-30-day"
+topic = "RSU"
+rule = "Shares acquired under an employee option or similar agreement that are designated and sold within 30 days of acquisition (for example sell-to-cover) are not identical properties, so each keeps its own ACB instead of averaging. Selling vested shares at a loss and getting new RSUs within 30 days can trigger the superficial-loss rule."
+why = "Gets the right ACB on quick sales; avoids denied losses."
+source = "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4037/capital-gains.html"
+confidence = "verified"
+notes = "Removed the 'section 47(3)' reference: CRA ties 47(3) to debt obligations, not the employee-share 30-day rule. CRA guide T4037 (Identical properties) states the 30-day exclusion."
+
+[[rules]]
+id = "espp-discount-benefit"
+topic = "ESPP"
+rule = "The ESPP discount (FMV at purchase minus your price) is a taxable employment benefit when shares are bought. Any employer match is also taxable employment income. ACB = FMV at purchase in CAD (your cost + taxed benefit)."
+why = "Report the benefit as income once; add it to ACB so it is not taxed again on sale."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+confidence = "verified"
+notes = "CRA page: benefit = FMV when acquired minus the amount the employee paid; ACB rule cites ITA 53(1)(j). Employer-match taxability is not on this page (general employment-benefit rule)."
+
+[[rules]]
+id = "espp-quick-sell"
+topic = "ESPP"
+rule = "A 15% discount ESPP sold right away is a near-risk-free return (about 17.6% on cash in for each purchase period), minus tax on the benefit. Selling promptly keeps concentration low."
+why = "Captures the discount without adding employer risk."
+source = "https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/diversify-your-investments"
+confidence = "heuristic"
+notes = "Arithmetic (15 / 85 = 17.6%), not a sourced fact; plan rules (holding periods, purchase timing) vary. FINRA says to read your plan's sale and timing rules."
+
+[[rules]]
+id = "options-benefit"
+topic = "stock options"
+rule = "Public-company or non-CCPC options: benefit = (FMV at exercise - strike) x shares, taxed as employment income in the year of exercise. CCPC options (arm's-length employee): taxed when you sell the shares, not at exercise."
+why = "Timing of tax differs sharply between CCPC and public employers."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+confidence = "verified"
+
+[[rules]]
+id = "options-deduction"
+topic = "stock options"
+rule = "Stock-option deduction of 50% of the benefit (so it is taxed like a capital gain) when conditions are met: strike >= FMV at grant and prescribed shares (110(1)(d)), or CCPC shares held 2+ years (110(1)(d.1)). The Budget 2024 cut to one-third was tied to the cancelled capital-gains change, so 50% stands for 2026."
+why = "The deduction halves the tax on option gains."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+confidence = "verified"
+
+[[rules]]
+id = "options-200k-limit"
+topic = "stock options"
+rule = "Options granted on or after July 1, 2021 by non-CCPC employers with gross revenue over 500 million: only 200,000 of options (by FMV at grant) can vest per year and still qualify for the 50% deduction. Excess options get no deduction, but the employer may deduct them."
+why = "Large grants at big public companies may be taxed fully as salary."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+confidence = "verified"
+
+[[rules]]
+id = "t1135"
+topic = "foreign property"
+rule = "If the total COST (ACB) of specified foreign property is over 100,000 CAD at any time in the year, file Form T1135 with your return. US-listed employer shares held in a non-registered broker account count. Part A (simplified) for 100,000-250,000; Part B (detailed) at 250,000+. Shares held in an RRSP or TFSA do not count."
+why = "Penalties for late or missing T1135 are steep even when no tax is owed."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/international-non-residents/information-been-moved/foreign-reporting/questions-answers-about-form-t1135.html"
+confidence = "verified"
+
+[[rules]]
+id = "us-estate-tax"
+topic = "US estate tax"
+rule = "Non-US citizens with US-situs assets (US-listed shares, including employer stock) over 60,000 USD at death must file US Form 706-NA. The Canada-US treaty gives a prorated unified credit, so most estates under the US exemption owe little or nothing, but a filing is still needed. Canadian-listed ETFs that hold US stocks are not US-situs."
+why = "Large employer-share holdings can create a US estate-tax filing and possible tax."
+source = "https://www.irs.gov/individuals/international-taxpayers/some-nonresidents-with-us-assets-must-file-estate-tax-returns"
+confidence = "verified"
+
+[[rules]]
+id = "us-dividend-withholding"
+topic = "US dividends"
+rule = "US dividends on employer shares are withheld at 15% under the treaty (file a W-8BEN with the broker; without it 30%). In a non-registered account, claim the foreign tax credit. In an RRSP there is no withholding; in a TFSA the 15% is lost."
+why = "A missing W-8BEN doubles the withholding."
+source = "https://www.blackrock.com/ca/investors/en/literature/brochure/withholding-tax-reference-guide-en-ca.pdf"
+confidence = "verified"
+notes = "BlackRock Canada withholding-tax guide and Vanguard Canada guide: US stocks and US-listed ETFs held directly in an RRSP/RRIF are exempt from US withholding (treaty); in a TFSA the 15% is withheld and cannot be recovered; a W-8BEN sets the 15% treaty rate."
+
+[[rules]]
+id = "foreign-currency-gains"
+topic = "FX"
+rule = "Compute proceeds and ACB in CAD at the exchange rate of each transaction date (or Bank of Canada daily rate). A USD gain can be a CAD loss and vice versa."
+why = "CRA requires CAD amounts; currency moves are part of the capital gain."
+source = "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4037/capital-gains.html"
+confidence = "verified"
+notes = "CRA T4037: convert proceeds at the rate on the sale date and ACB at the rate on the acquisition date; Bank of Canada rate is the default."
+
+[[rules]]
+id = "concentration-limit"
+topic = "concentration"
+rule = "Keep employer stock under about 10% of your total investment assets (some experts say no more than 10% in any single stock, including your company's; less may suit you). Your salary already depends on the same company. Sell vested shares on a schedule to stay under the limit."
+why = "A single-company drop can hit your job and savings at the same time."
+source = "https://www.finra.org/investors/insights/love-my-company-love-stock-beware-concentration-risk"
+confidence = "verified"
+notes = "Changed base from 'net worth' to 'total investment assets' to match FINRA. FINRA says the figure is a guideline and may be too high for some people."
+
+[[rules]]
+id = "blackout-windows"
+topic = "trading windows"
+rule = "Insiders and many employees may trade only in open windows (often a few weeks after earnings). Plan sales and tax payments around windows; ask HR about an automatic share disposition plan (ASDP / 10b5-1 style) to sell on a schedule."
+why = "A closed window can block a sale needed to pay a tax bill."
+source = "https://www.osc.ca/en/securities-law/instruments-rules-policies/5/55-104"
+confidence = "heuristic"
+notes = "Rule of thumb, no official source. Trading windows are set by each employer's insider-trading policy; OSC NI 55-104 covers insider reporting, not window timing."

@@ -1,0 +1,64 @@
+id = "casa"
+name = "Casa"
+kinds = ["crypto"]
+website = "https://casa.io"
+available_in_canada = true
+
+[import]
+formats = ["casa-csv", "crypto-generic-csv"]
+how_to_export = """
+1. Sign in to the Casa web app at app.keys.casa.
+2. In the left menu, select "Reporting & Tax".
+3. Click "Accounting CSV" (it has all vault transactions; "Tax CSV" is for tax software).
+4. Choose the time frame and click OK. Use the year presets, one file per year.
+5. Save the file into private/users/<you>/inbox/.
+"""
+no_export_reason = ""
+history_limit = "Full vault history on the web. The mobile app exports only the previous tax year."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API found. The column layout of the Accounting CSV is not documented publicly, so it maps to crypto-generic-csv until a synthetic fixture confirms the shape."
+
+[browser]
+login_url = "https://app.keys.casa"
+playbook = "playbooks/casa.md"
+
+[[actions]]
+id = "export-transaction-history"
+title = "Export transaction history as CSV"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-key-health"
+title = "Check when each key last passed a health check"
+risk = "read"
+via = ["browser", "human"]
+
+[[actions]]
+id = "check-vault-balance"
+title = "Check the vault balance"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "send-bitcoin"
+title = "Send bitcoin from the vault"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://support.casa.io/knowledge/download-transaction-history-.csv",
+  "https://support.casa.io/knowledge/health-checks-in-the-casa-app",
+  "https://support.casa.io/knowledge/performing-a-health-check-with-keystone",
+]
+confidence = "verified"

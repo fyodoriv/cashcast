@@ -1,0 +1,70 @@
+id = "kraken"
+name = "Kraken"
+kinds = ["crypto", "fx"]
+website = "https://www.kraken.com"
+available_in_canada = true
+
+[import]
+formats = ["kraken-ledger-csv"]
+how_to_export = """
+1. Sign in to kraken.com.
+2. Open the profile menu and select Documents. (On Kraken Pro the page is Statements > Export statement.)
+3. In Exports, click "Create export".
+4. Pick Ledgers (not Trades). Set a start and end date. Select all fields. Pick CSV.
+5. Submit. Check the Documents page later: Kraken sends no email, and an export can take minutes up to a week.
+6. Download the export. If it is a ZIP, unzip it and keep the ledgers CSV.
+7. Save the CSV into private/users/<you>/inbox/.
+"""
+no_export_reason = ""
+history_limit = "Full account history; you set the date range."
+
+[api]
+available = true
+docs = "https://docs.kraken.com/api/docs/rest-api/get-ledgers"
+auth = "api_key"
+base_url = "https://api.kraken.com"
+read = ["balance", "ledgers", "query_ledgers", "export_report", "public_ticker"]
+write = []
+notes = "Create a key with Query Funds, Query Ledger Entries and Export Data only; `api download kraken` uses the export endpoints. Never enable Trade, Deposit or Withdraw Funds. Set a key expiration. Store as CASHCAST_KRAKEN_KEY and CASHCAST_KRAKEN_SECRET. `api balances kraken` also reads the public ticker (no key sent) to price each asset in CAD."
+
+[browser]
+login_url = "https://www.kraken.com/sign-in"
+playbook = "playbooks/kraken.md"
+
+[[actions]]
+id = "export-ledgers"
+title = "Export ledgers as CSV"
+risk = "read"
+via = ["browser", "api"]
+
+[[actions]]
+id = "check-balances"
+title = "Check balances (web or read-only API key)"
+risk = "read"
+via = ["browser", "api"]
+
+[[actions]]
+id = "withdraw-cad"
+title = "Withdraw CAD to a bank account"
+risk = "money"
+via = ["human"]
+
+[[actions]]
+id = "buy-or-sell-crypto"
+title = "Buy or sell crypto"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://support.kraken.com/articles/208267878-how-to-export-your-account-history",
+  "https://support.kraken.com/articles/14320306955668-how-to-export-your-account-history",
+  "https://support.kraken.com/articles/360000919966-how-to-create-an-api-key",
+  "https://support.kraken.com/articles/how-to-create-an-api-key-on-kraken-pro",
+  "https://support.kraken.com/br/articles/funding-api-v1",
+  "https://docs.kraken.com/api/docs/rest-api/get-ledgers",
+  "https://docs.kraken.com/api/docs/rest-api/add-export",
+]
+confidence = "verified"

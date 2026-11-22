@@ -1,0 +1,4 @@
+Record Type,Symbol,Plan Type,Quantity,Date Acquired,Date Sold,Total Proceeds,Grant Number,Vest Date,Vest Date FMV,Order Number
+Summary,,,7,,,"$1,100.00",,,,
+Sell,ACME,RS,5,03/15/2025,04/01/2025,$800.00,CANARY-G001,03/15/2025,$140.00,CANARY-O1
+Sell,ACME,ESPP,2,06/30/2025,07/01/2025,$300.00,,-,-,CANARY-O2

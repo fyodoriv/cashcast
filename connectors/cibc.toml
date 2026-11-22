@@ -1,0 +1,65 @@
+id = "cibc"
+name = "CIBC"
+kinds = ["bank", "card"]
+website = "https://www.cibc.com/en/personal-banking.html"
+available_in_canada = true
+
+[import]
+formats = ["ofx"]
+ofx_orgs = ["CIBC"]
+file_prefixes = ["cibc"]
+how_to_export = """
+1. Sign in to CIBC Online Banking in a web browser.
+2. Open the account, then "Download transactions".
+3. Pick the date range and the Quicken (QFX) or Microsoft Money (OFX) format.
+4. Save the file into private/users/<you>/inbox/.
+5. Repeat for each account and card.
+"""
+no_export_reason = ""
+history_limit = "Online transaction download: about 18 months (estimate). PDF eStatements: up to 7 years."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for personal accounts. The CSV download has no header row; QFX/OFX is the safer format."
+
+[browser]
+login_url = "https://www.cibconline.cibc.com/"
+playbook = "playbooks/cibc.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download transactions (QFX or OFX)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "product-change-card"
+title = "Product-change a credit card"
+risk = "settings"
+via = ["human"]
+
+[[actions]]
+id = "send-etransfer"
+title = "Send an Interac e-Transfer"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-11-01
+review_by = 2027-05-01
+sources = [
+  "https://www.cibc.com/en/personal-banking/ways-to-bank/how-to/download-transactions.html",
+  "https://www.cibc.com/en/personal-banking/ways-to-bank/online-banking.html",
+]
+confidence = "estimate"

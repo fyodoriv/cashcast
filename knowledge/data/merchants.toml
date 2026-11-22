@@ -1,0 +1,61 @@
+# Merchant aliases: the billing names one merchant uses on bank and card
+# statements. `charges` groups rows whose text holds any pattern under one
+# merchant name, so "ANTHROPIC", "Anthropic PBC" and "CLAUDE.AI SUBSCRIPTION"
+# count as one merchant. Patterns are lower case and match whole words of the
+# row text after punctuation becomes spaces ("claude ai" matches "CLAUDE.AI").
+
+[meta]
+title = "Merchant billing names on Canadian statements"
+as_of = 2026-11-04
+review_by = 2027-05-04
+sources = [
+  "https://support.claude.com/en/collections/4078531-claude",
+  "https://help.openai.com/en/collections/3943089-billing",
+  "https://help.netflix.com/en/node/41049",
+  "https://support.apple.com/en-ca/118223",
+]
+
+[[merchants]]
+name = "Anthropic"
+patterns = ["anthropic", "claude ai", "claude subscription", "claude pro", "claude max"]
+notes = "Claude plans bill as Anthropic; card descriptors seen include ANTHROPIC, ANTHROPIC PBC and CLAUDE.AI SUBSCRIPTION."
+source = "https://support.claude.com/en/collections/4078531-claude"
+confidence = "estimate"
+
+[[merchants]]
+name = "OpenAI"
+patterns = ["openai", "chatgpt"]
+notes = "ChatGPT plans bill as OpenAI or CHATGPT SUBSCRIPTION."
+source = "https://help.openai.com/en/collections/3943089-billing"
+confidence = "estimate"
+
+[[merchants]]
+name = "Netflix"
+patterns = ["netflix"]
+source = "https://help.netflix.com/en/node/41049"
+confidence = "estimate"
+
+[[merchants]]
+name = "Apple"
+patterns = ["apple com bill", "apple com ca", "itunes"]
+notes = "App Store and iCloud subscriptions show as APPLE.COM/BILL."
+source = "https://support.apple.com/en-ca/118223"
+confidence = "estimate"
+
+[[merchants]]
+name = "Google"
+patterns = ["google one", "google youtube", "youtube premium", "google storage"]
+source = "https://support.google.com/googleone/answer/9156524"
+confidence = "estimate"
+
+[[merchants]]
+name = "Spotify"
+patterns = ["spotify"]
+source = "https://support.spotify.com/ca-en/article/payment-methods/"
+confidence = "estimate"
+
+[[merchants]]
+name = "Amazon Prime"
+patterns = ["amazon prime", "prime video", "amzn prime"]
+source = "https://www.amazon.ca/gp/help/customer/display.html?nodeId=G34EUPKVMYFW8N2U"
+confidence = "estimate"

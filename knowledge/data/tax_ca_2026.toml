@@ -1,0 +1,379 @@
+# Canada personal income tax facts for the 2026 tax year.
+# Brackets: each item taxes income up to `up_to` at `rate`; the last item has no `up_to`.
+# Amounts are CAD. Rates are decimals (0.14 = 14%).
+
+[meta]
+title = "Canada personal income tax 2026"
+as_of = 2026-10-19
+review_by = 2027-01-31
+sources = [
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/adjustment-personal-income-tax-benefit-amounts.html",
+  "https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas/t4127-jan/t4127-jan-payroll-deductions-formulas-computer-programs.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/registered-plans-administrators/pspa/mp-rrsp-dpsp-tfsa-limits-ympe.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account/contributing-your-fhsa.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/rrsps-related-plans/what-home-buyers-plan.html",
+  "https://www.canada.ca/en/department-finance/news/2025/01/government-of-canada-announces-deferral-in-implementation-of-change-to-capital-gains-inclusion-rate.html",
+  "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/who-pays-instalments.html",
+  "https://www.revenuquebec.ca/en/citizens/income-tax-return/completing-your-income-tax-return/income-tax-rates/",
+]
+
+[federal]
+# 14% lowest rate applies for the full 2026 year (cut from 15% effective July 1, 2025).
+basic_personal_amount = 16452
+basic_personal_amount_min = 14829   # BPA phases down to this for net income >= 258,482
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+
+[[federal.brackets]]
+up_to = 58523
+rate = 0.14
+[[federal.brackets]]
+up_to = 117045
+rate = 0.205
+[[federal.brackets]]
+up_to = 181440
+rate = 0.26
+[[federal.brackets]]
+up_to = 258482
+rate = 0.29
+[[federal.brackets]]
+rate = 0.33
+
+# ---------------------------------------------------------------- provinces
+# Bracket source: CRA current-year rates page. BPA source: CRA T4127 (Jan 2026).
+
+[provinces.AB]
+name = "Alberta"
+basic_personal_amount = 22769
+notes = "New 8% bracket on the first 61,200 starts in 2025-2026."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.AB.brackets]]
+up_to = 61200
+rate = 0.08
+[[provinces.AB.brackets]]
+up_to = 154259
+rate = 0.10
+[[provinces.AB.brackets]]
+up_to = 185111
+rate = 0.12
+[[provinces.AB.brackets]]
+up_to = 246813
+rate = 0.13
+[[provinces.AB.brackets]]
+up_to = 370220
+rate = 0.14
+[[provinces.AB.brackets]]
+rate = 0.15
+
+[provinces.BC]
+name = "British Columbia"
+basic_personal_amount = 13216
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.BC.brackets]]
+up_to = 50363
+rate = 0.056
+[[provinces.BC.brackets]]
+up_to = 100728
+rate = 0.077
+[[provinces.BC.brackets]]
+up_to = 115648
+rate = 0.105
+[[provinces.BC.brackets]]
+up_to = 140430
+rate = 0.1229
+[[provinces.BC.brackets]]
+up_to = 190405
+rate = 0.147
+[[provinces.BC.brackets]]
+up_to = 265545
+rate = 0.168
+[[provinces.BC.brackets]]
+rate = 0.205
+
+[provinces.MB]
+name = "Manitoba"
+basic_personal_amount = 15780
+notes = "BPA phases out linearly between 200,000 and 400,000 net income (0 at 400,000+)."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.MB.brackets]]
+up_to = 47564
+rate = 0.108
+[[provinces.MB.brackets]]
+up_to = 101200
+rate = 0.1275
+[[provinces.MB.brackets]]
+rate = 0.174
+
+[provinces.NB]
+name = "New Brunswick"
+basic_personal_amount = 13664
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.NB.brackets]]
+up_to = 52333
+rate = 0.094
+[[provinces.NB.brackets]]
+up_to = 104666
+rate = 0.14
+[[provinces.NB.brackets]]
+up_to = 193861
+rate = 0.16
+[[provinces.NB.brackets]]
+rate = 0.195
+
+[provinces.NL]
+name = "Newfoundland and Labrador"
+basic_personal_amount = 11188
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.NL.brackets]]
+up_to = 44678
+rate = 0.087
+[[provinces.NL.brackets]]
+up_to = 89354
+rate = 0.145
+[[provinces.NL.brackets]]
+up_to = 159528
+rate = 0.158
+[[provinces.NL.brackets]]
+up_to = 223340
+rate = 0.178
+[[provinces.NL.brackets]]
+up_to = 285319
+rate = 0.198
+[[provinces.NL.brackets]]
+up_to = 570638
+rate = 0.208
+[[provinces.NL.brackets]]
+up_to = 1141275
+rate = 0.213
+[[provinces.NL.brackets]]
+rate = 0.218
+
+[provinces.NS]
+name = "Nova Scotia"
+basic_personal_amount = 11932
+notes = "Flat BPA for 2026; the income-tested supplement was removed."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.NS.brackets]]
+up_to = 30995
+rate = 0.0879
+[[provinces.NS.brackets]]
+up_to = 61991
+rate = 0.1495
+[[provinces.NS.brackets]]
+up_to = 97417
+rate = 0.1667
+[[provinces.NS.brackets]]
+up_to = 157124
+rate = 0.175
+[[provinces.NS.brackets]]
+rate = 0.21
+
+[provinces.NT]
+name = "Northwest Territories"
+basic_personal_amount = 18198
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.NT.brackets]]
+up_to = 53003
+rate = 0.059
+[[provinces.NT.brackets]]
+up_to = 106009
+rate = 0.086
+[[provinces.NT.brackets]]
+up_to = 172346
+rate = 0.122
+[[provinces.NT.brackets]]
+rate = 0.1405
+
+[provinces.NU]
+name = "Nunavut"
+basic_personal_amount = 19659
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.NU.brackets]]
+up_to = 55801
+rate = 0.04
+[[provinces.NU.brackets]]
+up_to = 111602
+rate = 0.07
+[[provinces.NU.brackets]]
+up_to = 181439
+rate = 0.09
+[[provinces.NU.brackets]]
+rate = 0.115
+
+[provinces.ON]
+name = "Ontario"
+basic_personal_amount = 12989
+notes = "Surtax applies to basic Ontario tax (after non-refundable credits). Ontario Health Premium (up to 900/yr) is separate and not modelled here."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.ON.brackets]]
+up_to = 53891
+rate = 0.0505
+[[provinces.ON.brackets]]
+up_to = 107785
+rate = 0.0915
+[[provinces.ON.brackets]]
+up_to = 150000
+rate = 0.1116
+[[provinces.ON.brackets]]
+up_to = 220000
+rate = 0.1216
+[[provinces.ON.brackets]]
+rate = 0.1316
+# Surtax thresholds from CRA T4127 Jan 2026 (V1 formula): 20% of tax over 5,818 plus 36% of tax over 7,446.
+[[provinces.ON.surtax]]
+over = 5818
+rate = 0.20
+[[provinces.ON.surtax]]
+over = 7446
+rate = 0.36
+
+[provinces.PE]
+name = "Prince Edward Island"
+basic_personal_amount = 15000
+notes = "PEI surtax was eliminated from 2024; none applies in 2026."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.PE.brackets]]
+up_to = 33928
+rate = 0.095
+[[provinces.PE.brackets]]
+up_to = 65820
+rate = 0.1347
+[[provinces.PE.brackets]]
+up_to = 106890
+rate = 0.166
+[[provinces.PE.brackets]]
+up_to = 142520
+rate = 0.1762
+[[provinces.PE.brackets]]
+up_to = 200000
+rate = 0.19
+[[provinces.PE.brackets]]
+rate = 0.20
+
+[provinces.QC]
+name = "Quebec"
+basic_personal_amount = 18952
+federal_abatement = 0.165
+notes = "Quebec files its own return (TP-1). Bracket thresholds (54,345 / 108,680 / 132,245) and BPA 18,952 are confirmed in the Quebec finance ministry's 2026 parameters (Tableau 3, indexed 2.05%). The rates 14/19/24/25.75% are the statutory rates in force since 2023; that PDF lists thresholds only. The 16.5% federal abatement is verified in CRA T4127."
+source = "https://cdn-contenu.quebec.ca/cdn-contenu/adm/min/finances/publications-adm/parametres/AUTFR_RegimeImpot2026.pdf"
+confidence = "verified"
+[[provinces.QC.brackets]]
+up_to = 54345
+rate = 0.14
+[[provinces.QC.brackets]]
+up_to = 108680
+rate = 0.19
+[[provinces.QC.brackets]]
+up_to = 132245
+rate = 0.24
+[[provinces.QC.brackets]]
+rate = 0.2575
+
+[provinces.SK]
+name = "Saskatchewan"
+basic_personal_amount = 20381
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.SK.brackets]]
+up_to = 54532
+rate = 0.105
+[[provinces.SK.brackets]]
+up_to = 155805
+rate = 0.125
+[[provinces.SK.brackets]]
+rate = 0.145
+
+[provinces.YT]
+name = "Yukon"
+basic_personal_amount = 16452
+notes = "Yukon BPA mirrors the federal BPA, including the phase-down to 14,829."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html"
+confidence = "verified"
+[[provinces.YT.brackets]]
+up_to = 58523
+rate = 0.064
+[[provinces.YT.brackets]]
+up_to = 117045
+rate = 0.09
+[[provinces.YT.brackets]]
+up_to = 181440
+rate = 0.109
+[[provinces.YT.brackets]]
+up_to = 500000
+rate = 0.128
+[[provinces.YT.brackets]]
+rate = 0.15
+
+# ---------------------------------------------------------------- limits
+
+[limits]
+tfsa_annual = 7000
+rrsp_max = 33810                 # 2026 RRSP dollar limit (2027: 35,390)
+rrsp_rate = 0.18                 # 18% of prior-year earned income, up to rrsp_max
+fhsa_annual = 8000
+fhsa_lifetime = 40000
+fhsa_carryforward_max = 8000
+capital_gains_inclusion = 0.5    # The proposed 2/3 rate was cancelled in March 2025; 1/2 is the law for 2026.
+hbp_max = 60000                  # RRSP Home Buyers' Plan withdrawal limit
+rrsp_excess_buffer = 2000        # cumulative excess over the deduction limit with no tax (age 18+)
+rrsp_excess_tax_monthly = 0.01   # tax per month on the excess above the buffer (form T1-OVP)
+notes = "TFSA and RRSP from the CRA limits table. FHSA, HBP, capital gains and the RRSP excess rules (guide T4040) from the extra_sources pages."
+extra_sources = [
+  "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4040/rrsps-other-registered-plans-retirement.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account/contributing-your-fhsa.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/rrsps-related-plans/what-home-buyers-plan.html",
+  "https://www.canada.ca/en/department-finance/news/2025/01/government-of-canada-announces-deferral-in-implementation-of-change-to-capital-gains-inclusion-rate.html",
+]
+source = "https://www.canada.ca/en/revenue-agency/services/tax/registered-plans-administrators/pspa/mp-rrsp-dpsp-tfsa-limits-ympe.html"
+confidence = "verified"
+
+# ---------------------------------------------------------------- payroll
+
+[payroll]
+cpp_ympe = 74600
+cpp_basic_exemption = 3500
+cpp_rate = 0.0595          # employee base + first additional; self-employed pay double (0.119)
+cpp_max_employee = 4230.45
+cpp2_yampe = 85000
+cpp2_rate = 0.04           # on earnings between YMPE and YAMPE; self-employed pay 0.08
+cpp2_max_employee = 416.00
+ei_max_insurable = 68900
+ei_rate = 0.0163
+ei_max_employee = 1123.07
+ei_rate_qc = 0.013
+qpp_rate = 0.063           # Quebec employee rate (5.3% base + 1% first additional)
+notes = "QPIP is in [payroll.qpip] with its own Quebec source."
+source = "https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas/t4127-jan/t4127-jan-payroll-deductions-formulas-computer-programs.html"
+confidence = "verified"
+
+[payroll.qpip]
+qpip_rate = 0.0043
+qpip_max_insurable = 103000
+notes = "Employee rate 0.430%, maximum insurable 103,000, max employee contribution 442.90 (Quebec government payroll table, Jan 1 2026). Revenu Quebec pages block automated reads."
+source = "https://cdn-contenu.quebec.ca/cdn-contenu/gouvernement/travailler/Services_employes_Etat/Remuneration/Deductions_base_2026.pdf"
+confidence = "verified"
+
+# ---------------------------------------------------------------- deadlines
+
+[deadlines]
+filing = "April 30"
+self_employed_filing = "June 15"
+balance_due = "April 30"   # self-employed still pay any balance by April 30
+rrsp_contribution_deadline_for_2026 = 2027-03-01
+instalment_dates = ["March 15", "June 15", "September 15", "December 15"]
+instalment_threshold = 3000      # net tax owing; 1,800 for Quebec residents
+instalment_threshold_qc = 1800
+notes = "Instalments are required when net tax owing is over the threshold this year AND in either of the two prior years."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/important-dates-individuals.html"
+confidence = "verified"

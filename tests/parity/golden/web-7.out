@@ -1,0 +1,3 @@
+web /api/doc?user=sam&path=nope.md
+404 text/plain
+not found

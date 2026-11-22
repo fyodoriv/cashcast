@@ -1,0 +1,21 @@
+# Model routing for cashcast. Code reads this one file; nothing else names a model.
+# The app itself calls no model today: the person's own coding agent runs the
+# skills. These routes are the policy for eval judging and any future in-app
+# model call. Order: local first, then free hosted, then paid.
+# Personal data uses only routes with private_data: true (the local one).
+routes:
+  - name: local
+    provider: ollama
+    url: http://127.0.0.1:11434  # evals/run.py judges only on this computer
+    model: qwen3:14b             # the 14B judge; install with `ollama pull qwen3:14b`
+    private_data: true
+  - name: free-hosted
+    provider: cloudflare-workers-ai
+    model: "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+    private_data: false         # synthetic eval cases only
+  - name: paid
+    provider: anthropic
+    model: claude-sonnet-5-5
+    private_data: false         # set true only after the owner accepts the provider's data terms
+judge:
+  route: local                  # eval grader; a paid judge only for disagreements, on synthetic cases

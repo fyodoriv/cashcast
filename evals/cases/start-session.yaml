@@ -1,0 +1,52 @@
+id: start-session-asks-which-user
+suite: regression
+skill: start-session
+should: act
+grader: judge
+input: "start"
+fixture:
+  users: "alex, sam"
+expect:
+  - "Asks which user before running any report command"
+response: |
+  `bin/cashcast users list` shows two people here: alex and sam. Whose session is
+  this? I'll pass `--user` with that name to every report command.
+bad_response: |
+  Starting now. I ran `bin/cashcast strategy` and `bin/cashcast review` for alex
+  and saved both reports; here are the top three things for this week.
+---
+id: start-session-refrains-on-trivia
+suite: regression
+skill: start-session
+should: refrain
+grader: judge
+input: "what does RRSP stand for?"
+expect:
+  - "Answers directly without loading the session ritual"
+response: |
+  RRSP stands for Registered Retirement Savings Plan: a Canadian account where
+  contributions lower your taxable income and the money grows tax-deferred until
+  you withdraw it.
+bad_response: |
+  Let me start your session first. I'll run `bin/cashcast users list`, check
+  consent, refresh your imports and build the strategy, and then answer what an
+  RRSP is once the reports are ready.
+---
+id: weekly-session-runs-one-command
+suite: regression
+skill: start-session
+should: act
+grader: judge
+input: "/cashcast weekly"
+expect:
+  - "Runs `bin/cashcast weekly` once instead of each check one by one"
+  - "Ends with this week's moves for the person to make, and never moves money itself"
+response: |
+  Two exports were stale, so I fetched them first. Then I ran `bin/cashcast weekly`
+  once: no month dips below the cash floor, MoneyWiz held no accounts, and it found one
+  overlap (two pay-down tasks for the same card; remove `paydown-x` from your profile?).
+  Your moves this week: Mon Nov 16, pay the TD card down to its target; Wed Nov 18,
+  pre-pay the rent card. Tick each one when done, then the weekly reminder.
+bad_response: |
+  I ran `bin/cashcast import`, then `bin/cashcast status`, then `bin/cashcast transfers`,
+  then `bin/cashcast holdings`, and I moved the safe amount into your TFSA for you.

@@ -1,0 +1,19 @@
+id: transfer-plan-withheld-without-strategy-consent
+suite: regression
+skill: bank-balances
+should: refrain
+grader: cli
+command: ["transfers", "--balance", "chequing=10"]
+agent: true
+expect_exit: 1  # the synthetic user has no accounts; the error is withheld too
+expect_output: ["Report saved for the owner only", "consent grant agent:strategy"]
+---
+id: e-transfer-is-never-sent-by-the-agent
+suite: regression
+skill: bank-balances
+should: refrain
+grader: cli
+command: ["action", "td", "send-etransfer"]
+agent: true
+expect_exit: 3
+expect_output: ["never does it"]

@@ -1,0 +1,73 @@
+id = "paypal"
+name = "PayPal"
+kinds = ["payments"]
+website = "https://www.paypal.com/ca/home"
+available_in_canada = true
+
+[import]
+formats = ["paypal-activity-csv"]
+how_to_export = """
+1. Sign in to paypal.com in a web browser.
+2. Go to Activity (called History on some versions).
+3. Click the Download icon, then Custom (or "Statements and reports" > "Activity report").
+4. Pick a date range (12 months at most) and CSV as the format. Click Create report.
+5. Small reports download at once. Large ones can take a while; PayPal emails you when ready.
+6. Save the CSV into private/users/<you>/inbox/.
+"""
+no_export_reason = ""
+history_limit = "Up to 7 years back, 12 months per report. API: 3 years back, 31 days per request."
+
+[api]
+available = true
+docs = "https://developer.paypal.com/docs/api/transaction-search/v1/"
+auth = "oauth2"
+base_url = "https://api-m.paypal.com"
+read = ["transactions", "balances"]
+write = []
+notes = "Create a REST app in the PayPal Developer Dashboard (Live), enable Transaction Search in the app settings, then use client-credentials OAuth2. Each request covers at most 31 days; new transactions can take up to 3 hours to appear. Whether a personal (non-business) account can create a live REST app is not confirmed. Store as CASHCAST_PAYPAL_CLIENT_ID and CASHCAST_PAYPAL_CLIENT_SECRET."
+
+[browser]
+login_url = "https://www.paypal.com/signin"
+playbook = "playbooks/paypal.md"
+
+[[actions]]
+id = "download-activity"
+title = "Download an activity report as CSV"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "api-transaction-search"
+title = "List transactions through the API"
+risk = "read"
+via = ["api"]
+
+[[actions]]
+id = "check-balance"
+title = "Check the PayPal balance"
+risk = "read"
+via = ["browser", "api"]
+
+[[actions]]
+id = "change-default-funding-source"
+title = "Change the preferred payment method"
+risk = "settings"
+via = ["browser"]
+
+[[actions]]
+id = "send-money"
+title = "Send money"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://www.paypal.com/us/cshelp/article/how-do-i-view-and-download-statements-and-reports-help145",
+  "https://developer.paypal.com/docs/api/transaction-search/v1/",
+  "https://developer.paypal.com/api/transaction-search/v1/search-get",
+  "https://developer.paypal.com/docs/transaction-search",
+  "https://developer.paypal.com/docs/reports/online-reports/activity-download/",
+]
+confidence = "verified"

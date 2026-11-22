@@ -1,0 +1,112 @@
+# Credit score rules for Canada (Equifax and TransUnion).
+
+[meta]
+title = "Credit score rules (Canada)"
+as_of = 2026-10-19
+review_by = 2027-10-31
+sources = [
+  "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html",
+  "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/order-credit-report.html",
+  "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/information-credit-report.html",
+  "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/credit-report-score-basics.html",
+]
+
+[[rules]]
+id = "utilization-30"
+topic = "utilization"
+rule = "Keep each card's reported balance under 30% of its limit, and total utilization under 30%."
+why = "FCAC's guidance for a healthy credit utilization rate."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html"
+confidence = "verified"
+
+[[rules]]
+id = "utilization-top-tier"
+topic = "utilization"
+rule = "For the best scores, keep reported utilization under 10%, ideally 1-4% on at least one card (not 0% on all cards)."
+why = "Scoring models reward low but non-zero use. Industry rule of thumb, not an FCAC figure."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html"
+confidence = "heuristic"
+notes = "Rule of thumb, no official source. FCAC and Equifax Canada state only the under-30% target; neither names 10% or 'non-zero' use."
+
+[[rules]]
+id = "statement-close"
+topic = "utilization"
+rule = "Card issuers report your balance to the bureaus once a month, usually the statement balance, not what is left on the due date. Make extra payments during the billing cycle, before the statement closes, to lower reported utilization, then pay the rest by the due date."
+why = "You can spend a lot, pay in full, and still look highly utilized if the statement balance is high."
+source = "https://www.equifax.ca/personal/education/credit-score/articles/-/learn/what-is-credit-utilization/"
+confidence = "verified"
+notes = "Equifax Canada: issuers report once a month, and several payments in a billing cycle can lower the reported balance. That the reported figure is the statement balance is common practice, not stated by Equifax."
+
+[[rules]]
+id = "payment-history"
+topic = "payment history"
+rule = "Never miss a minimum payment; set autopay for at least the minimum on every card and loan. A payment 30+ days late is reported and stays for about 6 years."
+why = "Payment history is the most important part of the score."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/information-credit-report.html"
+confidence = "verified"
+
+[[rules]]
+id = "account-age-product-change"
+topic = "account age"
+rule = "To drop a fee card, ask for a product change to a no-fee card from the same issuer instead of closing it. Keep your oldest card open and use it a little every few months."
+why = "Closing old accounts can shorten history and cut available credit, which raises utilization. FCAC says keeping old accounts open can help."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html"
+confidence = "verified"
+
+[[rules]]
+id = "hard-inquiries"
+topic = "inquiries"
+rule = "Limit applications. Avoid new credit (cards, car loans, phone financing) for 6-12 months before a mortgage application. Checking your own score is a soft check and does not hurt."
+why = "Many credit checks in a short time lower the score and worry lenders."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html"
+confidence = "verified"
+
+[[rules]]
+id = "mortgage-prep"
+topic = "mortgage"
+rule = "12 months before: pull both bureau reports and fix errors; stop opening accounts. 6 months before: keep utilization under 10%, no late payments, keep the same job if possible. 1-3 months before: no new credit, no big purchases on credit, keep down-payment funds in one documented account."
+why = "Lenders price and approve on score, debt ratios and stability."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/mortgages/preparing-mortgage.html"
+confidence = "heuristic"
+notes = "FCAC confirms only 'order your credit report and check it for errors' before shopping for a mortgage. The 12/6/1-3 month timeline and the other steps are a rule of thumb, no official source."
+
+[[rules]]
+id = "free-reports"
+topic = "monitoring"
+rule = "Get free reports from both Equifax and TransUnion online. Equifax scores are free across Canada; TransUnion free scores mainly in Ontario and Quebec. Borrowell (Equifax), free TransUnion score sites and many bank apps show free scores."
+why = "Check both bureaus at least once a year for errors and fraud."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/order-credit-report.html"
+confidence = "verified"
+
+[[rules]]
+id = "report-errors"
+topic = "monitoring"
+rule = "Dispute errors directly with the bureau that shows them; each bureau keeps its own file."
+why = "Errors on one bureau are not fixed on the other automatically."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/order-credit-report.html"
+confidence = "verified"
+
+[[rules]]
+id = "rent-reporting"
+topic = "rent reporting"
+rule = "Rent can be reported to Equifax Canada through services such as FrontLobby (others include Chexy Credit Builder and Landlord Credit Bureau). It helps most for thin files (newcomers, young adults)."
+why = "On-time rent builds payment history when you have few credit accounts."
+source = "https://www.equifax.ca/about-equifax/newsroom/-/intlpress/equifax-canada-and-frontlobby-complete-first-rental-tradeline-study/"
+confidence = "verified"
+notes = "Equifax study: 48% of FrontLobby renters were scoreable on rent data alone; scores may rise within 6 months. Chexy and Landlord Credit Bureau are from reviewers, not Equifax."
+
+[[rules]]
+id = "credit-mix"
+topic = "credit mix"
+rule = "A mix of revolving (cards) and instalment credit (loan, mortgage) helps a little. Do not borrow only to improve the mix."
+why = "Mix is a minor factor; interest costs outweigh the gain."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html"
+confidence = "verified"
+
+[[rules]]
+id = "score-updates"
+topic = "timing"
+rule = "Scores update at least monthly as lenders report. Good habits take a few months to show."
+why = "Sets the expectation for how fast changes appear."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/credit-reports-score/improve-credit-score.html"
+confidence = "verified"

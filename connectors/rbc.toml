@@ -1,0 +1,59 @@
+id = "rbc"
+name = "RBC Royal Bank"
+kinds = ["bank", "card"]
+website = "https://www.rbcroyalbank.com/personal.html"
+available_in_canada = true
+
+[import]
+formats = ["rbc-csv", "ofx"]
+ofx_orgs = []
+file_prefixes = ["csv"]
+how_to_export = """
+1. Sign in to RBC Online Banking in a web browser.
+2. Open **Account Services** (or the account menu), then **Download Transactions**.
+3. Pick the accounts, the file type **Comma Separated Values (.csv)** (or Quicken/Money for QFX/OFX), and the date range.
+4. Click **Continue** and save the file into `private/users/<you>/inbox/`.
+5. One CSV may hold several accounts; cashcast reads the CAD$ column. A US-dollar account (USD$ column) needs its own QFX/OFX download.
+"""
+no_export_reason = ""
+history_limit = "Download Transactions: about the last 2 years of posted transactions (third-party reports; RBC does not state a limit). eStatements: up to 7 years as PDF (cashcast does not read RBC PDFs yet)."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for personal accounts. cashcast reads the CSV or OFX/QFX download."
+
+[browser]
+login_url = "https://www1.royalbank.com/cgi-bin/rbaccess/rbunxcgi?F6=1&F7=IB&F21=IB&F22=IB&REQUEST=ClientSignin&LANGUAGE=ENGLISH"
+playbook = "playbooks/rbc.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download transactions (CSV, or QFX/OFX)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "send-etransfer"
+title = "Send an Interac e-Transfer"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-11-22
+review_by = 2027-05-22
+sources = [
+  "https://www.rbcroyalbank.com/onlinebanking/bankingusertips/accounts/download-transactions.html",
+  "https://www.rbcroyalbank.com/onlinebanking/bankingusertips/accounts/view-estatements.html",
+]
+confidence = "estimate"

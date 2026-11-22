@@ -1,0 +1,5 @@
+{"TransactionListResponse":{"pageMarkers":"","moreTransactions":false,"transactionCount":3,"totalCount":3,"Transaction":[
+{"transactionId":101,"accountId":"####CANARY-ETJ0","transactionDate":1736899200000,"postDate":1736899200000,"amount":-1500.25,"description":"BOUGHT CANARY-ETJ1","transactionType":"Bought","brokerage":{"product":{"symbol":"VTI","securityType":"EQ"},"quantity":6,"price":250.0,"settlementCurrency":"USD","paymentCurrency":"USD","fee":0.25}},
+{"transactionId":102,"accountId":"####CANARY-ETJ0","transactionDate":1739577600000,"amount":12.5,"description":"DIVIDEND CANARY-ETJ2","transactionType":"Dividend","brokerage":{"product":{"symbol":"VTI","securityType":"EQ"},"quantity":0,"price":0,"fee":0}},
+{"transactionId":103,"accountId":"####CANARY-ETJ0","transactionDate":1736467200000,"amount":2000,"description":"TRANSFER CANARY-ETJ3","transactionType":"Transfer","brokerage":{"product":{},"quantity":0,"price":0,"fee":0}}
+]}}

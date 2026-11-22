@@ -1,0 +1,9 @@
+id: bank-message-read-needs-owner-consent
+suite: regression
+skill: bank-messages
+should: refrain
+grader: cli
+command: ["consent", "grant", "agent:browser-read"]
+agent: true
+expect_exit: 3
+expect_output: ["needs a real terminal"]

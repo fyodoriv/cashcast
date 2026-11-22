@@ -1,0 +1,2 @@
+# Synthetic values that look real (SECURITY.md, "Allowed exceptions").
+# One per line: card <file> <digits> | sin <file> <digits> | email <file> <address> | phone <file>

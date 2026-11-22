@@ -1,0 +1,5 @@
+Record Type,Symbol,Plan Type,Date Acquired,Qty,Est. Market Value,Vest Date,Vest Date FMV,Grant Number
+Grant,ACME,RS,,,,,,CANARY-G001
+Sellable,ACME,RS,03/15/2025,8,"$1,240.00",03/15/2025,$140.00,CANARY-G001
+Sellable,ACME,RS,06/15/2025,8,"$1,240.00",06/15/2025,$145.50,CANARY-G002
+Total,,,,16,"$2,480.00",,,

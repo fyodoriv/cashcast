@@ -1,0 +1,58 @@
+id = "paysend"
+name = "Paysend"
+kinds = ["payments", "fx"]
+website = "https://paysend.com"
+available_in_canada = true
+
+[import]
+formats = []
+how_to_export = ""
+no_export_reason = "Paysend has no CSV export. Its statement is a PDF sent by email and lists outgoing transfers only. Transfers are paid by card, so they show up in that card's bank export. Import the card statement instead."
+history_limit = "PDF statement for a period you choose; receipts one transfer at a time."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No personal API found. Paysend sells business APIs, which are not for a single person's account (not confirmed in detail)."
+
+[browser]
+login_url = "https://paysend.com"
+playbook = "playbooks/paysend.md"
+
+[[actions]]
+id = "view-transfer-history"
+title = "View transfer history"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "request-statement"
+title = "Request a PDF statement by email"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "get-transfer-receipt"
+title = "Get a receipt for one transfer"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "send-money"
+title = "Send money abroad"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://help.paysend.com/hc/en-us/articles/20452516351773-Transfer-history",
+  "https://help.paysend.com/hc/en-us/articles/20452609805981-How-can-I-get-a-transfer-receipt",
+  "https://paysend.com/en-uk/help/category/5092697897501/section/5989421778973/article/5989487615517",
+]
+confidence = "verified"

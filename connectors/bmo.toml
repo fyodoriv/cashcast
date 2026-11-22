@@ -1,0 +1,59 @@
+id = "bmo"
+name = "BMO Bank of Montreal"
+kinds = ["bank", "card"]
+website = "https://www.bmo.com/main/personal/"
+available_in_canada = true
+
+[import]
+formats = ["generic-csv", "ofx"]
+ofx_orgs = []
+file_prefixes = []
+how_to_export = """
+1. Sign in to BMO Online Banking in a web browser.
+2. Select the account, then **Download** (or **Export transactions**).
+3. Pick the date range and **CSV** (or Quicken/Money for QFX/OFX).
+4. Save the file into `private/users/<you>/inbox/`.
+5. Repeat for each account. The CSV starts with a few summary lines before the header; cashcast finds the header.
+"""
+no_export_reason = ""
+history_limit = "Download: about the last 18 months of posted transactions (third-party reports). eStatements: up to 7 years as PDF (cashcast does not read BMO PDFs yet)."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for personal accounts. cashcast reads the CSV or OFX/QFX download."
+
+[browser]
+login_url = "https://www1.bmo.com/banking/digital/login"
+playbook = "playbooks/bmo.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download transactions (CSV, or QFX/OFX)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "send-etransfer"
+title = "Send an Interac e-Transfer"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-11-22
+review_by = 2027-05-22
+sources = [
+  "https://www.bmo.com/main/personal/ways-to-bank/online-banking/",
+  "https://www.bmo.com/en-ca/main/personal/bank-accounts/estatements/",
+]
+confidence = "estimate"

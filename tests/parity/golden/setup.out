@@ -1,0 +1,41 @@
+User 'alex' ready in <WORK>/private/users/alex. Edit <WORK>/private/users/alex/profile.toml (cards, bank accounts, income, room, goals).
+User 'sam' ready in <WORK>/private/users/sam. Edit <WORK>/private/users/sam/profile.toml (cards, bank accounts, income, room, goals).
+# Import report (2023-10 to 2026-09)
+
+## Files
+
+- bank.csv (CSV): 75 transactions, 0 unreadable rows, 2025-10-01 to 2026-10-02.
+
+## Accounts (base currency -)
+
+| Account | Class | Why | Cur | Rows | Last row | Balance | Balance source |
+|---|---|---|---|---:|---|---:|---|
+| bank | cash (guess) | bank-like name |  | 75 | 2026-10-02 | 71,600.00 | running balance |
+
+## Pay
+
+- Schedule: biweekly, from Income > Salary. Last payday: 2026-09-18.
+- 2025-H2: 7 cheques, median 3,000.00, 0 more than 5% off the median
+- 2026-H1: 13 cheques, median 3,000.00, 0 more than 5% off the median
+- 2026-H2: 6 cheques, median 3,000.00, 0 more than 5% off the median
+
+## Categories classified automatically
+
+- Income > Salary: income (other)
+
+## Recurring payments found
+
+- Payments #1: monthly, Housing, 12 charges, usually 1,800.00, last 2026-09-01; about 21,600.00 a year
+- Payments #2: monthly, Food, 12 charges, usually 450.00, last 2026-09-02; about 5,400.00 a year
+- Payments #3: monthly, Food, 12 charges, usually 120.00, last 2026-09-09; about 1,440.00 a year
+- Payments #4: monthly, Bills, 12 charges, usually 80.00, last 2026-09-05; about 960.00 a year
+
+## Spending categories
+
+Bills, Food, Housing
+
+## Data checks
+
+- accounts with a guessed class: 1
+
+Wrote data/summary.json. data/review.md is for the owner only; agents must not open it.

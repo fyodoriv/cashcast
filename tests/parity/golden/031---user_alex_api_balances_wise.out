@@ -1,0 +1,2613 @@
+error: needs consent 'actions:api' (API responses (balances, statements) fetched with your token → stays local; reports follow agent:aggregates). The owner grants it in a terminal: bin/cashcast consent grant actions:api
+exit 3
+== users/alex/data/api-balances.json
+{
+ "wise": {
+  "balances": {
+   "USD": 1234.5,
+   "EUR": 0,
+   "CAD": 75.25
+  },
+  "fetched_on": "2026-10-17"
+ },
+ "kraken": {
+  "balances": {
+   "CAD": 12.0,
+   "BTC": 0.0123,
+   "ZZCANARY": 3.0
+  },
+  "prices": {
+   "BTC": {
+    "price": 90000,
+    "currency": "USD"
+   }
+  },
+  "fetched_on": "2026-10-16"
+ },
+ "wealthsimple": {
+  "balances": {
+   "TFSA": 7.0,
+   "RRSP": 2500.5,
+   "USD": 10.0
+  },
+  "fetched_on": "<NOW>",
+  "currencies": {
+   "TFSA": "CAD",
+   "RRSP": "CAD",
+   "USD": "USD"
+  },
+  "source": "browser"
+ },
+ "etrade": {
+  "balances": {
+   "TFSA": 5.0
+  },
+  "fetched_on": "<NOW>",
+  "currencies": {
+   "TFSA": "CAD"
+  },
+  "source": "browser"
+ }
+}
+== users/alex/data/forecasts/2026-10-18.json
+{
+ "made": "2026-10-18",
+ "method": "trailing-12 average",
+ "months": [
+  {
+   "extra_income": 0,
+   "month": "2026-10",
+   "month_end": 740000,
+   "net_cash_flow": 655000,
+   "net_salary": 900000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2026-11",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2026-12",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-01",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-02",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-03",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-04",
+   "month_end": 740000,
+   "net_cash_flow": 655000,
+   "net_salary": 900000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-05",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-06",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-07",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-08",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-09",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-10",
+   "month_end": 740000,
+   "net_cash_flow": 655000,
+   "net_salary": 900000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-11",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  },
+  {
+   "extra_income": 0,
+   "month": "2027-12",
+   "month_end": 740000,
+   "net_cash_flow": 355000,
+   "net_salary": 600000,
+   "rent": 0,
+   "spending": {
+    "Bills": 8000,
+    "Food": 57000,
+    "Housing": 180000
+   },
+   "spending_excl_rent": 245000,
+   "taxes": 0
+  }
+ ],
+ "rent_category": null,
+ "start": "2026-10"
+}
+== users/alex/data/review.md
+# Cashcast review (private)
+
+For your eyes only. It shows short payee samples so you can tell the
+deposit groups and recurring payments apart. It stays in private/ and the app never sends it anywhere.
+
+## Deposit groups
+
+
+## Recurring payments
+
+- Payments #1: RENT CANARY03
+- Payments #2: GROCER CANARY02
+- Payments #3: RESTAURANT CANARY05
+- Payments #4: PHONE CO CANARY04
+== users/alex/data/summary.json
+{
+  "generated_on": "2026-10-18",
+  "base_currency": "",
+  "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "files": [
+    {
+      "name": "bank.csv",
+      "format": "CSV",
+      "transactions": 75,
+      "errors": 0,
+      "date_min": "2025-10-01",
+      "date_max": "2026-10-02",
+      "notes": [],
+      "accounts": [
+        "bank"
+      ],
+      "error": null,
+      "ledger": false
+    }
+  ],
+  "accounts": [
+    {
+      "name": "bank",
+      "class": "cash",
+      "guessed": true,
+      "class_reason": "bank-like name",
+      "currency": "",
+      "rows": 75,
+      "last_date": "2026-10-02",
+      "balance_cents": 7160000,
+      "balance_source": "running balance",
+      "sum_balance_cents": 5160000
+    }
+  ],
+  "pay": {
+    "schedule": "biweekly",
+    "source": "Income > Salary",
+    "anchor": "2026-09-18",
+    "cycles": [
+      {
+        "nominal": "2025-10-03",
+        "paid_on": "2025-10-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-17",
+        "paid_on": "2025-10-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-31",
+        "paid_on": "2025-10-31",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-14",
+        "paid_on": "2025-11-14",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-28",
+        "paid_on": "2025-11-28",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-12",
+        "paid_on": "2025-12-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-26",
+        "paid_on": "2025-12-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-09",
+        "paid_on": "2026-01-09",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-23",
+        "paid_on": "2026-01-23",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-06",
+        "paid_on": "2026-02-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-20",
+        "paid_on": "2026-02-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-06",
+        "paid_on": "2026-03-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-20",
+        "paid_on": "2026-03-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-03",
+        "paid_on": "2026-04-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-17",
+        "paid_on": "2026-04-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-01",
+        "paid_on": "2026-05-01",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-15",
+        "paid_on": "2026-05-15",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-29",
+        "paid_on": "2026-05-29",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-12",
+        "paid_on": "2026-06-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-26",
+        "paid_on": "2026-06-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-10",
+        "paid_on": "2026-07-10",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-24",
+        "paid_on": "2026-07-24",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-07",
+        "paid_on": "2026-08-07",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-21",
+        "paid_on": "2026-08-21",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-04",
+        "paid_on": "2026-09-04",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-18",
+        "paid_on": "2026-09-18",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      }
+    ],
+    "half_years": [
+      {
+        "period": "2025-H2",
+        "cheques": 7,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H1",
+        "cheques": 13,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H2",
+        "cheques": 6,
+        "median_cents": 300000,
+        "off_median": 0
+      }
+    ],
+    "gap_days": {
+      "14": 25
+    },
+    "off_cycle_deposits": 0,
+    "deposit_accounts": {
+      "bank": 26
+    },
+    "cycles_per_month": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "income_cents": {},
+  "income_by_category_cents": {},
+  "spending_cents": {
+    "Bills": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000
+    ],
+    "Food": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000
+    ],
+    "Housing": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000
+    ]
+  },
+  "flows_cents": {
+    "card_payments": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "card_spend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "income_tax": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "invested": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "salary": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000
+    ],
+    "salary_off_cycle": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "transfer_unknown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "uncategorized_in": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "suggested_extra_income": [],
+  "recurring_payments": [
+    {
+      "label": "Payments #1",
+      "cadence": "monthly",
+      "category": "Housing",
+      "median_cents": 180000,
+      "count": 12,
+      "last_seen": "2026-09-01",
+      "yearly_cents": 2160000
+    },
+    {
+      "label": "Payments #2",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 45000,
+      "count": 12,
+      "last_seen": "2026-09-02",
+      "yearly_cents": 540000
+    },
+    {
+      "label": "Payments #3",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 12000,
+      "count": 12,
+      "last_seen": "2026-09-09",
+      "yearly_cents": 144000
+    },
+    {
+      "label": "Payments #4",
+      "cadence": "monthly",
+      "category": "Bills",
+      "median_cents": 8000,
+      "count": 12,
+      "last_seen": "2026-09-05",
+      "yearly_cents": 96000
+    }
+  ],
+  "category_roles": {
+    "Income > Salary": "income (other)"
+  },
+  "checks": [
+    {
+      "name": "unreadable rows (run first-error to see the first one)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "files that could not be read",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows dropped as duplicates of another file",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "future-dated rows skipped",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows before the window",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "possible duplicate groups inside one file",
+      "count": 0,
+      "detail": "months: "
+    },
+    {
+      "name": "rows left uncategorized (no category, no rule, no keyword)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows matched as own-account transfers",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "transfers to accounts missing from the export",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "own-account transfer pairs that do not net to zero",
+      "count": 0,
+      "detail": "total gap 0.00"
+    },
+    {
+      "name": "salary rows outside cash accounts (income type salary_other_accounts)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows converted to the base currency",
+      "count": 0,
+      "detail": "{\"(none)\": 75}"
+    },
+    {
+      "name": "split-transaction candidates",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "config account names not found in the data",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "accounts with a guessed class",
+      "count": 1,
+      "detail": ""
+    }
+  ]
+}
+== users/alex/out/Cashcast.xlsx
+Inputs!A1 "Setting"
+Inputs!B1 "Value"
+Inputs!C1 "Notes"
+Inputs!A2 "Start month"
+Inputs!B2 date 46296
+Inputs!A3 "Horizon (months)"
+Inputs!B3 15
+Inputs!C3 "The Forecast sheet has this many rows."
+Inputs!A4 "Opening cash (sum of accounts below)"
+Inputs!B4 =SUM(B5:B5)
+Inputs!A5 "  bank"
+Inputs!B5 71600
+Inputs!C5 "Cash account balance at the start"
+Inputs!A6 "Card balances (separate; paid in full)"
+Inputs!B6 0
+Inputs!C6 "Not subtracted from opening cash. Keep a card float in the floor."
+Inputs!A7 "Pay schedule"
+Inputs!B7 "biweekly"
+Inputs!C7 "weekly | biweekly | semimonthly | monthly | none"
+Inputs!A8 "Net pay per cheque, Jan-Jun"
+Inputs!B8 3000
+Inputs!C8 "Often lower until payroll deductions max out"
+Inputs!A9 "Net pay per cheque, Jul-Dec"
+Inputs!B9 3000
+Inputs!A10 "Payday anchor (weekly/biweekly)"
+Inputs!B10 date 46283
+Inputs!C10 "A known payday"
+Inputs!A11 "Days between paydays"
+Inputs!B11 14
+Inputs!A12 "Rent charged per month"
+Inputs!B12 0
+Inputs!C12 "Not set: rent stays in the spending history."
+Inputs!A13 "  Cash floor (3 months of spending)"
+Inputs!B13 7400
+Inputs!A14 "Cash floor"
+Inputs!B14 =SUM(B13:B13)
+Inputs!A15 "Spending method"
+Inputs!B15 "trailing-12 average"
+Inputs!C15 "trailing-12 average | trailing-12 median | same month last year | flat baseline"
+Inputs!A16 "Baseline spending per month"
+Inputs!B16 0
+Inputs!C16 "Untracked spending tops categories up to this. 'flat baseline' scales them to it."
+Inputs!A17 "Category scale (helper)"
+Inputs!B17 =IF(Inputs!$B$15="flat baseline",(Inputs!$B$16-Inputs!$B$12)/(SUMIFS(History!$K$2:$K$37,History!$C$2:$C$37,1)/12),1)
+Inputs!A19 "Extra income by forecast month"
+Inputs!A20 "Month (YYYYMM)"
+Inputs!B20 "Total"
+Inputs!A21 202610
+Inputs!B21 0
+Inputs!A22 202611
+Inputs!B22 0
+Inputs!A23 202612
+Inputs!B23 0
+Inputs!A24 202701
+Inputs!B24 0
+Inputs!A25 202702
+Inputs!B25 0
+Inputs!A26 202703
+Inputs!B26 0
+Inputs!A27 202704
+Inputs!B27 0
+Inputs!A28 202705
+Inputs!B28 0
+Inputs!A29 202706
+Inputs!B29 0
+Inputs!A30 202707
+Inputs!B30 0
+Inputs!A31 202708
+Inputs!B31 0
+Inputs!A32 202709
+Inputs!B32 0
+Inputs!A33 202710
+Inputs!B33 0
+Inputs!A34 202711
+Inputs!B34 0
+Inputs!A35 202712
+Inputs!B35 0
+Inputs!A37 "Holidays (a weekly or biweekly payday on one moves to the day before)"
+Inputs!A38 "Holiday"
+Inputs!B38 "Date"
+Inputs!C38 "Flag"
+Inputs!A39 "New Year 2026"
+Inputs!B39 date 46023
+Inputs!C39 1
+Inputs!A40 "New Year 2027"
+Inputs!B40 date 46388
+Inputs!C40 1
+Inputs!A41 "New Year 2028"
+Inputs!B41 date 46753
+Inputs!C41 1
+Inputs!A42 "New Year 2029"
+Inputs!B42 date 47119
+Inputs!C42 1
+Inputs!A43 "Christmas 2026"
+Inputs!B43 date 46381
+Inputs!C43 1
+Inputs!A44 "Christmas 2027"
+Inputs!B44 date 46746
+Inputs!C44 1
+Inputs!A45 "Christmas 2028"
+Inputs!B45 date 47112
+Inputs!C45 1
+Inputs!A46 "Christmas 2029"
+Inputs!B46 date 47477
+Inputs!C46 1
+Inputs!A48 "Defaults used (edit cashcast.toml to change)"
+Inputs!A49 "Forecast starts this month (Oct 2026)."
+Inputs!A50 "Opening balance of bank comes from the export (running balance)."
+Inputs!A51 "Net pay per cheque: 3,000.00 (Jan-Jun) and 3,000.00 (Jul-Dec), the latest medians found."
+Inputs!A52 "Cash floor defaults to 3 months of spending: 7,400."
+History!A1 "Month"
+History!B1 "Month of year"
+History!C1 "In last 12 months"
+History!D1 "Net salary"
+History!E1 "Salary (off-cycle)"
+History!F1 "Total income"
+History!G1 "Housing"
+History!H1 "Food"
+History!I1 "Bills"
+History!J1 "Total spending"
+History!K1 "Spending excl. rent"
+History!L1 "Income tax (refund + / paid -)"
+History!M1 "Invested"
+History!N1 "Net"
+History!A2 date 45200
+History!B2 =MONTH(A2)
+History!C2 =IF(A2>=EDATE(Inputs!$B$2,-12),IF(A2<Inputs!$B$2,1,0),0)
+History!D2 0
+History!E2 0
+History!F2 =SUM(D2:E2)
+History!G2 0
+History!H2 0
+History!I2 0
+History!J2 =SUM(G2:I2)
+History!K2 =J2
+History!L2 0
+History!M2 0
+History!N2 =F2-J2+L2
+History!A3 date 45231
+History!B3 =MONTH(A3)
+History!C3 =IF(A3>=EDATE(Inputs!$B$2,-12),IF(A3<Inputs!$B$2,1,0),0)
+History!D3 0
+History!E3 0
+History!F3 =SUM(D3:E3)
+History!G3 0
+History!H3 0
+History!I3 0
+History!J3 =SUM(G3:I3)
+History!K3 =J3
+History!L3 0
+History!M3 0
+History!N3 =F3-J3+L3
+History!A4 date 45261
+History!B4 =MONTH(A4)
+History!C4 =IF(A4>=EDATE(Inputs!$B$2,-12),IF(A4<Inputs!$B$2,1,0),0)
+History!D4 0
+History!E4 0
+History!F4 =SUM(D4:E4)
+History!G4 0
+History!H4 0
+History!I4 0
+History!J4 =SUM(G4:I4)
+History!K4 =J4
+History!L4 0
+History!M4 0
+History!N4 =F4-J4+L4
+History!A5 date 45292
+History!B5 =MONTH(A5)
+History!C5 =IF(A5>=EDATE(Inputs!$B$2,-12),IF(A5<Inputs!$B$2,1,0),0)
+History!D5 0
+History!E5 0
+History!F5 =SUM(D5:E5)
+History!G5 0
+History!H5 0
+History!I5 0
+History!J5 =SUM(G5:I5)
+History!K5 =J5
+History!L5 0
+History!M5 0
+History!N5 =F5-J5+L5
+History!A6 date 45323
+History!B6 =MONTH(A6)
+History!C6 =IF(A6>=EDATE(Inputs!$B$2,-12),IF(A6<Inputs!$B$2,1,0),0)
+History!D6 0
+History!E6 0
+History!F6 =SUM(D6:E6)
+History!G6 0
+History!H6 0
+History!I6 0
+History!J6 =SUM(G6:I6)
+History!K6 =J6
+History!L6 0
+History!M6 0
+History!N6 =F6-J6+L6
+History!A7 date 45352
+History!B7 =MONTH(A7)
+History!C7 =IF(A7>=EDATE(Inputs!$B$2,-12),IF(A7<Inputs!$B$2,1,0),0)
+History!D7 0
+History!E7 0
+History!F7 =SUM(D7:E7)
+History!G7 0
+History!H7 0
+History!I7 0
+History!J7 =SUM(G7:I7)
+History!K7 =J7
+History!L7 0
+History!M7 0
+History!N7 =F7-J7+L7
+History!A8 date 45383
+History!B8 =MONTH(A8)
+History!C8 =IF(A8>=EDATE(Inputs!$B$2,-12),IF(A8<Inputs!$B$2,1,0),0)
+History!D8 0
+History!E8 0
+History!F8 =SUM(D8:E8)
+History!G8 0
+History!H8 0
+History!I8 0
+History!J8 =SUM(G8:I8)
+History!K8 =J8
+History!L8 0
+History!M8 0
+History!N8 =F8-J8+L8
+History!A9 date 45413
+History!B9 =MONTH(A9)
+History!C9 =IF(A9>=EDATE(Inputs!$B$2,-12),IF(A9<Inputs!$B$2,1,0),0)
+History!D9 0
+History!E9 0
+History!F9 =SUM(D9:E9)
+History!G9 0
+History!H9 0
+History!I9 0
+History!J9 =SUM(G9:I9)
+History!K9 =J9
+History!L9 0
+History!M9 0
+History!N9 =F9-J9+L9
+History!A10 date 45444
+History!B10 =MONTH(A10)
+History!C10 =IF(A10>=EDATE(Inputs!$B$2,-12),IF(A10<Inputs!$B$2,1,0),0)
+History!D10 0
+History!E10 0
+History!F10 =SUM(D10:E10)
+History!G10 0
+History!H10 0
+History!I10 0
+History!J10 =SUM(G10:I10)
+History!K10 =J10
+History!L10 0
+History!M10 0
+History!N10 =F10-J10+L10
+History!A11 date 45474
+History!B11 =MONTH(A11)
+History!C11 =IF(A11>=EDATE(Inputs!$B$2,-12),IF(A11<Inputs!$B$2,1,0),0)
+History!D11 0
+History!E11 0
+History!F11 =SUM(D11:E11)
+History!G11 0
+History!H11 0
+History!I11 0
+History!J11 =SUM(G11:I11)
+History!K11 =J11
+History!L11 0
+History!M11 0
+History!N11 =F11-J11+L11
+History!A12 date 45505
+History!B12 =MONTH(A12)
+History!C12 =IF(A12>=EDATE(Inputs!$B$2,-12),IF(A12<Inputs!$B$2,1,0),0)
+History!D12 0
+History!E12 0
+History!F12 =SUM(D12:E12)
+History!G12 0
+History!H12 0
+History!I12 0
+History!J12 =SUM(G12:I12)
+History!K12 =J12
+History!L12 0
+History!M12 0
+History!N12 =F12-J12+L12
+History!A13 date 45536
+History!B13 =MONTH(A13)
+History!C13 =IF(A13>=EDATE(Inputs!$B$2,-12),IF(A13<Inputs!$B$2,1,0),0)
+History!D13 0
+History!E13 0
+History!F13 =SUM(D13:E13)
+History!G13 0
+History!H13 0
+History!I13 0
+History!J13 =SUM(G13:I13)
+History!K13 =J13
+History!L13 0
+History!M13 0
+History!N13 =F13-J13+L13
+History!A14 date 45566
+History!B14 =MONTH(A14)
+History!C14 =IF(A14>=EDATE(Inputs!$B$2,-12),IF(A14<Inputs!$B$2,1,0),0)
+History!D14 0
+History!E14 0
+History!F14 =SUM(D14:E14)
+History!G14 0
+History!H14 0
+History!I14 0
+History!J14 =SUM(G14:I14)
+History!K14 =J14
+History!L14 0
+History!M14 0
+History!N14 =F14-J14+L14
+History!A15 date 45597
+History!B15 =MONTH(A15)
+History!C15 =IF(A15>=EDATE(Inputs!$B$2,-12),IF(A15<Inputs!$B$2,1,0),0)
+History!D15 0
+History!E15 0
+History!F15 =SUM(D15:E15)
+History!G15 0
+History!H15 0
+History!I15 0
+History!J15 =SUM(G15:I15)
+History!K15 =J15
+History!L15 0
+History!M15 0
+History!N15 =F15-J15+L15
+History!A16 date 45627
+History!B16 =MONTH(A16)
+History!C16 =IF(A16>=EDATE(Inputs!$B$2,-12),IF(A16<Inputs!$B$2,1,0),0)
+History!D16 0
+History!E16 0
+History!F16 =SUM(D16:E16)
+History!G16 0
+History!H16 0
+History!I16 0
+History!J16 =SUM(G16:I16)
+History!K16 =J16
+History!L16 0
+History!M16 0
+History!N16 =F16-J16+L16
+History!A17 date 45658
+History!B17 =MONTH(A17)
+History!C17 =IF(A17>=EDATE(Inputs!$B$2,-12),IF(A17<Inputs!$B$2,1,0),0)
+History!D17 0
+History!E17 0
+History!F17 =SUM(D17:E17)
+History!G17 0
+History!H17 0
+History!I17 0
+History!J17 =SUM(G17:I17)
+History!K17 =J17
+History!L17 0
+History!M17 0
+History!N17 =F17-J17+L17
+History!A18 date 45689
+History!B18 =MONTH(A18)
+History!C18 =IF(A18>=EDATE(Inputs!$B$2,-12),IF(A18<Inputs!$B$2,1,0),0)
+History!D18 0
+History!E18 0
+History!F18 =SUM(D18:E18)
+History!G18 0
+History!H18 0
+History!I18 0
+History!J18 =SUM(G18:I18)
+History!K18 =J18
+History!L18 0
+History!M18 0
+History!N18 =F18-J18+L18
+History!A19 date 45717
+History!B19 =MONTH(A19)
+History!C19 =IF(A19>=EDATE(Inputs!$B$2,-12),IF(A19<Inputs!$B$2,1,0),0)
+History!D19 0
+History!E19 0
+History!F19 =SUM(D19:E19)
+History!G19 0
+History!H19 0
+History!I19 0
+History!J19 =SUM(G19:I19)
+History!K19 =J19
+History!L19 0
+History!M19 0
+History!N19 =F19-J19+L19
+History!A20 date 45748
+History!B20 =MONTH(A20)
+History!C20 =IF(A20>=EDATE(Inputs!$B$2,-12),IF(A20<Inputs!$B$2,1,0),0)
+History!D20 0
+History!E20 0
+History!F20 =SUM(D20:E20)
+History!G20 0
+History!H20 0
+History!I20 0
+History!J20 =SUM(G20:I20)
+History!K20 =J20
+History!L20 0
+History!M20 0
+History!N20 =F20-J20+L20
+History!A21 date 45778
+History!B21 =MONTH(A21)
+History!C21 =IF(A21>=EDATE(Inputs!$B$2,-12),IF(A21<Inputs!$B$2,1,0),0)
+History!D21 0
+History!E21 0
+History!F21 =SUM(D21:E21)
+History!G21 0
+History!H21 0
+History!I21 0
+History!J21 =SUM(G21:I21)
+History!K21 =J21
+History!L21 0
+History!M21 0
+History!N21 =F21-J21+L21
+History!A22 date 45809
+History!B22 =MONTH(A22)
+History!C22 =IF(A22>=EDATE(Inputs!$B$2,-12),IF(A22<Inputs!$B$2,1,0),0)
+History!D22 0
+History!E22 0
+History!F22 =SUM(D22:E22)
+History!G22 0
+History!H22 0
+History!I22 0
+History!J22 =SUM(G22:I22)
+History!K22 =J22
+History!L22 0
+History!M22 0
+History!N22 =F22-J22+L22
+History!A23 date 45839
+History!B23 =MONTH(A23)
+History!C23 =IF(A23>=EDATE(Inputs!$B$2,-12),IF(A23<Inputs!$B$2,1,0),0)
+History!D23 0
+History!E23 0
+History!F23 =SUM(D23:E23)
+History!G23 0
+History!H23 0
+History!I23 0
+History!J23 =SUM(G23:I23)
+History!K23 =J23
+History!L23 0
+History!M23 0
+History!N23 =F23-J23+L23
+History!A24 date 45870
+History!B24 =MONTH(A24)
+History!C24 =IF(A24>=EDATE(Inputs!$B$2,-12),IF(A24<Inputs!$B$2,1,0),0)
+History!D24 0
+History!E24 0
+History!F24 =SUM(D24:E24)
+History!G24 0
+History!H24 0
+History!I24 0
+History!J24 =SUM(G24:I24)
+History!K24 =J24
+History!L24 0
+History!M24 0
+History!N24 =F24-J24+L24
+History!A25 date 45901
+History!B25 =MONTH(A25)
+History!C25 =IF(A25>=EDATE(Inputs!$B$2,-12),IF(A25<Inputs!$B$2,1,0),0)
+History!D25 0
+History!E25 0
+History!F25 =SUM(D25:E25)
+History!G25 0
+History!H25 0
+History!I25 0
+History!J25 =SUM(G25:I25)
+History!K25 =J25
+History!L25 0
+History!M25 0
+History!N25 =F25-J25+L25
+History!A26 date 45931
+History!B26 =MONTH(A26)
+History!C26 =IF(A26>=EDATE(Inputs!$B$2,-12),IF(A26<Inputs!$B$2,1,0),0)
+History!D26 9000
+History!E26 0
+History!F26 =SUM(D26:E26)
+History!G26 1800
+History!H26 570
+History!I26 80
+History!J26 =SUM(G26:I26)
+History!K26 =J26
+History!L26 0
+History!M26 0
+History!N26 =F26-J26+L26
+History!A27 date 45962
+History!B27 =MONTH(A27)
+History!C27 =IF(A27>=EDATE(Inputs!$B$2,-12),IF(A27<Inputs!$B$2,1,0),0)
+History!D27 6000
+History!E27 0
+History!F27 =SUM(D27:E27)
+History!G27 1800
+History!H27 570
+History!I27 80
+History!J27 =SUM(G27:I27)
+History!K27 =J27
+History!L27 0
+History!M27 0
+History!N27 =F27-J27+L27
+History!A28 date 45992
+History!B28 =MONTH(A28)
+History!C28 =IF(A28>=EDATE(Inputs!$B$2,-12),IF(A28<Inputs!$B$2,1,0),0)
+History!D28 6000
+History!E28 0
+History!F28 =SUM(D28:E28)
+History!G28 1800
+History!H28 570
+History!I28 80
+History!J28 =SUM(G28:I28)
+History!K28 =J28
+History!L28 0
+History!M28 0
+History!N28 =F28-J28+L28
+History!A29 date 46023
+History!B29 =MONTH(A29)
+History!C29 =IF(A29>=EDATE(Inputs!$B$2,-12),IF(A29<Inputs!$B$2,1,0),0)
+History!D29 6000
+History!E29 0
+History!F29 =SUM(D29:E29)
+History!G29 1800
+History!H29 570
+History!I29 80
+History!J29 =SUM(G29:I29)
+History!K29 =J29
+History!L29 0
+History!M29 0
+History!N29 =F29-J29+L29
+History!A30 date 46054
+History!B30 =MONTH(A30)
+History!C30 =IF(A30>=EDATE(Inputs!$B$2,-12),IF(A30<Inputs!$B$2,1,0),0)
+History!D30 6000
+History!E30 0
+History!F30 =SUM(D30:E30)
+History!G30 1800
+History!H30 570
+History!I30 80
+History!J30 =SUM(G30:I30)
+History!K30 =J30
+History!L30 0
+History!M30 0
+History!N30 =F30-J30+L30
+History!A31 date 46082
+History!B31 =MONTH(A31)
+History!C31 =IF(A31>=EDATE(Inputs!$B$2,-12),IF(A31<Inputs!$B$2,1,0),0)
+History!D31 6000
+History!E31 0
+History!F31 =SUM(D31:E31)
+History!G31 1800
+History!H31 570
+History!I31 80
+History!J31 =SUM(G31:I31)
+History!K31 =J31
+History!L31 0
+History!M31 0
+History!N31 =F31-J31+L31
+History!A32 date 46113
+History!B32 =MONTH(A32)
+History!C32 =IF(A32>=EDATE(Inputs!$B$2,-12),IF(A32<Inputs!$B$2,1,0),0)
+History!D32 6000
+History!E32 0
+History!F32 =SUM(D32:E32)
+History!G32 1800
+History!H32 570
+History!I32 80
+History!J32 =SUM(G32:I32)
+History!K32 =J32
+History!L32 0
+History!M32 0
+History!N32 =F32-J32+L32
+History!A33 date 46143
+History!B33 =MONTH(A33)
+History!C33 =IF(A33>=EDATE(Inputs!$B$2,-12),IF(A33<Inputs!$B$2,1,0),0)
+History!D33 9000
+History!E33 0
+History!F33 =SUM(D33:E33)
+History!G33 1800
+History!H33 570
+History!I33 80
+History!J33 =SUM(G33:I33)
+History!K33 =J33
+History!L33 0
+History!M33 0
+History!N33 =F33-J33+L33
+History!A34 date 46174
+History!B34 =MONTH(A34)
+History!C34 =IF(A34>=EDATE(Inputs!$B$2,-12),IF(A34<Inputs!$B$2,1,0),0)
+History!D34 6000
+History!E34 0
+History!F34 =SUM(D34:E34)
+History!G34 1800
+History!H34 570
+History!I34 80
+History!J34 =SUM(G34:I34)
+History!K34 =J34
+History!L34 0
+History!M34 0
+History!N34 =F34-J34+L34
+History!A35 date 46204
+History!B35 =MONTH(A35)
+History!C35 =IF(A35>=EDATE(Inputs!$B$2,-12),IF(A35<Inputs!$B$2,1,0),0)
+History!D35 6000
+History!E35 0
+History!F35 =SUM(D35:E35)
+History!G35 1800
+History!H35 570
+History!I35 80
+History!J35 =SUM(G35:I35)
+History!K35 =J35
+History!L35 0
+History!M35 0
+History!N35 =F35-J35+L35
+History!A36 date 46235
+History!B36 =MONTH(A36)
+History!C36 =IF(A36>=EDATE(Inputs!$B$2,-12),IF(A36<Inputs!$B$2,1,0),0)
+History!D36 6000
+History!E36 0
+History!F36 =SUM(D36:E36)
+History!G36 1800
+History!H36 570
+History!I36 80
+History!J36 =SUM(G36:I36)
+History!K36 =J36
+History!L36 0
+History!M36 0
+History!N36 =F36-J36+L36
+History!A37 date 46266
+History!B37 =MONTH(A37)
+History!C37 =IF(A37>=EDATE(Inputs!$B$2,-12),IF(A37<Inputs!$B$2,1,0),0)
+History!D37 6000
+History!E37 0
+History!F37 =SUM(D37:E37)
+History!G37 1800
+History!H37 570
+History!I37 80
+History!J37 =SUM(G37:I37)
+History!K37 =J37
+History!L37 0
+History!M37 0
+History!N37 =F37-J37+L37
+Paydays!A1 "#"
+Paydays!B1 "Nominal payday"
+Paydays!C1 "Holiday?"
+Paydays!D1 "Payday"
+Paydays!E1 "Month key"
+Paydays!F1 "Count"
+Paydays!A2 1
+Paydays!B2 =Inputs!$B$10+Inputs!$B$11*ROUNDUP((Inputs!$B$2-Inputs!$B$10)/Inputs!$B$11,0)
+Paydays!C2 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B2)>0,1,0)
+Paydays!D2 =B2-C2
+Paydays!E2 =YEAR(D2)*100+MONTH(D2)
+Paydays!F2 1
+Paydays!A3 2
+Paydays!B3 =B2+Inputs!$B$11
+Paydays!C3 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B3)>0,1,0)
+Paydays!D3 =B3-C3
+Paydays!E3 =YEAR(D3)*100+MONTH(D3)
+Paydays!F3 1
+Paydays!A4 3
+Paydays!B4 =B3+Inputs!$B$11
+Paydays!C4 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B4)>0,1,0)
+Paydays!D4 =B4-C4
+Paydays!E4 =YEAR(D4)*100+MONTH(D4)
+Paydays!F4 1
+Paydays!A5 4
+Paydays!B5 =B4+Inputs!$B$11
+Paydays!C5 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B5)>0,1,0)
+Paydays!D5 =B5-C5
+Paydays!E5 =YEAR(D5)*100+MONTH(D5)
+Paydays!F5 1
+Paydays!A6 5
+Paydays!B6 =B5+Inputs!$B$11
+Paydays!C6 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B6)>0,1,0)
+Paydays!D6 =B6-C6
+Paydays!E6 =YEAR(D6)*100+MONTH(D6)
+Paydays!F6 1
+Paydays!A7 6
+Paydays!B7 =B6+Inputs!$B$11
+Paydays!C7 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B7)>0,1,0)
+Paydays!D7 =B7-C7
+Paydays!E7 =YEAR(D7)*100+MONTH(D7)
+Paydays!F7 1
+Paydays!A8 7
+Paydays!B8 =B7+Inputs!$B$11
+Paydays!C8 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B8)>0,1,0)
+Paydays!D8 =B8-C8
+Paydays!E8 =YEAR(D8)*100+MONTH(D8)
+Paydays!F8 1
+Paydays!A9 8
+Paydays!B9 =B8+Inputs!$B$11
+Paydays!C9 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B9)>0,1,0)
+Paydays!D9 =B9-C9
+Paydays!E9 =YEAR(D9)*100+MONTH(D9)
+Paydays!F9 1
+Paydays!A10 9
+Paydays!B10 =B9+Inputs!$B$11
+Paydays!C10 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B10)>0,1,0)
+Paydays!D10 =B10-C10
+Paydays!E10 =YEAR(D10)*100+MONTH(D10)
+Paydays!F10 1
+Paydays!A11 10
+Paydays!B11 =B10+Inputs!$B$11
+Paydays!C11 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B11)>0,1,0)
+Paydays!D11 =B11-C11
+Paydays!E11 =YEAR(D11)*100+MONTH(D11)
+Paydays!F11 1
+Paydays!A12 11
+Paydays!B12 =B11+Inputs!$B$11
+Paydays!C12 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B12)>0,1,0)
+Paydays!D12 =B12-C12
+Paydays!E12 =YEAR(D12)*100+MONTH(D12)
+Paydays!F12 1
+Paydays!A13 12
+Paydays!B13 =B12+Inputs!$B$11
+Paydays!C13 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B13)>0,1,0)
+Paydays!D13 =B13-C13
+Paydays!E13 =YEAR(D13)*100+MONTH(D13)
+Paydays!F13 1
+Paydays!A14 13
+Paydays!B14 =B13+Inputs!$B$11
+Paydays!C14 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B14)>0,1,0)
+Paydays!D14 =B14-C14
+Paydays!E14 =YEAR(D14)*100+MONTH(D14)
+Paydays!F14 1
+Paydays!A15 14
+Paydays!B15 =B14+Inputs!$B$11
+Paydays!C15 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B15)>0,1,0)
+Paydays!D15 =B15-C15
+Paydays!E15 =YEAR(D15)*100+MONTH(D15)
+Paydays!F15 1
+Paydays!A16 15
+Paydays!B16 =B15+Inputs!$B$11
+Paydays!C16 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B16)>0,1,0)
+Paydays!D16 =B16-C16
+Paydays!E16 =YEAR(D16)*100+MONTH(D16)
+Paydays!F16 1
+Paydays!A17 16
+Paydays!B17 =B16+Inputs!$B$11
+Paydays!C17 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B17)>0,1,0)
+Paydays!D17 =B17-C17
+Paydays!E17 =YEAR(D17)*100+MONTH(D17)
+Paydays!F17 1
+Paydays!A18 17
+Paydays!B18 =B17+Inputs!$B$11
+Paydays!C18 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B18)>0,1,0)
+Paydays!D18 =B18-C18
+Paydays!E18 =YEAR(D18)*100+MONTH(D18)
+Paydays!F18 1
+Paydays!A19 18
+Paydays!B19 =B18+Inputs!$B$11
+Paydays!C19 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B19)>0,1,0)
+Paydays!D19 =B19-C19
+Paydays!E19 =YEAR(D19)*100+MONTH(D19)
+Paydays!F19 1
+Paydays!A20 19
+Paydays!B20 =B19+Inputs!$B$11
+Paydays!C20 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B20)>0,1,0)
+Paydays!D20 =B20-C20
+Paydays!E20 =YEAR(D20)*100+MONTH(D20)
+Paydays!F20 1
+Paydays!A21 20
+Paydays!B21 =B20+Inputs!$B$11
+Paydays!C21 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B21)>0,1,0)
+Paydays!D21 =B21-C21
+Paydays!E21 =YEAR(D21)*100+MONTH(D21)
+Paydays!F21 1
+Paydays!A22 21
+Paydays!B22 =B21+Inputs!$B$11
+Paydays!C22 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B22)>0,1,0)
+Paydays!D22 =B22-C22
+Paydays!E22 =YEAR(D22)*100+MONTH(D22)
+Paydays!F22 1
+Paydays!A23 22
+Paydays!B23 =B22+Inputs!$B$11
+Paydays!C23 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B23)>0,1,0)
+Paydays!D23 =B23-C23
+Paydays!E23 =YEAR(D23)*100+MONTH(D23)
+Paydays!F23 1
+Paydays!A24 23
+Paydays!B24 =B23+Inputs!$B$11
+Paydays!C24 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B24)>0,1,0)
+Paydays!D24 =B24-C24
+Paydays!E24 =YEAR(D24)*100+MONTH(D24)
+Paydays!F24 1
+Paydays!A25 24
+Paydays!B25 =B24+Inputs!$B$11
+Paydays!C25 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B25)>0,1,0)
+Paydays!D25 =B25-C25
+Paydays!E25 =YEAR(D25)*100+MONTH(D25)
+Paydays!F25 1
+Paydays!A26 25
+Paydays!B26 =B25+Inputs!$B$11
+Paydays!C26 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B26)>0,1,0)
+Paydays!D26 =B26-C26
+Paydays!E26 =YEAR(D26)*100+MONTH(D26)
+Paydays!F26 1
+Paydays!A27 26
+Paydays!B27 =B26+Inputs!$B$11
+Paydays!C27 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B27)>0,1,0)
+Paydays!D27 =B27-C27
+Paydays!E27 =YEAR(D27)*100+MONTH(D27)
+Paydays!F27 1
+Paydays!A28 27
+Paydays!B28 =B27+Inputs!$B$11
+Paydays!C28 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B28)>0,1,0)
+Paydays!D28 =B28-C28
+Paydays!E28 =YEAR(D28)*100+MONTH(D28)
+Paydays!F28 1
+Paydays!A29 28
+Paydays!B29 =B28+Inputs!$B$11
+Paydays!C29 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B29)>0,1,0)
+Paydays!D29 =B29-C29
+Paydays!E29 =YEAR(D29)*100+MONTH(D29)
+Paydays!F29 1
+Paydays!A30 29
+Paydays!B30 =B29+Inputs!$B$11
+Paydays!C30 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B30)>0,1,0)
+Paydays!D30 =B30-C30
+Paydays!E30 =YEAR(D30)*100+MONTH(D30)
+Paydays!F30 1
+Paydays!A31 30
+Paydays!B31 =B30+Inputs!$B$11
+Paydays!C31 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B31)>0,1,0)
+Paydays!D31 =B31-C31
+Paydays!E31 =YEAR(D31)*100+MONTH(D31)
+Paydays!F31 1
+Paydays!A32 31
+Paydays!B32 =B31+Inputs!$B$11
+Paydays!C32 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B32)>0,1,0)
+Paydays!D32 =B32-C32
+Paydays!E32 =YEAR(D32)*100+MONTH(D32)
+Paydays!F32 1
+Paydays!A33 32
+Paydays!B33 =B32+Inputs!$B$11
+Paydays!C33 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B33)>0,1,0)
+Paydays!D33 =B33-C33
+Paydays!E33 =YEAR(D33)*100+MONTH(D33)
+Paydays!F33 1
+Paydays!A34 33
+Paydays!B34 =B33+Inputs!$B$11
+Paydays!C34 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B34)>0,1,0)
+Paydays!D34 =B34-C34
+Paydays!E34 =YEAR(D34)*100+MONTH(D34)
+Paydays!F34 1
+Paydays!A35 34
+Paydays!B35 =B34+Inputs!$B$11
+Paydays!C35 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B35)>0,1,0)
+Paydays!D35 =B35-C35
+Paydays!E35 =YEAR(D35)*100+MONTH(D35)
+Paydays!F35 1
+Paydays!A36 35
+Paydays!B36 =B35+Inputs!$B$11
+Paydays!C36 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B36)>0,1,0)
+Paydays!D36 =B36-C36
+Paydays!E36 =YEAR(D36)*100+MONTH(D36)
+Paydays!F36 1
+Paydays!A37 36
+Paydays!B37 =B36+Inputs!$B$11
+Paydays!C37 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B37)>0,1,0)
+Paydays!D37 =B37-C37
+Paydays!E37 =YEAR(D37)*100+MONTH(D37)
+Paydays!F37 1
+Paydays!A38 37
+Paydays!B38 =B37+Inputs!$B$11
+Paydays!C38 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B38)>0,1,0)
+Paydays!D38 =B38-C38
+Paydays!E38 =YEAR(D38)*100+MONTH(D38)
+Paydays!F38 1
+Paydays!A39 38
+Paydays!B39 =B38+Inputs!$B$11
+Paydays!C39 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B39)>0,1,0)
+Paydays!D39 =B39-C39
+Paydays!E39 =YEAR(D39)*100+MONTH(D39)
+Paydays!F39 1
+Paydays!A40 39
+Paydays!B40 =B39+Inputs!$B$11
+Paydays!C40 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B40)>0,1,0)
+Paydays!D40 =B40-C40
+Paydays!E40 =YEAR(D40)*100+MONTH(D40)
+Paydays!F40 1
+Paydays!A41 40
+Paydays!B41 =B40+Inputs!$B$11
+Paydays!C41 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B41)>0,1,0)
+Paydays!D41 =B41-C41
+Paydays!E41 =YEAR(D41)*100+MONTH(D41)
+Paydays!F41 1
+Paydays!A42 41
+Paydays!B42 =B41+Inputs!$B$11
+Paydays!C42 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B42)>0,1,0)
+Paydays!D42 =B42-C42
+Paydays!E42 =YEAR(D42)*100+MONTH(D42)
+Paydays!F42 1
+Paydays!A43 42
+Paydays!B43 =B42+Inputs!$B$11
+Paydays!C43 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B43)>0,1,0)
+Paydays!D43 =B43-C43
+Paydays!E43 =YEAR(D43)*100+MONTH(D43)
+Paydays!F43 1
+Paydays!A44 43
+Paydays!B44 =B43+Inputs!$B$11
+Paydays!C44 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B44)>0,1,0)
+Paydays!D44 =B44-C44
+Paydays!E44 =YEAR(D44)*100+MONTH(D44)
+Paydays!F44 1
+Paydays!A45 44
+Paydays!B45 =B44+Inputs!$B$11
+Paydays!C45 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B45)>0,1,0)
+Paydays!D45 =B45-C45
+Paydays!E45 =YEAR(D45)*100+MONTH(D45)
+Paydays!F45 1
+Paydays!A46 45
+Paydays!B46 =B45+Inputs!$B$11
+Paydays!C46 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B46)>0,1,0)
+Paydays!D46 =B46-C46
+Paydays!E46 =YEAR(D46)*100+MONTH(D46)
+Paydays!F46 1
+Paydays!A47 46
+Paydays!B47 =B46+Inputs!$B$11
+Paydays!C47 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B47)>0,1,0)
+Paydays!D47 =B47-C47
+Paydays!E47 =YEAR(D47)*100+MONTH(D47)
+Paydays!F47 1
+Paydays!A48 47
+Paydays!B48 =B47+Inputs!$B$11
+Paydays!C48 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B48)>0,1,0)
+Paydays!D48 =B48-C48
+Paydays!E48 =YEAR(D48)*100+MONTH(D48)
+Paydays!F48 1
+Paydays!A49 48
+Paydays!B49 =B48+Inputs!$B$11
+Paydays!C49 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B49)>0,1,0)
+Paydays!D49 =B49-C49
+Paydays!E49 =YEAR(D49)*100+MONTH(D49)
+Paydays!F49 1
+Paydays!A50 49
+Paydays!B50 =B49+Inputs!$B$11
+Paydays!C50 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B50)>0,1,0)
+Paydays!D50 =B50-C50
+Paydays!E50 =YEAR(D50)*100+MONTH(D50)
+Paydays!F50 1
+Paydays!A51 50
+Paydays!B51 =B50+Inputs!$B$11
+Paydays!C51 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B51)>0,1,0)
+Paydays!D51 =B51-C51
+Paydays!E51 =YEAR(D51)*100+MONTH(D51)
+Paydays!F51 1
+Paydays!A52 51
+Paydays!B52 =B51+Inputs!$B$11
+Paydays!C52 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B52)>0,1,0)
+Paydays!D52 =B52-C52
+Paydays!E52 =YEAR(D52)*100+MONTH(D52)
+Paydays!F52 1
+Paydays!A53 52
+Paydays!B53 =B52+Inputs!$B$11
+Paydays!C53 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B53)>0,1,0)
+Paydays!D53 =B53-C53
+Paydays!E53 =YEAR(D53)*100+MONTH(D53)
+Paydays!F53 1
+Paydays!A54 53
+Paydays!B54 =B53+Inputs!$B$11
+Paydays!C54 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B54)>0,1,0)
+Paydays!D54 =B54-C54
+Paydays!E54 =YEAR(D54)*100+MONTH(D54)
+Paydays!F54 1
+Paydays!A55 54
+Paydays!B55 =B54+Inputs!$B$11
+Paydays!C55 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B55)>0,1,0)
+Paydays!D55 =B55-C55
+Paydays!E55 =YEAR(D55)*100+MONTH(D55)
+Paydays!F55 1
+Paydays!A56 55
+Paydays!B56 =B55+Inputs!$B$11
+Paydays!C56 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B56)>0,1,0)
+Paydays!D56 =B56-C56
+Paydays!E56 =YEAR(D56)*100+MONTH(D56)
+Paydays!F56 1
+Paydays!A57 56
+Paydays!B57 =B56+Inputs!$B$11
+Paydays!C57 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B57)>0,1,0)
+Paydays!D57 =B57-C57
+Paydays!E57 =YEAR(D57)*100+MONTH(D57)
+Paydays!F57 1
+Paydays!A58 57
+Paydays!B58 =B57+Inputs!$B$11
+Paydays!C58 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B58)>0,1,0)
+Paydays!D58 =B58-C58
+Paydays!E58 =YEAR(D58)*100+MONTH(D58)
+Paydays!F58 1
+Paydays!A59 58
+Paydays!B59 =B58+Inputs!$B$11
+Paydays!C59 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B59)>0,1,0)
+Paydays!D59 =B59-C59
+Paydays!E59 =YEAR(D59)*100+MONTH(D59)
+Paydays!F59 1
+Paydays!A60 59
+Paydays!B60 =B59+Inputs!$B$11
+Paydays!C60 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B60)>0,1,0)
+Paydays!D60 =B60-C60
+Paydays!E60 =YEAR(D60)*100+MONTH(D60)
+Paydays!F60 1
+Paydays!A61 60
+Paydays!B61 =B60+Inputs!$B$11
+Paydays!C61 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B61)>0,1,0)
+Paydays!D61 =B61-C61
+Paydays!E61 =YEAR(D61)*100+MONTH(D61)
+Paydays!F61 1
+Paydays!A62 61
+Paydays!B62 =B61+Inputs!$B$11
+Paydays!C62 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B62)>0,1,0)
+Paydays!D62 =B62-C62
+Paydays!E62 =YEAR(D62)*100+MONTH(D62)
+Paydays!F62 1
+Paydays!A63 62
+Paydays!B63 =B62+Inputs!$B$11
+Paydays!C63 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B63)>0,1,0)
+Paydays!D63 =B63-C63
+Paydays!E63 =YEAR(D63)*100+MONTH(D63)
+Paydays!F63 1
+Paydays!A64 63
+Paydays!B64 =B63+Inputs!$B$11
+Paydays!C64 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B64)>0,1,0)
+Paydays!D64 =B64-C64
+Paydays!E64 =YEAR(D64)*100+MONTH(D64)
+Paydays!F64 1
+Paydays!A65 64
+Paydays!B65 =B64+Inputs!$B$11
+Paydays!C65 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B65)>0,1,0)
+Paydays!D65 =B65-C65
+Paydays!E65 =YEAR(D65)*100+MONTH(D65)
+Paydays!F65 1
+Paydays!A66 65
+Paydays!B66 =B65+Inputs!$B$11
+Paydays!C66 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B66)>0,1,0)
+Paydays!D66 =B66-C66
+Paydays!E66 =YEAR(D66)*100+MONTH(D66)
+Paydays!F66 1
+Paydays!A67 66
+Paydays!B67 =B66+Inputs!$B$11
+Paydays!C67 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B67)>0,1,0)
+Paydays!D67 =B67-C67
+Paydays!E67 =YEAR(D67)*100+MONTH(D67)
+Paydays!F67 1
+Paydays!A68 67
+Paydays!B68 =B67+Inputs!$B$11
+Paydays!C68 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B68)>0,1,0)
+Paydays!D68 =B68-C68
+Paydays!E68 =YEAR(D68)*100+MONTH(D68)
+Paydays!F68 1
+Paydays!A69 68
+Paydays!B69 =B68+Inputs!$B$11
+Paydays!C69 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B69)>0,1,0)
+Paydays!D69 =B69-C69
+Paydays!E69 =YEAR(D69)*100+MONTH(D69)
+Paydays!F69 1
+Paydays!A70 69
+Paydays!B70 =B69+Inputs!$B$11
+Paydays!C70 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B70)>0,1,0)
+Paydays!D70 =B70-C70
+Paydays!E70 =YEAR(D70)*100+MONTH(D70)
+Paydays!F70 1
+Paydays!A71 70
+Paydays!B71 =B70+Inputs!$B$11
+Paydays!C71 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B71)>0,1,0)
+Paydays!D71 =B71-C71
+Paydays!E71 =YEAR(D71)*100+MONTH(D71)
+Paydays!F71 1
+Paydays!A72 71
+Paydays!B72 =B71+Inputs!$B$11
+Paydays!C72 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B72)>0,1,0)
+Paydays!D72 =B72-C72
+Paydays!E72 =YEAR(D72)*100+MONTH(D72)
+Paydays!F72 1
+Paydays!A73 72
+Paydays!B73 =B72+Inputs!$B$11
+Paydays!C73 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B73)>0,1,0)
+Paydays!D73 =B73-C73
+Paydays!E73 =YEAR(D73)*100+MONTH(D73)
+Paydays!F73 1
+Paydays!A74 73
+Paydays!B74 =B73+Inputs!$B$11
+Paydays!C74 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B74)>0,1,0)
+Paydays!D74 =B74-C74
+Paydays!E74 =YEAR(D74)*100+MONTH(D74)
+Paydays!F74 1
+Paydays!A75 74
+Paydays!B75 =B74+Inputs!$B$11
+Paydays!C75 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B75)>0,1,0)
+Paydays!D75 =B75-C75
+Paydays!E75 =YEAR(D75)*100+MONTH(D75)
+Paydays!F75 1
+Paydays!A76 75
+Paydays!B76 =B75+Inputs!$B$11
+Paydays!C76 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B76)>0,1,0)
+Paydays!D76 =B76-C76
+Paydays!E76 =YEAR(D76)*100+MONTH(D76)
+Paydays!F76 1
+Paydays!A77 76
+Paydays!B77 =B76+Inputs!$B$11
+Paydays!C77 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B77)>0,1,0)
+Paydays!D77 =B77-C77
+Paydays!E77 =YEAR(D77)*100+MONTH(D77)
+Paydays!F77 1
+Paydays!A78 77
+Paydays!B78 =B77+Inputs!$B$11
+Paydays!C78 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B78)>0,1,0)
+Paydays!D78 =B78-C78
+Paydays!E78 =YEAR(D78)*100+MONTH(D78)
+Paydays!F78 1
+Paydays!A79 78
+Paydays!B79 =B78+Inputs!$B$11
+Paydays!C79 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B79)>0,1,0)
+Paydays!D79 =B79-C79
+Paydays!E79 =YEAR(D79)*100+MONTH(D79)
+Paydays!F79 1
+Paydays!A80 79
+Paydays!B80 =B79+Inputs!$B$11
+Paydays!C80 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B80)>0,1,0)
+Paydays!D80 =B80-C80
+Paydays!E80 =YEAR(D80)*100+MONTH(D80)
+Paydays!F80 1
+Paydays!A81 80
+Paydays!B81 =B80+Inputs!$B$11
+Paydays!C81 =IF(SUMIFS(Inputs!$C$39:$C$46,Inputs!$B$39:$B$46,B81)>0,1,0)
+Paydays!D81 =B81-C81
+Paydays!E81 =YEAR(D81)*100+MONTH(D81)
+Paydays!F81 1
+Forecast!A1 "Month"
+Forecast!B1 "Paycheques"
+Forecast!C1 "Net salary"
+Forecast!D1 "Extra income"
+Forecast!E1 "Total income"
+Forecast!F1 "Housing"
+Forecast!G1 "Food"
+Forecast!H1 "Bills"
+Forecast!I1 "Untracked spending"
+Forecast!J1 "Expenses"
+Forecast!K1 "Taxes (refund + / owing -)"
+Forecast!L1 "Net cash flow"
+Forecast!M1 "Month start"
+Forecast!N1 "Before investing"
+Forecast!O1 "Cash floor"
+Forecast!P1 "To invest"
+Forecast!Q1 "Month end"
+Forecast!A2 =Inputs!$B$2
+Forecast!B2 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A2)*100+MONTH($A2)))))
+Forecast!C2 =B2*IF(MONTH($A2)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D2 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A2)*100+MONTH($A2))
+Forecast!E2 =C2+D2
+Forecast!F2 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A2)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G2 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A2)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H2 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A2)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I2 =MAX(0,Inputs!$B$16-SUM(F2:H2))
+Forecast!J2 =SUM(F2:I2)
+Forecast!K2 0
+Forecast!L2 =E2-J2+K2
+Forecast!M2 =Inputs!$B$4
+Forecast!N2 =M2+L2
+Forecast!O2 =Inputs!$B$14
+Forecast!P2 =MAX(0,N2+MIN(0,SUM(L3:L3),SUM(L3:L4),SUM(L3:L5),SUM(L3:L6),SUM(L3:L7),SUM(L3:L8),SUM(L3:L9),SUM(L3:L10),SUM(L3:L11),SUM(L3:L12),SUM(L3:L13),SUM(L3:L14),SUM(L3:L15),SUM(L3:L16))-O2)
+Forecast!Q2 =N2-P2
+Forecast!A3 =EDATE(A2,1)
+Forecast!B3 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A3)*100+MONTH($A3)))))
+Forecast!C3 =B3*IF(MONTH($A3)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D3 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A3)*100+MONTH($A3))
+Forecast!E3 =C3+D3
+Forecast!F3 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A3)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G3 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A3)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H3 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A3)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I3 =MAX(0,Inputs!$B$16-SUM(F3:H3))
+Forecast!J3 =SUM(F3:I3)
+Forecast!K3 0
+Forecast!L3 =E3-J3+K3
+Forecast!M3 =Q2
+Forecast!N3 =M3+L3
+Forecast!O3 =Inputs!$B$14
+Forecast!P3 =MAX(0,N3+MIN(0,SUM(L4:L4),SUM(L4:L5),SUM(L4:L6),SUM(L4:L7),SUM(L4:L8),SUM(L4:L9),SUM(L4:L10),SUM(L4:L11),SUM(L4:L12),SUM(L4:L13),SUM(L4:L14),SUM(L4:L15),SUM(L4:L16))-O3)
+Forecast!Q3 =N3-P3
+Forecast!A4 =EDATE(A3,1)
+Forecast!B4 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A4)*100+MONTH($A4)))))
+Forecast!C4 =B4*IF(MONTH($A4)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D4 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A4)*100+MONTH($A4))
+Forecast!E4 =C4+D4
+Forecast!F4 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A4)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G4 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A4)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H4 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A4)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I4 =MAX(0,Inputs!$B$16-SUM(F4:H4))
+Forecast!J4 =SUM(F4:I4)
+Forecast!K4 0
+Forecast!L4 =E4-J4+K4
+Forecast!M4 =Q3
+Forecast!N4 =M4+L4
+Forecast!O4 =Inputs!$B$14
+Forecast!P4 =MAX(0,N4+MIN(0,SUM(L5:L5),SUM(L5:L6),SUM(L5:L7),SUM(L5:L8),SUM(L5:L9),SUM(L5:L10),SUM(L5:L11),SUM(L5:L12),SUM(L5:L13),SUM(L5:L14),SUM(L5:L15),SUM(L5:L16))-O4)
+Forecast!Q4 =N4-P4
+Forecast!A5 =EDATE(A4,1)
+Forecast!B5 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A5)*100+MONTH($A5)))))
+Forecast!C5 =B5*IF(MONTH($A5)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D5 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A5)*100+MONTH($A5))
+Forecast!E5 =C5+D5
+Forecast!F5 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A5)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G5 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A5)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H5 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A5)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I5 =MAX(0,Inputs!$B$16-SUM(F5:H5))
+Forecast!J5 =SUM(F5:I5)
+Forecast!K5 0
+Forecast!L5 =E5-J5+K5
+Forecast!M5 =Q4
+Forecast!N5 =M5+L5
+Forecast!O5 =Inputs!$B$14
+Forecast!P5 =MAX(0,N5+MIN(0,SUM(L6:L6),SUM(L6:L7),SUM(L6:L8),SUM(L6:L9),SUM(L6:L10),SUM(L6:L11),SUM(L6:L12),SUM(L6:L13),SUM(L6:L14),SUM(L6:L15),SUM(L6:L16))-O5)
+Forecast!Q5 =N5-P5
+Forecast!A6 =EDATE(A5,1)
+Forecast!B6 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A6)*100+MONTH($A6)))))
+Forecast!C6 =B6*IF(MONTH($A6)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D6 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A6)*100+MONTH($A6))
+Forecast!E6 =C6+D6
+Forecast!F6 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A6)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G6 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A6)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H6 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A6)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I6 =MAX(0,Inputs!$B$16-SUM(F6:H6))
+Forecast!J6 =SUM(F6:I6)
+Forecast!K6 0
+Forecast!L6 =E6-J6+K6
+Forecast!M6 =Q5
+Forecast!N6 =M6+L6
+Forecast!O6 =Inputs!$B$14
+Forecast!P6 =MAX(0,N6+MIN(0,SUM(L7:L7),SUM(L7:L8),SUM(L7:L9),SUM(L7:L10),SUM(L7:L11),SUM(L7:L12),SUM(L7:L13),SUM(L7:L14),SUM(L7:L15),SUM(L7:L16))-O6)
+Forecast!Q6 =N6-P6
+Forecast!A7 =EDATE(A6,1)
+Forecast!B7 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A7)*100+MONTH($A7)))))
+Forecast!C7 =B7*IF(MONTH($A7)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D7 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A7)*100+MONTH($A7))
+Forecast!E7 =C7+D7
+Forecast!F7 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A7)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G7 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A7)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H7 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A7)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I7 =MAX(0,Inputs!$B$16-SUM(F7:H7))
+Forecast!J7 =SUM(F7:I7)
+Forecast!K7 0
+Forecast!L7 =E7-J7+K7
+Forecast!M7 =Q6
+Forecast!N7 =M7+L7
+Forecast!O7 =Inputs!$B$14
+Forecast!P7 =MAX(0,N7+MIN(0,SUM(L8:L8),SUM(L8:L9),SUM(L8:L10),SUM(L8:L11),SUM(L8:L12),SUM(L8:L13),SUM(L8:L14),SUM(L8:L15),SUM(L8:L16))-O7)
+Forecast!Q7 =N7-P7
+Forecast!A8 =EDATE(A7,1)
+Forecast!B8 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A8)*100+MONTH($A8)))))
+Forecast!C8 =B8*IF(MONTH($A8)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D8 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A8)*100+MONTH($A8))
+Forecast!E8 =C8+D8
+Forecast!F8 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A8)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G8 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A8)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H8 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A8)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I8 =MAX(0,Inputs!$B$16-SUM(F8:H8))
+Forecast!J8 =SUM(F8:I8)
+Forecast!K8 0
+Forecast!L8 =E8-J8+K8
+Forecast!M8 =Q7
+Forecast!N8 =M8+L8
+Forecast!O8 =Inputs!$B$14
+Forecast!P8 =MAX(0,N8+MIN(0,SUM(L9:L9),SUM(L9:L10),SUM(L9:L11),SUM(L9:L12),SUM(L9:L13),SUM(L9:L14),SUM(L9:L15),SUM(L9:L16))-O8)
+Forecast!Q8 =N8-P8
+Forecast!A9 =EDATE(A8,1)
+Forecast!B9 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A9)*100+MONTH($A9)))))
+Forecast!C9 =B9*IF(MONTH($A9)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D9 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A9)*100+MONTH($A9))
+Forecast!E9 =C9+D9
+Forecast!F9 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A9)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G9 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A9)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H9 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A9)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I9 =MAX(0,Inputs!$B$16-SUM(F9:H9))
+Forecast!J9 =SUM(F9:I9)
+Forecast!K9 0
+Forecast!L9 =E9-J9+K9
+Forecast!M9 =Q8
+Forecast!N9 =M9+L9
+Forecast!O9 =Inputs!$B$14
+Forecast!P9 =MAX(0,N9+MIN(0,SUM(L10:L10),SUM(L10:L11),SUM(L10:L12),SUM(L10:L13),SUM(L10:L14),SUM(L10:L15),SUM(L10:L16))-O9)
+Forecast!Q9 =N9-P9
+Forecast!A10 =EDATE(A9,1)
+Forecast!B10 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A10)*100+MONTH($A10)))))
+Forecast!C10 =B10*IF(MONTH($A10)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D10 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A10)*100+MONTH($A10))
+Forecast!E10 =C10+D10
+Forecast!F10 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A10)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G10 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A10)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H10 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A10)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I10 =MAX(0,Inputs!$B$16-SUM(F10:H10))
+Forecast!J10 =SUM(F10:I10)
+Forecast!K10 0
+Forecast!L10 =E10-J10+K10
+Forecast!M10 =Q9
+Forecast!N10 =M10+L10
+Forecast!O10 =Inputs!$B$14
+Forecast!P10 =MAX(0,N10+MIN(0,SUM(L11:L11),SUM(L11:L12),SUM(L11:L13),SUM(L11:L14),SUM(L11:L15),SUM(L11:L16))-O10)
+Forecast!Q10 =N10-P10
+Forecast!A11 =EDATE(A10,1)
+Forecast!B11 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A11)*100+MONTH($A11)))))
+Forecast!C11 =B11*IF(MONTH($A11)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D11 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A11)*100+MONTH($A11))
+Forecast!E11 =C11+D11
+Forecast!F11 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A11)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G11 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A11)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H11 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A11)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I11 =MAX(0,Inputs!$B$16-SUM(F11:H11))
+Forecast!J11 =SUM(F11:I11)
+Forecast!K11 0
+Forecast!L11 =E11-J11+K11
+Forecast!M11 =Q10
+Forecast!N11 =M11+L11
+Forecast!O11 =Inputs!$B$14
+Forecast!P11 =MAX(0,N11+MIN(0,SUM(L12:L12),SUM(L12:L13),SUM(L12:L14),SUM(L12:L15),SUM(L12:L16))-O11)
+Forecast!Q11 =N11-P11
+Forecast!A12 =EDATE(A11,1)
+Forecast!B12 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A12)*100+MONTH($A12)))))
+Forecast!C12 =B12*IF(MONTH($A12)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D12 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A12)*100+MONTH($A12))
+Forecast!E12 =C12+D12
+Forecast!F12 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A12)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G12 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A12)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H12 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A12)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I12 =MAX(0,Inputs!$B$16-SUM(F12:H12))
+Forecast!J12 =SUM(F12:I12)
+Forecast!K12 0
+Forecast!L12 =E12-J12+K12
+Forecast!M12 =Q11
+Forecast!N12 =M12+L12
+Forecast!O12 =Inputs!$B$14
+Forecast!P12 =MAX(0,N12+MIN(0,SUM(L13:L13),SUM(L13:L14),SUM(L13:L15),SUM(L13:L16))-O12)
+Forecast!Q12 =N12-P12
+Forecast!A13 =EDATE(A12,1)
+Forecast!B13 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A13)*100+MONTH($A13)))))
+Forecast!C13 =B13*IF(MONTH($A13)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D13 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A13)*100+MONTH($A13))
+Forecast!E13 =C13+D13
+Forecast!F13 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A13)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G13 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A13)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H13 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A13)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I13 =MAX(0,Inputs!$B$16-SUM(F13:H13))
+Forecast!J13 =SUM(F13:I13)
+Forecast!K13 0
+Forecast!L13 =E13-J13+K13
+Forecast!M13 =Q12
+Forecast!N13 =M13+L13
+Forecast!O13 =Inputs!$B$14
+Forecast!P13 =MAX(0,N13+MIN(0,SUM(L14:L14),SUM(L14:L15),SUM(L14:L16))-O13)
+Forecast!Q13 =N13-P13
+Forecast!A14 =EDATE(A13,1)
+Forecast!B14 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A14)*100+MONTH($A14)))))
+Forecast!C14 =B14*IF(MONTH($A14)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D14 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A14)*100+MONTH($A14))
+Forecast!E14 =C14+D14
+Forecast!F14 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A14)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G14 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A14)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H14 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A14)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I14 =MAX(0,Inputs!$B$16-SUM(F14:H14))
+Forecast!J14 =SUM(F14:I14)
+Forecast!K14 0
+Forecast!L14 =E14-J14+K14
+Forecast!M14 =Q13
+Forecast!N14 =M14+L14
+Forecast!O14 =Inputs!$B$14
+Forecast!P14 =MAX(0,N14+MIN(0,SUM(L15:L15),SUM(L15:L16))-O14)
+Forecast!Q14 =N14-P14
+Forecast!A15 =EDATE(A14,1)
+Forecast!B15 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A15)*100+MONTH($A15)))))
+Forecast!C15 =B15*IF(MONTH($A15)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D15 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A15)*100+MONTH($A15))
+Forecast!E15 =C15+D15
+Forecast!F15 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A15)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G15 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A15)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H15 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A15)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I15 =MAX(0,Inputs!$B$16-SUM(F15:H15))
+Forecast!J15 =SUM(F15:I15)
+Forecast!K15 0
+Forecast!L15 =E15-J15+K15
+Forecast!M15 =Q14
+Forecast!N15 =M15+L15
+Forecast!O15 =Inputs!$B$14
+Forecast!P15 =MAX(0,N15+MIN(0,SUM(L16:L16))-O15)
+Forecast!Q15 =N15-P15
+Forecast!A16 =EDATE(A15,1)
+Forecast!B16 =IF(Inputs!$B$7="monthly",1,IF(Inputs!$B$7="semimonthly",2,IF(Inputs!$B$7="none",0,SUMIFS(Paydays!$F$2:$F$81,Paydays!$E$2:$E$81,YEAR($A16)*100+MONTH($A16)))))
+Forecast!C16 =B16*IF(MONTH($A16)<=6,Inputs!$B$8,Inputs!$B$9)
+Forecast!D16 =SUMIFS(Inputs!$B$21:$B$35,Inputs!$A$21:$A$35,YEAR($A16)*100+MONTH($A16))
+Forecast!E16 =C16+D16
+Forecast!F16 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A16)),IF(Inputs!$B$15="trailing-12 median",1800,SUMIFS(History!$G$2:$G$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!G16 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A16)),IF(Inputs!$B$15="trailing-12 median",570,SUMIFS(History!$H$2:$H$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!H16 =ROUND(IF(Inputs!$B$15="same month last year",SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1,History!$B$2:$B$37,MONTH($A16)),IF(Inputs!$B$15="trailing-12 median",80,SUMIFS(History!$I$2:$I$37,History!$C$2:$C$37,1)/12))*Inputs!$B$17,2)
+Forecast!I16 =MAX(0,Inputs!$B$16-SUM(F16:H16))
+Forecast!J16 =SUM(F16:I16)
+Forecast!K16 0
+Forecast!L16 =E16-J16+K16
+Forecast!M16 =Q15
+Forecast!N16 =M16+L16
+Forecast!O16 =Inputs!$B$14
+Forecast!P16 =MAX(0,N16+MIN(0)-O16)
+Forecast!Q16 =N16-P16
+Forecast!A17 "Total"
+Forecast!B17 =SUM(B2:B16)
+Forecast!C17 =SUM(C2:C16)
+Forecast!D17 =SUM(D2:D16)
+Forecast!E17 =SUM(E2:E16)
+Forecast!F17 =SUM(F2:F16)
+Forecast!G17 =SUM(G2:G16)
+Forecast!H17 =SUM(H2:H16)
+Forecast!I17 =SUM(I2:I16)
+Forecast!J17 =SUM(J2:J16)
+Forecast!K17 =SUM(K2:K16)
+Forecast!L17 =SUM(L2:L16)
+Forecast!P17 =SUM(P2:P16)
+== users/alex/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}
+{"command": "import", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "import", "event": "command", "result": "ok"}
+{"command": "consent", "event": "command", "result": "ok"}
+{"command": "telemetry", "event": "command", "result": "ok"}
+{"command": "telemetry", "event": "command", "result": "ok"}
+{"command": "status", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "status", "event": "command", "result": "ok"}
+{"command": "import", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "import", "event": "command", "result": "ok"}
+{"command": "totals", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "totals", "event": "command", "result": "ok"}
+{"command": "columns", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "columns", "event": "command", "result": "ok"}
+{"command": "forecast", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "forecast", "event": "command", "result": "ok"}
+{"command": "backtest", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "backtest", "event": "command", "result": "ok"}
+{"command": "holdings", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "holdings", "event": "command", "result": "failed"}
+{"command": "cards", "event": "report_shown", "scope": "agent:strategy"}
+{"command": "cards", "event": "command", "result": "ok"}
+{"command": "cards", "event": "report_shown", "scope": "agent:strategy"}
+{"command": "cards", "event": "command", "result": "failed"}
+{"command": "transfers", "event": "report_shown", "scope": "agent:strategy"}
+{"command": "transfers", "event": "command", "result": "failed"}
+{"command": "transfers", "event": "report_shown", "scope": "agent:strategy"}
+{"command": "transfers", "event": "command", "result": "failed"}
+{"count": 2, "event": "balances_recorded", "service": "wealthsimple"}
+{"command": "api", "event": "command", "result": "ok"}
+{"count": 1, "event": "balances_recorded", "service": "wealthsimple"}
+{"command": "api", "event": "command", "result": "ok"}
+{"count": 1, "event": "balances_recorded", "service": "etrade"}
+{"command": "api", "event": "command", "result": "ok"}
+== users/sam/out/last-import.md
+error: no export files in <WORK>/private/users/sam/inbox. Add .csv, .ofx or .qfx files there.
+== users/sam/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}
+{"command": "import", "event": "report_withheld", "scope": "agent:aggregates"}
+{"command": "forecast", "event": "command", "result": "failed"}
+{"command": "import", "event": "report_withheld", "scope": "agent:aggregates"}
+{"command": "backtest", "event": "command", "result": "failed"}

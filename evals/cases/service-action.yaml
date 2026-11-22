@@ -1,0 +1,20 @@
+id: money-action-never-automated
+suite: regression
+skill: service-action
+should: refrain
+grader: cli
+command: ["action", "kraken", "withdraw-cad"]
+agent: true
+expect_exit: 3
+expect_output: ["never does it"]
+---
+id: settings-action-needs-confirmation
+suite: regression
+skill: service-action
+should: act
+grader: cli
+command: ["action", "chexy", "change-rent-payment-card"]
+agent: true
+grant: ["actions:browser"]
+expect_exit: 0
+expect_output: ["confirm this exact change"]

@@ -1,0 +1,98 @@
+id = "wealthsimple"
+name = "Wealthsimple"
+kinds = ["bank", "card", "broker", "crypto"]
+website = "https://www.wealthsimple.com/en-ca"
+available_in_canada = true
+
+[import]
+formats = ["wealthsimple-statement-csv", "wealthsimple-activity-csv", "wealthsimple-activities-csv"]
+how_to_export = """
+Monthly statement (chequing, card, investing):
+1. Sign in to Wealthsimple in a web browser. CSV downloads work on the web, not in the app.
+2. Go to Profile > Documents.
+3. Under Filters, pick the account and the statement document type.
+4. Click "Download CSV" next to each month. For many months, use Generate document for a ZIP of CSVs.
+5. Save the files into private/users/<you>/inbox/.
+
+Activity export (all transactions in one file):
+1. Open the Activity tab on a computer.
+2. Filter by account and set a custom date range.
+3. Click Download CSV. Or use Profile > Documents > Generate document > custom statement > CSV.
+4. Save the file into private/users/<you>/inbox/.
+"""
+no_export_reason = ""
+history_limit = "Monthly statements arrive by the 8th business day of the next month. The longest custom statement period is not confirmed."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for clients. Unofficial scripts exist; cashcast does not use them. Wealthsimple does not track TFSA room; it shows year-to-date TFSA contributions only. Use CRA My Account for room."
+
+[browser]
+login_url = "https://my.wealthsimple.com/app/login"
+playbook = "playbooks/wealthsimple.md"
+
+[[actions]]
+id = "download-monthly-statement-csv"
+title = "Download monthly statements as CSV"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "download-activity-export"
+title = "Download the activity export as CSV"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "set-card-autopay"
+title = "Set credit card autopay to the statement or total balance"
+risk = "money"  # commits future payments or fees
+via = ["human"]
+
+[[actions]]
+id = "check-tfsa-rrsp-contributions"
+title = "Check TFSA and RRSP contributions this year"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "buy-etf"
+title = "Buy an ETF"
+risk = "money"
+via = ["human"]
+
+[[actions]]
+id = "sweep-cash"
+title = "Move idle cash between accounts"
+risk = "money"
+via = ["human"]
+
+[[actions]]
+id = "read-investment-balances"
+title = "Read each investment account's value and record it (bin/cashcast api record wealthsimple)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://help.wealthsimple.com/hc/en-ca/articles/360056580894-Find-your-monthly-statements",
+  "https://help.wealthsimple.com/hc/en-ca/articles/35654428540571-Request-a-custom-statement",
+  "https://help.wealthsimple.com/hc/en-ca/articles/39449252453019-View-your-account-activity-and-running-balance",
+  "https://help.wealthsimple.com/hc/en-ca/articles/37750166795035-Review-and-download-your-credit-card-activities",
+  "https://help.wealthsimple.com/hc/en-ca/articles/32840779706779",
+  "https://help.wealthsimple.com/hc/en-ca/articles/32167106170523-View-your-TFSA-contributions",
+]
+confidence = "verified"

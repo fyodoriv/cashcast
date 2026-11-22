@@ -1,0 +1,38 @@
+# Synthetic optimizer inputs with sales: held values, units at a price, an untargeted symbol.
+allow_sell = true
+
+[cash]
+tfsa = 500
+
+[prices]
+EQCA = 30.5
+
+[[targets]]
+symbol = "EQCA"
+weight = 0.6
+price = 30.5
+
+[[targets]]
+symbol = "BOND"
+weight = 0.4
+asset_class = "bond"
+
+[[holdings]]
+account = "taxable"
+symbol = "EQCA"
+units = 400
+
+[[holdings]]
+account = "rrsp"
+symbol = "OLDFUND"
+value = 3000
+
+[[holdings]]
+account = "tfsa"
+symbol = "BOND"
+value = 1000.25
+
+[[holdings]]
+account = "rrsp"
+symbol = "NOPRICE"
+units = 3

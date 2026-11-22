@@ -1,0 +1,57 @@
+id = "google-sheets"
+name = "Google Sheets"
+kinds = ["sheets"]
+website = "https://www.google.com/sheets/about/"
+available_in_canada = true
+
+[import]
+formats = ["generic-csv"]
+how_to_export = """
+1. Open the spreadsheet in a web browser.
+2. Click the tab (sheet) you want. CSV export saves the current tab only.
+3. Choose File > Download > Comma-separated values (.csv).
+4. Save the file into private/users/<you>/inbox/.
+"""
+no_export_reason = ""
+history_limit = "Current content only."
+
+[api]
+available = true
+docs = "https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/get"
+auth = "oauth2"
+base_url = "https://sheets.googleapis.com/v4"
+read = ["values_get", "spreadsheets_get"]
+write = ["values_update"]
+notes = "Use OAuth2 with a desktop client from a Google Cloud project you own. For reading only, request spreadsheets.readonly. Request spreadsheets (full) only to write a forecast tab. Store the client file path as CASHCAST_GOOGLE_CLIENT_SECRET_FILE and the sheet ID as CASHCAST_GOOGLE_SHEET_ID."
+
+[browser]
+login_url = "https://docs.google.com/spreadsheets/"
+playbook = "playbooks/google-sheets.md"
+
+[[actions]]
+id = "download-sheet-csv"
+title = "Download a sheet as CSV"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "api-read-values"
+title = "Read values through the API"
+risk = "read"
+via = ["api"]
+
+[[actions]]
+id = "write-forecast-tab"
+title = "Write a forecast tab"
+risk = "settings"
+via = ["api", "browser"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/get",
+  "https://developers.google.com/workspace/sheets/api/reference/rest/v4/spreadsheets.values/update",
+  "https://support.google.com/docs/answer/49114",
+]
+confidence = "verified"

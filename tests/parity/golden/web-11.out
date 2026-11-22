@@ -1,0 +1,3 @@
+web /api/users?x=1
+200 application/json
+[{"name": "alex", "display": "alex", "province": "ON", "ready": true}, {"name": "sam", "display": "sam", "province": "QC", "ready": true}]

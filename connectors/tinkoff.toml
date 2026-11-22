@@ -1,0 +1,57 @@
+id = "tinkoff"
+name = "T-Bank (Tinkoff)"
+kinds = ["bank", "card"]
+website = "https://www.tbank.ru/"
+available_in_canada = false
+
+[import]
+formats = ["tinkoff-csv"]
+how_to_export = """
+1. Sign in to the T-Bank web app in a web browser.
+2. Open the account or card, then "Выписка" (Statement) or "Операции" (Operations).
+3. Pick the period, then download as CSV (Windows-1251, semicolons).
+4. Save the file into private/users/<you>/inbox/.
+5. Repeat for each account.
+"""
+no_export_reason = ""
+history_limit = "The operations CSV covers any period since the account opened (estimate)."
+
+[api]
+available = false
+docs = "https://developer.tbank.ru/invest/intro/intro"
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "The public T-Invest API covers brokerage accounts only; personal bank accounts have no API. Aggregators do not reach it."
+
+[browser]
+login_url = "https://www.tbank.ru/login/"
+playbook = "playbooks/tinkoff.md"
+
+[[actions]]
+id = "download-operations"
+title = "Download operations (CSV)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the account balances"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "send-transfer"
+title = "Send a transfer"
+risk = "money"
+via = ["human"]
+
+[meta]
+as_of = 2026-11-03
+review_by = 2027-05-03
+sources = [
+  "https://www.tbank.ru/bank/help/general/products/statement/",
+  "https://developer.tbank.ru/invest/intro/intro",
+]
+confidence = "estimate"

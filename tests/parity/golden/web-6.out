@@ -1,0 +1,3 @@
+web /api/docs?user=sam&q=canary
+200 application/json
+[{"path": "notion/Finances/Budget.md", "title": "Budget", "folder": "notion/Finances", "snippet": "# Budget  | Name | Amount\\|x | Notes | |---|---|---| | CANARY_ROW | 1 | multi line | |  |  |  | | short |  |  |"}, {"path": "notion/Finances/Taxes.md", "title": "Taxes", "folder": "notion/Finances", "snippet": "# Taxes  CANARY_NOTION_TAXES. Back to [Finances](doc:notion/Finances.md)."}, {"path": "notion/Finances.md", "title": "Finances", "folder": "notion", "snippet": "# Finances  CANARY_NOTION_PAGE text.  - [Taxes](doc:notion/Finances/Taxes.md) - [Budget](doc:notion/Finances/Bud"}]

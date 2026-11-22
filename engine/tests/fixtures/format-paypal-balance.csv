@@ -1,0 +1,4 @@
+"Date","Time","TimeZone","Name","Type","Status","Currency","Amount","Fees","Total","Exchange Rate","Receipt ID","Balance","Transaction ID","Item Title"
+"14/02/2025","10:15:00","EST","Shop CANARY-PB01","Express Checkout Payment","Completed","CAD","-40.00","0.00","-40.00","","","10.00","PB-CANARY-0001",""
+"20/02/2025","11:00:00","EST","","General Card Deposit","Completed","CAD","40.00","0.00","40.00","","","50.00","PB-CANARY-0002",""
+"03/03/2025","09:30:00","EST","Seller CANARY-PB02","Express Checkout Payment","Completed","USD","-12.50","-0.50","-13.00","","","0.00","PB-CANARY-0003","Item CANARY-PB03"

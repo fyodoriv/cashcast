@@ -1,0 +1,3417 @@
+{
+ "actions": [
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast start",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "set up, start the web app, refresh, and print what matters now (also: no command)",
+   "name": "start",
+   "terminal_only": "it starts the web app you are using; run `bin/cashcast` in a terminal",
+   "terminal_only_choices": {},
+   "ui": false
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast stop",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "stop the web app that `bin/cashcast` started",
+   "name": "stop",
+   "terminal_only": "it stops the web app you are using; run `bin/cashcast stop` in a terminal",
+   "terminal_only_choices": {},
+   "ui": false
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--dry-run",
+     "help": "show what MoneyWiz and the task list would change; change neither",
+     "kind": "flag",
+     "name": "dry_run",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--balance",
+     "help": "a balance read today on the bank or card site, for transfers and cards; repeat per account",
+     "kind": "text",
+     "name": "balance",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast weekly",
+   "confirm": "adds and fixes MoneyWiz rows, marks resolved tasks done and writes them to Reminders, Calendar and Notion (--dry-run changes nothing)",
+   "confirm_choices": {},
+   "help": "the Sunday session in one run: fresh data, MoneyWiz, forecast, transfers, cards, charges, investing, tasks, and this week's moves",
+   "name": "weekly",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast help",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "print the command overview",
+   "name": "help",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast init",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "create your data folder",
+   "name": "init",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast import",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "read the exports in your inbox",
+   "name": "import",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast status",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "import, then the forecast summary",
+   "name": "status",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast forecast",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "import, then the month-by-month forecast",
+   "name": "forecast",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast backtest",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "import, then the last forecast vs actual, a backtest per line, and the spending methods learned",
+   "name": "backtest",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast numbers",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "make an Apple Numbers copy of the forecast workbook",
+   "name": "numbers",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast totals",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "totals per category and month",
+   "name": "totals",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: only with the owner's OK in chat and the agent:raw-row scope",
+   "args": [],
+   "command": "bin/cashcast first-error",
+   "confirm": "shows one raw row of your data on screen",
+   "confirm_choices": {},
+   "help": "print the first unreadable export row",
+   "name": "first-error",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast columns",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "header names and masked cell shapes of each inbox file (no values)",
+   "name": "columns",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast holdings",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "investments and crypto: quantity, cost base (ACB) and gains",
+   "name": "holdings",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--json",
+     "help": "the catalog as JSON",
+     "kind": "flag",
+     "name": "json",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast actions",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "list every action with its arguments (for agents: --json)",
+   "name": "actions",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "show",
+      "set"
+     ],
+     "default": "show",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a setting key, for example web.port",
+     "kind": "text",
+     "name": "key",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "the new value",
+     "kind": "text",
+     "name": "value",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast config",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "show the settings and where each value comes from, or set one",
+   "name": "config",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "list",
+      "add",
+      "adopt"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a short name (letters, digits)",
+     "kind": "text",
+     "name": "name",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": "",
+     "flag": "--province",
+     "help": "two-letter province or territory, for example ON",
+     "kind": "text",
+     "name": "province",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--display",
+     "help": "the name shown in reports",
+     "kind": "text",
+     "name": "display",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast users",
+   "confirm": null,
+   "confirm_choices": {
+    "add": "creates a person's data folder",
+    "adopt": "moves the single-user data folder into a person's folder"
+   },
+   "help": "list, add or adopt people",
+   "name": "users",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: never grant; give the owner the `consent grant SCOPE` command to run in a terminal",
+   "args": [
+    {
+     "choices": [
+      "list",
+      "grant",
+      "revoke"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": [
+      "agent:aggregates",
+      "agent:raw-row",
+      "agent:strategy",
+      "cloud:sheets",
+      "cloud:notion",
+      "net:market-data",
+      "net:usage-counts",
+      "local:reminders",
+      "local:calendar",
+      "local:moneywiz",
+      "actions:browser",
+      "agent:browser-read",
+      "actions:api"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "scope",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast consent",
+   "confirm": null,
+   "confirm_choices": {
+    "revoke": "turns off a consent you granted"
+   },
+   "help": "list, grant or revoke what may leave this computer",
+   "name": "consent",
+   "terminal_only": null,
+   "terminal_only_choices": {
+    "grant": "consent is typed into your own terminal, so no web page or agent can grant it"
+   },
+   "ui": true
+  },
+  {
+   "agent_note": "agents: ask the owner in chat before `telemetry send` (without --dry-run) or `telemetry on`",
+   "args": [
+    {
+     "choices": [
+      "status",
+      "on",
+      "off",
+      "send"
+     ],
+     "default": "status",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--dry-run",
+     "help": "send: print the exact body with the key hidden; send nothing",
+     "kind": "flag",
+     "name": "dry_run",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast telemetry",
+   "confirm": null,
+   "confirm_choices": {
+    "send": "sends anonymous usage counts to PostHog EU (with consent net:usage-counts and a key)"
+   },
+   "help": "opt-in anonymous usage counts to PostHog EU: status, on, off, send (--dry-run shows the body)",
+   "name": "telemetry",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--section",
+     "help": "limit the report to one section id",
+     "kind": "text",
+     "name": "section",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--market",
+     "help": "use live market data (needs net:market-data)",
+     "kind": "flag",
+     "name": "market",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast strategy",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "the full money plan (saved to out/strategy.md)",
+   "name": "strategy",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast net-total",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "your net total (all you have minus all you owe), its trend, and the options ranked by what they add, inside your boundaries",
+   "name": "net-total",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast review",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "the monthly review and checklist",
+   "name": "review",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast budget",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "the budget section",
+   "name": "budget",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast tax",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "rates, room and tax moves",
+   "name": "tax",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast rrsp",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "this year's RRSP contributions (Sun Life and others) against your deduction limit",
+   "name": "rrsp",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast alternatives",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "cheaper cards, banks and services",
+   "name": "alternatives",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast payments",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "fees, interest and recurring payments",
+   "name": "payments",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast spending",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "spending checkup: more than usual, spend vs earn, interest and fees paid",
+   "name": "spending",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [],
+   "command": "bin/cashcast invest-plan",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "ranked investment moves: gain ranges, evidence, risk, cost and do-nothing (override in [invest])",
+   "name": "invest-plan",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--market",
+     "help": "use live market data (needs net:market-data)",
+     "kind": "flag",
+     "name": "market",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast invest",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "long-term investing: core, placement and watchlist screen",
+   "name": "invest",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: preview here; the owner runs `sync` in Terminal (the sandbox blocks osascript)",
+   "args": [
+    {
+     "choices": [
+      "preview",
+      "sync"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    }
+   ],
+   "command": "bin/cashcast reminders",
+   "confirm": null,
+   "confirm_choices": {
+    "sync": "writes your tasks to Apple Reminders"
+   },
+   "help": "preview or sync your tasks to one Apple Reminders list",
+   "name": "reminders",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: preview here; the owner runs `sync` in Terminal (the sandbox blocks osascript)",
+   "args": [
+    {
+     "choices": [
+      "preview",
+      "sync"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    }
+   ],
+   "command": "bin/cashcast calendar",
+   "confirm": null,
+   "confirm_choices": {
+    "sync": "writes your dated deadlines to Apple Calendar"
+   },
+   "help": "preview or sync your dated deadlines to one Apple Calendar",
+   "name": "calendar",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: use /cashcast-tasks; report every BLOCKED task to the owner, never call it done",
+   "args": [
+    {
+     "choices": [
+      "list",
+      "resolve",
+      "verdict"
+     ],
+     "default": "list",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "verdict: the check's task id",
+     "kind": "text",
+     "name": "id",
+     "required": false
+    },
+    {
+     "choices": [
+      "pass",
+      "fail"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "verdict: what the evidence showed",
+     "kind": "choice",
+     "name": "result",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--reason",
+     "help": "verdict: what the evidence showed, in words; no amounts, balances or scores",
+     "kind": "text",
+     "name": "reason",
+     "required": false
+    },
+    {
+     "choices": [
+      "local",
+      "browser"
+     ],
+     "default": "local",
+     "flag": "--source",
+     "help": "verdict: browser needs agent:browser-read",
+     "kind": "choice",
+     "name": "source",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--json",
+     "help": "list: one JSON row per task (id, due, lane, step, risk)",
+     "kind": "flag",
+     "name": "json",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast tasks",
+   "confirm": null,
+   "confirm_choices": {
+    "resolve": "marks due tasks done that cashcast resolved itself (undo: changes undo ID)"
+   },
+   "help": "your open finance tasks: who does each (list), resolve what cashcast can and name every blocker (resolve), or record an agent check (verdict)",
+   "name": "tasks",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: follow skills/bank-change; ask for a yes in chat right before each final click",
+   "args": [
+    {
+     "choices": [
+      "list",
+      "show",
+      "done",
+      "undo"
+     ],
+     "default": "list",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a change id from the list",
+     "kind": "text",
+     "name": "id",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast changes",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "bank and card settings to change, ready for a browser session",
+   "name": "changes",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--balance",
+     "help": "a balance read from the bank site; repeat per account or card",
+     "kind": "text",
+     "name": "balance",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast transfers",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "e-Transfers that bring each bank to its keep amount, from balances you read (daily limit, amounts quick to type)",
+   "name": "transfers",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "check",
+      "find"
+     ],
+     "default": "check",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "find: a merchant name or billing word, for example anthropic",
+     "kind": "text",
+     "name": "word",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast charges",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "unexpected charges on every account: duplicate subscriptions, new recurring charges, price rises, charges after a pause; find WORD lists one merchant's charges",
+   "name": "charges",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "now"
+     ],
+     "default": "now",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--balance",
+     "help": "a card balance read on the card site; repeat per card (default: recorded balances)",
+     "kind": "text",
+     "name": "balance",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast cards",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "which card to use now per spending category: cap used and left, reset date, rent charges, credit left",
+   "name": "cards",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: show the plan; the owner places every trade",
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--input",
+     "help": "a TOML file with [optimize]; default: profile.toml",
+     "kind": "text",
+     "name": "input",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast optimize",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "where new money goes to reach your target weights (you place the trades)",
+   "name": "optimize",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "list",
+      "show"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a service id, for example td",
+     "kind": "text",
+     "name": "service",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast connectors",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "the services cashcast knows, and how to export from each",
+   "name": "connectors",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: money actions become reminders; never move money",
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a service id, for example td",
+     "kind": "text",
+     "name": "service",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "an action id from `connectors show SERVICE`",
+     "kind": "text",
+     "name": "action_id",
+     "required": true
+    }
+   ],
+   "command": "bin/cashcast action",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "the safe steps for one service action, by risk",
+   "name": "action",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "balances",
+      "download",
+      "etrade-auth",
+      "record"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": "etrade",
+     "flag": null,
+     "help": "a service id",
+     "kind": "text",
+     "name": "service",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "Google Sheets: the sheet id",
+     "kind": "text",
+     "name": "target",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "Google Sheets: the tab id",
+     "kind": "text",
+     "name": "gid",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--set",
+     "help": "record: balances read in the browser, NAME=AMOUNT,NAME=AMOUNT (for example TFSA=1000,RRSP=500)",
+     "kind": "text",
+     "name": "set",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": "CAD",
+     "flag": "--currency",
+     "help": "record: the currency of the amounts",
+     "kind": "text",
+     "name": "currency",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast api",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "read balances or download exports through a service's API, or record balances read in the browser",
+   "name": "api",
+   "terminal_only": null,
+   "terminal_only_choices": {
+    "etrade-auth": "the E*TRADE code goes to a prompt in your own terminal"
+   },
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "plan",
+      "collect"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--all",
+     "help": "plan: every service with an export, not only those in the inbox",
+     "kind": "flag",
+     "name": "all",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": 60,
+     "flag": "--minutes",
+     "help": "collect: files saved in the last N minutes",
+     "kind": "int",
+     "name": "minutes",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast fetch",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "which exports are stale and how to get each (plan), or move new downloads into the inbox unopened (collect)",
+   "name": "fetch",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": "agents: run `sync status`; the owner runs `sync all` and `sync install` in Terminal (the sandbox blocks osascript and launchctl)",
+   "args": [
+    {
+     "choices": [
+      "all",
+      "status",
+      "install",
+      "uninstall",
+      "sheets"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "sheets: the Google Sheet id",
+     "kind": "text",
+     "name": "dest",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--allow-removals",
+     "help": "all: remove more than 10 items in one run",
+     "kind": "flag",
+     "name": "allow_removals",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "where to write, for example Cashcast!A1",
+     "kind": "text",
+     "name": "range",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast sync",
+   "confirm": null,
+   "confirm_choices": {
+    "all": "writes your tasks to Reminders, Calendar and Notion, and records the ones you ticked done",
+    "install": "adds a LaunchAgent that runs sync all every hour",
+    "sheets": "writes the forecast to your Google Sheet",
+    "uninstall": "removes the hourly sync"
+   },
+   "help": "keep Reminders, Calendar and Notion in step (all, status, install hourly), or write the forecast to a Google Sheet",
+   "name": "sync",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "status",
+      "coverage",
+      "diagnose",
+      "categorize",
+      "sync",
+      "weekly",
+      "resync",
+      "edit",
+      "probe",
+      "categories"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--dry-run",
+     "help": "show what would change, change nothing",
+     "kind": "flag",
+     "name": "dry_run",
+     "required": false
+    },
+    {
+     "choices": [
+      "list",
+      "suggest",
+      "new",
+      "migrate",
+      "rollback"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "categories: what to do",
+     "kind": "choice",
+     "name": "step",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--name",
+     "help": "categories new: a short name for the migration file",
+     "kind": "text",
+     "name": "name",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--ops",
+     "help": "categories new: the changes as JSON, a list of [[op]] tables (the web app sends them)",
+     "kind": "text",
+     "name": "ops",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--yes",
+     "help": "categories migrate, rollback: change MoneyWiz (after a --dry-run preview)",
+     "kind": "flag",
+     "name": "yes",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--ui",
+     "help": "probe: also check the window fallback",
+     "kind": "flag",
+     "name": "ui",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--fixes",
+     "help": "edit: also apply the fixes a sync found",
+     "kind": "flag",
+     "name": "fixes",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--no-download",
+     "help": "sync: skip the API downloads",
+     "kind": "flag",
+     "name": "no_download",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--account",
+     "help": "resync: only this MoneyWiz or export account; edit: the account --archived changes",
+     "kind": "text",
+     "name": "account",
+     "required": false
+    },
+    {
+     "choices": [
+      "yes",
+      "no"
+     ],
+     "default": null,
+     "flag": "--archived",
+     "help": "edit: archive the --account in MoneyWiz (yes), or show it again so the sync can add rows (no)",
+     "kind": "choice",
+     "name": "archived",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--from",
+     "help": "resync: first day to check again, YYYY-MM-DD",
+     "kind": "text",
+     "name": "from",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--to",
+     "help": "resync: last day to check again, YYYY-MM-DD",
+     "kind": "text",
+     "name": "to",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--check",
+     "help": "categorize: hide every 5th row you categorized and report how often learning agrees",
+     "kind": "flag",
+     "name": "check",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--list",
+     "help": "categorize: also list the rows with no category found (private: day, account, amount, payee)",
+     "kind": "flag",
+     "name": "list",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--resend",
+     "help": "sync: send again the rows MoneyWiz held once and lacks now (deleted there?)",
+     "kind": "flag",
+     "name": "resend",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--record-since",
+     "help": "categorize: note the rows categorized since this backup folder as cashcast's",
+     "kind": "text",
+     "name": "record_since",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast moneywiz",
+   "confirm": null,
+   "confirm_choices": {
+    "edit": "changes rows in MoneyWiz",
+    "sync": "adds rows to MoneyWiz"
+   },
+   "help": "compare, sync and fix MoneyWiz against your exports",
+   "name": "moneywiz",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "import"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "path to the export .zip or folder",
+     "kind": "text",
+     "name": "source",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--delete-source",
+     "help": "delete the export after the import",
+     "kind": "flag",
+     "name": "delete_source",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast notion",
+   "confirm": null,
+   "confirm_choices": {
+    "import": "imports documents (with delete_source it deletes the export)"
+   },
+   "help": "import a Notion Markdown & CSV export, offline",
+   "name": "notion",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--port",
+     "help": "0 picks a free port",
+     "kind": "int",
+     "name": "port",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast web",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "run the web app in this terminal",
+   "name": "web",
+   "terminal_only": "it is the web app itself",
+   "terminal_only_choices": {},
+   "ui": false
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": [
+      "check",
+      "list",
+      "propose",
+      "refresh"
+     ],
+     "default": null,
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": true
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "propose: path to a <topic>.toml",
+     "kind": "text",
+     "name": "file",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast knowledge",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "check, list, propose or refresh (live rates) the sourced facts",
+   "name": "knowledge",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a verb, then its words; `help` lists them",
+     "kind": "text",
+     "name": "verb",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast paperwork",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "citizenship steps, presence count and official sources, sealed on this Mac (terminal only)",
+   "name": "paperwork",
+   "terminal_only": "paperwork is private: run `bin/cashcast paperwork` in Terminal on this Mac",
+   "terminal_only_choices": {},
+   "ui": false
+  },
+  {
+   "agent_note": null,
+   "args": [
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "a verb, then its words; `help` lists them",
+     "kind": "text",
+     "name": "verb",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast citizenship",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "the guided citizenship application: answers, judges, proofs and the local evidence page (terminal only)",
+   "name": "citizenship",
+   "terminal_only": "the application holds ID numbers: run `bin/cashcast citizenship` in Terminal on this Mac",
+   "terminal_only_choices": {},
+   "ui": false
+  }
+ ],
+ "bankSync": {
+  "accounts": [
+   {
+    "add": [
+     {
+      "amount": "-80.00",
+      "category": "",
+      "cents": -8000,
+      "date": "2026-09-05",
+      "text": "PHONE CO CANARY03"
+     },
+     {
+      "amount": "-500.00",
+      "category": "",
+      "cents": -50000,
+      "date": "2026-09-15",
+      "text": "VISA PAYMENT CANARY04"
+     },
+     {
+      "amount": "3,000.00",
+      "category": "",
+      "cents": 300000,
+      "date": "2026-09-30",
+      "text": "PAYROLL CANARY05"
+     }
+    ],
+    "balance": "MoneyWiz 1,575.00 vs bank 2,575.00 after sync",
+    "bankRows": 5,
+    "conflicts": 0,
+    "daysOld": 1,
+    "export": "Chequing",
+    "fix": [
+     {
+      "bank": "-45.00",
+      "date": "2026-09-02",
+      "moneywiz": "-40.00",
+      "text": "GROCER CANARY02"
+     }
+    ],
+    "from": "2026-09-01",
+    "held": null,
+    "kind": "bank",
+    "ledger": null,
+    "matched": 1,
+    "moneywiz": "Chequing",
+    "onlyInMoneywiz": 0,
+    "onlyInMoneywizRows": [],
+    "reconcile": 0,
+    "standIn": 0,
+    "to": "2026-09-30"
+   },
+   {
+    "add": [
+     {
+      "amount": "-30.00",
+      "category": "Dining",
+      "cents": -3000,
+      "date": "2026-09-08",
+      "text": "RESTAURANT CANARY06"
+     },
+     {
+      "amount": "500.00",
+      "category": "",
+      "cents": 50000,
+      "date": "2026-09-15",
+      "text": "PAYMENT THANK YOU CANARY07"
+     }
+    ],
+    "balance": "matches the bank (470.00)",
+    "bankRows": 2,
+    "conflicts": 0,
+    "daysOld": 16,
+    "export": "Visa",
+    "fix": [],
+    "from": "2026-09-08",
+    "held": null,
+    "kind": "card",
+    "ledger": null,
+    "matched": 0,
+    "moneywiz": "Visa",
+    "onlyInMoneywiz": 0,
+    "onlyInMoneywizRows": [],
+    "reconcile": 0,
+    "standIn": 0,
+    "to": "2026-09-15"
+   }
+  ],
+  "coverage": {
+   "accounts": [
+    {
+     "connector": null,
+     "covered": 2,
+     "gap": null,
+     "kind": "BankCheque",
+     "last": "2026-09-02",
+     "name": "Chequing",
+     "rows": 2,
+     "source": "Chequing (CSV)"
+    },
+    {
+     "connector": null,
+     "covered": 0,
+     "gap": null,
+     "kind": "CreditCard",
+     "last": null,
+     "name": "Visa",
+     "rows": 0,
+     "source": "Visa (CSV)"
+    }
+   ],
+   "covered": 2,
+   "percent": 100,
+   "rows": 2,
+   "suggestions": []
+  },
+  "database": "MoneyWiz.sqlite",
+  "links": {
+   "gone": 0,
+   "held": 0,
+   "toSend": 6,
+   "waiting": 0
+  },
+  "mode": "adjust",
+  "moneywizExports": 0,
+  "recheck": [],
+  "runs": [],
+  "today": "2026-10-01",
+  "unlinkedExports": [],
+  "untouched": [
+   "Cash"
+  ]
+ },
+ "moneywizCategories": {
+  "applied": 0,
+  "categories": [
+   {
+    "cashcast": "Food",
+    "incomeRows": 0,
+    "kind": "expense",
+    "path": "Food",
+    "rows": 0,
+    "shared": false,
+    "subcategories": 1,
+    "suggested": []
+   },
+   {
+    "cashcast": "Food > Groceries",
+    "incomeRows": 0,
+    "kind": "expense",
+    "path": "Food/Groceries",
+    "rows": 1,
+    "shared": false,
+    "subcategories": 0,
+    "suggested": []
+   },
+   {
+    "cashcast": null,
+    "incomeRows": 0,
+    "kind": "expense",
+    "path": "Old",
+    "rows": 1,
+    "shared": false,
+    "subcategories": 0,
+    "suggested": []
+   },
+   {
+    "cashcast": null,
+    "incomeRows": 0,
+    "kind": "income",
+    "path": "Salary",
+    "rows": 0,
+    "shared": false,
+    "subcategories": 0,
+    "suggested": [
+     2
+    ]
+   },
+   {
+    "cashcast": "Transport",
+    "incomeRows": 0,
+    "kind": "expense",
+    "path": "Transport",
+    "rows": 0,
+    "shared": false,
+    "subcategories": 0,
+    "suggested": []
+   },
+   {
+    "cashcast": null,
+    "incomeRows": 0,
+    "kind": "expense",
+    "path": "groceries",
+    "rows": 0,
+    "shared": false,
+    "subcategories": 0,
+    "suggested": [
+     1
+    ]
+   }
+  ],
+  "lastApplied": null,
+  "missing": [
+   "Food/Coffee"
+  ],
+  "pending": [],
+  "suggestions": [
+   {
+    "ops": [
+     {
+      "add": "Food/Coffee"
+     }
+    ],
+    "reason": "Your budget or card strategy uses \"Food/Coffee\", which MoneyWiz does not have."
+   },
+   {
+    "ops": [
+     {
+      "delete": "groceries"
+     }
+    ],
+    "reason": "\"groceries\" (0 rows) looks like a duplicate of \"Food/Groceries\" (1 row): merge it."
+   },
+   {
+    "ops": [
+     {
+      "delete": "Salary"
+     }
+    ],
+    "reason": "\"Salary\" has no rows."
+   }
+  ],
+  "tree": "f78d1fc6790ba7d1"
+ },
+ "plan": {
+  "cashback": {
+   "bankPaid": {
+    "bank_only": 4800.0
+   },
+   "cardFees": 150.0,
+   "gross": 1589.45,
+   "membershipFees": 150.0,
+   "net": 749.45,
+   "routes": [
+    {
+     "amount": 6000.0,
+     "card": "Test Grocery 4%",
+     "category": "groceries",
+     "rate": 0.04
+    },
+    {
+     "amount": 960.0,
+     "card": "Test Grocery 4%",
+     "category": "recurring",
+     "rate": 0.04
+    },
+    {
+     "amount": 18040.0,
+     "card": "Test Grocery 4%",
+     "category": "rent",
+     "rate": 0.025
+    },
+    {
+     "amount": 4050.0,
+     "card": "Test Costly",
+     "category": "dining",
+     "rate": 0.021
+    },
+    {
+     "amount": 60.0,
+     "card": "Test Flat 2%",
+     "category": "other",
+     "rate": 0.02
+    },
+    {
+     "amount": 7200.0,
+     "card": "Test Flat 2%",
+     "category": "travel",
+     "rate": 0.02
+    },
+    {
+     "amount": 17960.0,
+     "card": "Test Flat 2%",
+     "category": "rent",
+     "rate": 0.005000000000000001
+    }
+   ],
+   "serviceFees": 540.0
+  },
+  "connectors": [
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download transactions (CSV, or QFX/OFX)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-etransfer",
+      "risk": "money",
+      "title": "Send an Interac e-Transfer",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "generic-csv",
+     "ofx"
+    ],
+    "id": "bmo",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "BMO Bank of Montreal",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "export-transaction-history",
+      "risk": "read",
+      "title": "Export transaction history as CSV",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-key-health",
+      "risk": "read",
+      "title": "Check when each key last passed a health check",
+      "via": [
+       "browser",
+       "human"
+      ]
+     },
+     {
+      "id": "check-vault-balance",
+      "risk": "read",
+      "title": "Check the vault balance",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-bitcoin",
+      "risk": "money",
+      "title": "Send bitcoin from the vault",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "casa-csv",
+     "crypto-generic-csv"
+    ],
+    "id": "casa",
+    "kinds": [
+     "crypto"
+    ],
+    "name": "Casa",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "change-rent-payment-card",
+      "risk": "settings",
+      "title": "Change the card that pays rent",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-next-charge",
+      "risk": "read",
+      "title": "Check the next charge date and amount",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-credit-builder-status",
+      "risk": "read",
+      "title": "Check Credit Builder status",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "renew-or-cancel-membership",
+      "risk": "money",
+      "title": "Renew or cancel the membership",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "change-rent-amount-or-date",
+      "risk": "money",
+      "title": "Change the rent amount or due date",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [],
+    "id": "chexy",
+    "kinds": [
+     "rent",
+     "payments"
+    ],
+    "name": "Chexy",
+    "noExport": "Chexy has no transaction export we could find. Each rent payment and its fee is charged to your credit card, so it shows up in that card's bank export. Import the card statement instead."
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download transactions (QFX or OFX)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "product-change-card",
+      "risk": "settings",
+      "title": "Product-change a credit card",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "send-etransfer",
+      "risk": "money",
+      "title": "Send an Interac e-Transfer",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "ofx"
+    ],
+    "id": "cibc",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "CIBC",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download brokerage transactions",
+      "via": [
+       "browser",
+       "api"
+      ]
+     },
+     {
+      "id": "download-stockplan-gains-losses",
+      "risk": "read",
+      "title": "Download stock plan gains and losses",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "download-benefit-history",
+      "risk": "read",
+      "title": "Download stock plan benefit history",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-upcoming-vests",
+      "risk": "read",
+      "title": "Check upcoming vests",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "sell-shares",
+      "risk": "money",
+      "title": "Sell shares",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": "oauth1",
+    "formats": [
+     "etrade-transactions-csv",
+     "etrade-stockplan-csv",
+     "etrade-benefit-rs",
+     "etrade-benefit-espp",
+     "etrade-gains-losses",
+     "etrade-stockplan-pdf"
+    ],
+    "id": "etrade",
+    "kinds": [
+     "broker"
+    ],
+    "name": "E*TRADE from Morgan Stanley",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-sheet-csv",
+      "risk": "read",
+      "title": "Download a sheet as CSV",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "api-read-values",
+      "risk": "read",
+      "title": "Read values through the API",
+      "via": [
+       "api"
+      ]
+     },
+     {
+      "id": "write-forecast-tab",
+      "risk": "settings",
+      "title": "Write a forecast tab",
+      "via": [
+       "api",
+       "browser"
+      ]
+     }
+    ],
+    "api": "oauth2",
+    "formats": [
+     "generic-csv"
+    ],
+    "id": "google-sheets",
+    "kinds": [
+     "sheets"
+    ],
+    "name": "Google Sheets",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "export-ledgers",
+      "risk": "read",
+      "title": "Export ledgers as CSV",
+      "via": [
+       "browser",
+       "api"
+      ]
+     },
+     {
+      "id": "check-balances",
+      "risk": "read",
+      "title": "Check balances (web or read-only API key)",
+      "via": [
+       "browser",
+       "api"
+      ]
+     },
+     {
+      "id": "withdraw-cad",
+      "risk": "money",
+      "title": "Withdraw CAD to a bank account",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "buy-or-sell-crypto",
+      "risk": "money",
+      "title": "Buy or sell crypto",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": "api_key",
+    "formats": [
+     "kraken-ledger-csv"
+    ],
+    "id": "kraken",
+    "kinds": [
+     "crypto",
+     "fx"
+    ],
+    "name": "Kraken",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "sync-from-exports",
+      "risk": "settings",
+      "title": "Add the missing bank and card rows to MoneyWiz (bin/cashcast moneywiz sync)",
+      "via": [
+       "api"
+      ]
+     },
+     {
+      "id": "fix-listed-rows",
+      "risk": "read",
+      "title": "Check the rows listed in out/moneywiz-fixes.md (duplicates, or not posted yet)",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "export-csv",
+      "risk": "read",
+      "title": "Export transactions as CSV",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "export-report-csv",
+      "risk": "read",
+      "title": "Export a saved report as CSV",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "refresh-bank-sync",
+      "risk": "read",
+      "title": "Refresh bank sync before an export",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "edit-in-place",
+      "risk": "settings",
+      "title": "Change existing MoneyWiz rows and categories in place (bin/cashcast moneywiz edit)",
+      "via": [
+       "api"
+      ]
+     },
+     {
+      "id": "probe-edit-paths",
+      "risk": "read",
+      "title": "Find which ways in can edit MoneyWiz rows and categories (bin/cashcast moneywiz probe --ui)",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "check-account-balances",
+      "risk": "read",
+      "title": "Check that account balances match the banks",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "moneywiz-database",
+     "moneywiz-csv"
+    ],
+    "id": "moneywiz",
+    "kinds": [
+     "budgeting"
+    ],
+    "name": "MoneyWiz",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-activity",
+      "risk": "read",
+      "title": "Download an activity report as CSV",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "api-transaction-search",
+      "risk": "read",
+      "title": "List transactions through the API",
+      "via": [
+       "api"
+      ]
+     },
+     {
+      "id": "check-balance",
+      "risk": "read",
+      "title": "Check the PayPal balance",
+      "via": [
+       "browser",
+       "api"
+      ]
+     },
+     {
+      "id": "change-default-funding-source",
+      "risk": "settings",
+      "title": "Change the preferred payment method",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-money",
+      "risk": "money",
+      "title": "Send money",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": "oauth2",
+    "formats": [
+     "paypal-activity-csv"
+    ],
+    "id": "paypal",
+    "kinds": [
+     "payments"
+    ],
+    "name": "PayPal",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "view-transfer-history",
+      "risk": "read",
+      "title": "View transfer history",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "request-statement",
+      "risk": "read",
+      "title": "Request a PDF statement by email",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "get-transfer-receipt",
+      "risk": "read",
+      "title": "Get a receipt for one transfer",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-money",
+      "risk": "money",
+      "title": "Send money abroad",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [],
+    "id": "paysend",
+    "kinds": [
+     "payments",
+     "fx"
+    ],
+    "name": "Paysend",
+    "noExport": "Paysend has no CSV export. Its statement is a PDF sent by email and lists outgoing transfers only. Transfers are paid by card, so they show up in that card's bank export. Import the card statement instead."
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download transactions (CSV, or QFX/OFX)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-etransfer",
+      "risk": "money",
+      "title": "Send an Interac e-Transfer",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "rbc-csv",
+     "ofx"
+    ],
+    "id": "rbc",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "RBC Royal Bank",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download transactions (CSV or QFX)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "download-statements",
+      "risk": "read",
+      "title": "Download PDF statements for months older than the CSV reaches",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-statement-close-date",
+      "risk": "read",
+      "title": "Check the credit card statement close date and due date",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "change-chequing-package",
+      "risk": "settings",
+      "title": "Change the chequing account package",
+      "via": [
+       "browser",
+       "human"
+      ]
+     },
+     {
+      "id": "set-card-autopay-full-balance",
+      "risk": "money",
+      "title": "Set credit card autopay to the full statement balance",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "redeem-scene-points-statement-credit",
+      "risk": "settings",
+      "title": "Redeem Scene+ points as a statement credit",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "product-change-card",
+      "risk": "settings",
+      "title": "Product-change a credit card",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "send-etransfer",
+      "risk": "money",
+      "title": "Send an Interac e-Transfer",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "scotiabank-csv",
+     "scotiabank-legacy-csv",
+     "ofx",
+     "scotiabank-visa-pdf",
+     "scotiabank-chequing-pdf",
+     "scotiabank-ssi-pdf"
+    ],
+    "id": "scotiabank",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "Scotiabank",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transaction-history",
+      "risk": "read",
+      "title": "Download the transaction history",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "download-statements",
+      "risk": "read",
+      "title": "Download statements (PDF)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-rrsp-contributions",
+      "risk": "read",
+      "title": "Check RRSP contributions and receipts this year",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-funds-and-fees",
+      "risk": "read",
+      "title": "Check the plan's funds and fees",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "change-future-investments",
+      "risk": "settings",
+      "title": "Change how future contributions are invested",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "change-contribution-rate",
+      "risk": "settings",
+      "title": "Change the payroll contribution rate (often through the employer)",
+      "via": [
+       "browser",
+       "human"
+      ]
+     },
+     {
+      "id": "rebalance-existing-money",
+      "risk": "money",
+      "title": "Move existing money between funds (rebalance)",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read each plan account's value and record it (bin/cashcast api record sunlife)",
+      "via": [
+       "browser"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "sunlife-transactions-csv",
+     "sunlife-statement-pdf"
+    ],
+    "id": "sunlife",
+    "kinds": [
+     "retirement"
+    ],
+    "name": "Sun Life (group retirement)",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download transactions (CSV, or QFX/OFX)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-etransfer",
+      "risk": "money",
+      "title": "Send an Interac e-Transfer",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "generic-csv",
+     "ofx"
+    ],
+    "id": "tangerine",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "Tangerine",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-transactions",
+      "risk": "read",
+      "title": "Download transactions (CSV or QFX)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "download-statements",
+      "risk": "read",
+      "title": "Download PDF statements for months older than the CSV reaches",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "check-statement-close-date",
+      "risk": "read",
+      "title": "Check the credit card statement close date and due date",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "change-chequing-package",
+      "risk": "settings",
+      "title": "Change the chequing account package",
+      "via": [
+       "browser",
+       "human"
+      ]
+     },
+     {
+      "id": "set-card-autopay-full-balance",
+      "risk": "money",
+      "title": "Set credit card autopay to the full statement balance",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "redeem-cash-back-statement-credit",
+      "risk": "settings",
+      "title": "Redeem cash back as a statement credit",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "product-change-card",
+      "risk": "settings",
+      "title": "Product-change a credit card",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "send-etransfer",
+      "risk": "money",
+      "title": "Send an Interac e-Transfer",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "td-csv",
+     "ofx",
+     "td-credit-pdf",
+     "td-chequing-pdf"
+    ],
+    "id": "td",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "TD Canada Trust",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-operations",
+      "risk": "read",
+      "title": "Download operations (CSV)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the account balances",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "send-transfer",
+      "risk": "money",
+      "title": "Send a transfer",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "tinkoff-csv"
+    ],
+    "id": "tinkoff",
+    "kinds": [
+     "bank",
+     "card"
+    ],
+    "name": "T-Bank (Tinkoff)",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-monthly-statement-csv",
+      "risk": "read",
+      "title": "Download monthly statements as CSV",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "download-activity-export",
+      "risk": "read",
+      "title": "Download the activity export as CSV",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "set-card-autopay",
+      "risk": "money",
+      "title": "Set credit card autopay to the statement or total balance",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "check-tfsa-rrsp-contributions",
+      "risk": "read",
+      "title": "Check TFSA and RRSP contributions this year",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "buy-etf",
+      "risk": "money",
+      "title": "Buy an ETF",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "sweep-cash",
+      "risk": "money",
+      "title": "Move idle cash between accounts",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "read-investment-balances",
+      "risk": "read",
+      "title": "Read each investment account's value and record it (bin/cashcast api record wealthsimple)",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "read-balances",
+      "risk": "read",
+      "title": "Read the chequing and credit card balances (for bin/cashcast transfers)",
+      "via": [
+       "browser"
+      ]
+     }
+    ],
+    "api": null,
+    "formats": [
+     "wealthsimple-statement-csv",
+     "wealthsimple-activity-csv",
+     "wealthsimple-activities-csv"
+    ],
+    "id": "wealthsimple",
+    "kinds": [
+     "bank",
+     "card",
+     "broker",
+     "crypto"
+    ],
+    "name": "Wealthsimple",
+    "noExport": ""
+   },
+   {
+    "actions": [
+     {
+      "id": "download-statement",
+      "risk": "read",
+      "title": "Download a statement as CSV",
+      "via": [
+       "browser",
+       "api"
+      ]
+     },
+     {
+      "id": "check-balances",
+      "risk": "read",
+      "title": "Check balances in each currency",
+      "via": [
+       "browser",
+       "api"
+      ]
+     },
+     {
+      "id": "check-transfer-status",
+      "risk": "read",
+      "title": "Check the status of a transfer",
+      "via": [
+       "browser"
+      ]
+     },
+     {
+      "id": "convert-currency",
+      "risk": "money",
+      "title": "Convert money between currency balances",
+      "via": [
+       "human"
+      ]
+     },
+     {
+      "id": "send-transfer",
+      "risk": "money",
+      "title": "Send money to someone",
+      "via": [
+       "human"
+      ]
+     }
+    ],
+    "api": "personal_token",
+    "formats": [
+     "wise-statement-csv"
+    ],
+    "id": "wise",
+    "kinds": [
+     "bank",
+     "fx",
+     "payments"
+    ],
+    "name": "Wise",
+    "noExport": ""
+   }
+  ],
+  "consent": [
+   {
+    "grantedUntil": null,
+    "recipient": "the AI agent you run and its model provider",
+    "scope": "agent:aggregates",
+    "shares": "reports with totals, account and category names (never single transactions)"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "the AI agent and its model provider",
+    "scope": "agent:raw-row",
+    "shares": "one raw export row, to debug an unreadable file"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "the AI agent and its model provider",
+    "scope": "agent:strategy",
+    "shares": "your strategy report: card routing, targets, balances, room and dated checklist"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "Google Sheets (your spreadsheet)",
+    "scope": "cloud:sheets",
+    "shares": "the forecast table you choose to sync"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "Notion (your own tasks database)",
+    "scope": "cloud:notion",
+    "shares": "task titles with every amount removed, due dates, the kind of task and whether it is done"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "the market-data provider you configure",
+    "scope": "net:market-data",
+    "shares": "ticker symbols from your watchlist (no amounts, no balances)"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "PostHog EU (product analytics of the cashcast author), only once a key is set",
+    "scope": "net:usage-counts",
+    "shares": "anonymous usage counts: command names, ok or failed, durations and counts (never amounts, names, payees, services or paths)"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "Apple Reminders on this Mac, and iCloud if you sync Reminders",
+    "scope": "local:reminders",
+    "shares": "task titles with amounts and due dates"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "Apple Calendar on this Mac, and iCloud if you sync Calendar",
+    "scope": "local:calendar",
+    "shares": "dated task titles with amounts and due dates"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "MoneyWiz on this Mac, and the MoneyWiz cloud if you turned on its sync",
+    "scope": "local:moneywiz",
+    "shares": "transactions from your exports (dates, amounts, payees, categories) written into MoneyWiz"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "the AI agent and its model provider",
+    "scope": "actions:browser",
+    "shares": "on-screen account pages while an agent performs an approved action"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "the AI agent and its model provider (files stay on this Mac)",
+    "scope": "agent:browser-read",
+    "shares": "finance site pages an agent reads to check a task, and statements it saves to your private inbox"
+   },
+   {
+    "grantedUntil": null,
+    "recipient": "stays local; reports follow agent:aggregates",
+    "scope": "actions:api",
+    "shares": "API responses (balances, statements) fetched with your token"
+   }
+  ],
+  "disclaimer": "Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. Check facts marked 'estimate' before you act.",
+  "forecast": [
+   {
+    "end": 32715.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2026-10",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 40000.0,
+    "toInvest": 5362.5
+   },
+   {
+    "end": 30792.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2026-11",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 32715.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 28870.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2026-12",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 30792.5,
+    "toInvest": 0.0
+   },
+   {
+    "end": 26947.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-01",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 28870.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 25025.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-02",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 26947.5,
+    "toInvest": 0.0
+   },
+   {
+    "end": 23102.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-03",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 25025.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 21180.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-04",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 23102.5,
+    "toInvest": 0.0
+   },
+   {
+    "end": 19257.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-05",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 21180.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 17335.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-06",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 19257.5,
+    "toInvest": 0.0
+   },
+   {
+    "end": 15412.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-07",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 17335.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 13490.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-08",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 15412.5,
+    "toInvest": 0.0
+   },
+   {
+    "end": 11567.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-09",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 13490.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 9645.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-10",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 11567.5,
+    "toInvest": 0.0
+   },
+   {
+    "end": 7722.5,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-11",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 9645.0,
+    "toInvest": 0.0
+   },
+   {
+    "end": 5800.0,
+    "expenses": 1922.5,
+    "high": null,
+    "income": 0.0,
+    "low": null,
+    "month": "2027-12",
+    "net": -1922.5,
+    "paycheques": 0,
+    "start": 7722.5,
+    "toInvest": 0.0
+   }
+  ],
+  "forecastAccuracy": null,
+  "headline": {
+   "canInvest": 5362.5,
+   "emergencyFund": 5767.5,
+   "investAbove": 7690.0,
+   "lowestMonth": "2027-12",
+   "lowestMonthEnd": 5800.0,
+   "marginalRate": 0.43409599999999043,
+   "netCashBack": 749.45,
+   "nextReview": "2026-11-02",
+   "pivot": false
+  },
+  "holdings": {
+   "assets": [
+    {
+     "acb_cad": 3600.0,
+     "account_bucket": "TFSA",
+     "quantity": 120,
+     "symbol": "XEQT"
+    },
+    {
+     "acb_cad": 9000.0,
+     "account_bucket": "non-registered",
+     "quantity": 40,
+     "symbol": "EMPL"
+    },
+    {
+     "acb_cad": 0,
+     "account_bucket": "non-registered",
+     "cost_unknown": true,
+     "quantity": 0.05,
+     "symbol": "BTC"
+    }
+   ],
+   "checks": [
+    "EMPL: E*TRADE reports 40 sellable shares; the files give 40 non-registered (match)."
+   ],
+   "needs_cost": [
+    {
+     "account_bucket": "non-registered",
+     "asset": "BTC",
+     "quantity": 0.05,
+     "reason": "deposit with unknown cost"
+    }
+   ],
+   "realized_by_year": [
+    {
+     "gains_cad": 1200.0,
+     "losses_cad": 200.0,
+     "net_cad": 1000.0,
+     "sales": 3,
+     "year": 2026
+    }
+   ],
+   "superficial_loss_flags": []
+  },
+  "knowledge": {
+   "estimates": 15,
+   "facts": 226,
+   "files": 13,
+   "heuristics": 24,
+   "problems": [],
+   "stale": [],
+   "topics": [
+    {
+     "asOf": "2026-10-19",
+     "name": "banks",
+     "reviewBy": "2027-01-31",
+     "title": "Canadian chequing packages, fee waivers and card rebates"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "corporate_stock",
+     "reviewBy": "2027-04-30",
+     "title": "Employer stock: RSUs, ESPP, options, US-listed shares"
+    },
+    {
+     "asOf": "2026-11-15",
+     "name": "credit_cards",
+     "reviewBy": "2027-01-31",
+     "title": "Canadian credit cards (cash back focus)"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "credit_score",
+     "reviewBy": "2027-10-31",
+     "title": "Credit score rules (Canada)"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "crypto_exchanges",
+     "reviewBy": "2027-01-31",
+     "title": "Crypto platforms for Canadians"
+    },
+    {
+     "asOf": "2026-11-14",
+     "name": "foreign_cash",
+     "reviewBy": "2026-12-31",
+     "title": "Foreign cash: exchange rates, conversion, T1135 and interest"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "insurance",
+     "reviewBy": "2027-10-31",
+     "title": "Insurance rules of thumb and gap checks"
+    },
+    {
+     "asOf": "2026-11-01",
+     "name": "invest_evidence",
+     "reviewBy": "2027-04-30",
+     "title": "Investment recommender: evidence, assumptions and their limits"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "investing",
+     "reviewBy": "2027-04-30",
+     "title": "Investing: core ETFs, account priority, asset location"
+    },
+    {
+     "asOf": "2026-11-04",
+     "name": "merchants",
+     "reviewBy": "2027-05-04",
+     "title": "Merchant billing names on Canadian statements"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "payment_services",
+     "reviewBy": "2027-01-31",
+     "title": "Payment services: rent by card, FX, transfers, crypto funding"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "tax_ca_2026",
+     "reviewBy": "2027-01-31",
+     "title": "Canada personal income tax 2026"
+    },
+    {
+     "asOf": "2026-10-19",
+     "name": "tax_deductions",
+     "reviewBy": "2027-01-31",
+     "title": "Canadian deductions and credits checklist (2026)"
+    }
+   ]
+  },
+  "netTotal": {
+   "byKind": {
+    "cash": 40000.0,
+    "investment": 12600.0
+   },
+   "changes": [],
+   "history": [
+    {
+     "date": "2026-10-18",
+     "total": 52600.0
+    }
+   ],
+   "missing": [
+    "investment market values: record them with `bin/cashcast api record wealthsimple --set TFSA=…`"
+   ],
+   "ranked": [
+    {
+     "cashOut": null,
+     "id": "invest-plan:cash-drag",
+     "netEffect": 274.27,
+     "refused": [],
+     "section": "invest_plan",
+     "title": "Keep the $26,947.50 set aside for later months safe, at the best rate (needed in about 10 months) (range $183 to $366 a year; long-run, not a forecast)",
+     "why": "You need this money within 10 months, too soon for stocks. A high-interest account, GIC or cash ETF pays about 2.4% versus your 0%. If it is for a first home, up to $8,000 of it can sit in your FHSA in the same safe holdings: the contribution is deductible (about $3,473 less tax once, at your marginal rate) and a withdrawal for the home is tax-free."
+    },
+    {
+     "cashOut": null,
+     "id": "cashback-routing",
+     "netEffect": 56.95,
+     "refused": [],
+     "section": "cashback",
+     "title": "Pay each spending category with the card the cash-back section names",
+     "why": "Compared with putting everything on your best single card."
+    }
+   ],
+   "refused": [],
+   "stale": [],
+   "total": 52600.0
+  },
+  "sections": [
+   {
+    "id": "cashback",
+    "markdown": "## Cash back: where to pay\n\n| Spending | Per year | Card (in order) | Net rate |\n|---|---|---|---|\n| rent | $36,000.00 | Test Grocery 4% ($18,040.00) → Test Flat 2% ($17,960.00) | 2.50% / 0.50% |\n| travel | $7,200.00 | Test Flat 2% | 2% |\n| groceries | $6,000.00 | Test Grocery 4% | 4% |\n| dining | $4,050.00 | Test Costly | 2.10% |\n| recurring | $960.00 | Test Grocery 4% | 4% |\n| other | $60.00 | Test Flat 2% | 2% |\n\n- Gross cash back: **$1,589.45** a year (2.93% of card-eligible spend).\n- Card fees not rebated: $150.00. Rent service fees: $540.00. Memberships: $150.00.\n- **Net: $749.45 a year.**\n- Paid by bank transfer: taxes, transfers and other payments cards cannot take.\n- Rent rule (count charges, no math): Test Grocery 4% × 6 → Test Flat 2% × 6 per cap year, starting at each card's cap reset.\n",
+    "title": "Cash back: where to pay"
+   },
+   {
+    "id": "banking",
+    "markdown": "## Bank accounts: hold the minimum or pay the fee\n\nCash is valued at 2% a year (a default; set `goals.cash_rate`). Holding a minimum costs that rate minus what the account pays.\n\n| Account | Fee/month | Minimum | Keep | Interest | Holding costs | Fee + rebate lost | Break-even | Verdict |\n|---|---|---|---|---|---|---|---|---|\n| Test Bank Package | $30.95 | $6,000.00 | $6,500.00 | 0% | $120.00 | $491.40 | 8.19% | hold the minimum |\n\n- Cash held at bank minimums: $6,500.00 (counts toward the emergency fund).\n- Minimums are usually the balance at the end of **every** day; one day below means the full monthly fee.\n- Money moves in before it moves out: transfer first, then pay the card the same day.\n",
+    "title": "Bank accounts: hold the minimum or pay the fee"
+   },
+   {
+    "id": "credit",
+    "markdown": "## Credit score: statement targets and pay-down dates\n\n| Card | Limit | Target at close | Keep balance under (9%) | Usual use if not paid early | Pay down by |\n|---|---|---|---|---|---|\n| Test Flat 2% | $25,000.00 | $750.00 (3%) | $2,250.00 | 8.41% | Oct 23 (closes Oct 24) |\n| Test Grocery 4% | $15,000.00 | $450.00 (3%) | $1,350.00 | 13.89% | Oct 23 (closes Oct 25) |\n| Test Costly | $5,000.00 | $150.00 (3%) | $450.00 | 6.75% | Oct 16 (closes Oct 18) |\n\n- Combined: $1,350.00 reported on $45,000.00 of limits (3%).\n- Every card autopays its **full statement balance** from a chequing account: no interest, perfect history.\n- Never close an old card; product-change it to a no-fee version to keep its age and limit.\n- Mortgage in about 10 months: no new credit or hard pulls from now; pull both bureau reports 3 months before and dispute errors.\n",
+    "title": "Credit score: statement targets and pay-down dates"
+   },
+   {
+    "id": "tax",
+    "markdown": "## Tax: rates and moves\n\n- Estimated 2026 income tax on $120,000.00: $27,852.76 (average 23.21%, marginal **43.41%**).\n- Capital gains: half is taxable, so a $1,000 gain costs about $217.05.\n- Payroll contributions on employment income: CPP/QPP $4,646.45, EI $1,123.07.\n- Using all RRSP room ($20,000.00) cuts tax by about **$7,082.21** (35.41% back on each dollar on average: below your 43.41% top rate, because the deduction reaches lower brackets).\n- RRSP contributions for 2026 (window Mar 2, 2026 to Mar 1, 2027): **$0.00** (you $0.00, employer $0.00).\n- No RRSP contributions found. Add your Sun Life transaction history to the inbox (connectors show sunlife), or set `[room] rrsp_other` for contributions no export shows.\n- Limit $20,000.00: **$20,000.00 left**.\n- Within the limit: no contributions so far in this window (to Mar 1, 2027).\n- Realized capital gains so far in 2026: $1,000.00 → about $217.05 tax.\n- Tax-loss harvesting: selling positions at a loss offsets gains; avoid buying the same asset 30 days before or after (superficial loss).\n",
+    "title": "Tax: rates and moves"
+   },
+   {
+    "id": "reserve",
+    "markdown": "## Cash reserve and where new money goes\n\n- Monthly spending: $1,922.50.\n- Emergency fund: **$5,767.50** (3 months). Keep it in cash or a high-interest account.\n- Monthly float: $1,922.50 so card payments never bounce.\n- Invest anything above **$7,690.00** of total cash.\n- Cash now: $40,000.00 → **$32,310.00 can be invested**.\n\nOrder for new money:\n1. FHSA (room $8,000.00): deductible now, tax-free out for a first home.\n2. RRSP (room $20,000.00): deduction at your 43.41% marginal rate.\n3. TFSA (room $7,000.00): tax-free growth, withdraw any time.\n4. Non-registered: after registered room is full.\n- Down-payment money needed within about 2 years stays in cash or GICs, not stocks. The RRSP Home Buyers' Plan needs contributions to sit 90 days before withdrawal.\n- The forecast keeps $26,947.50 of that for later months that dip: invest $5,362.50 now.\n",
+    "title": "Cash reserve and where new money goes"
+   },
+   {
+    "id": "foreign",
+    "markdown": "## Foreign cash: Wise USD and other currencies\n\n- No foreign-currency cash found. Run `bin/cashcast api balances wise` to read your Wise balances.\n",
+    "title": "Foreign cash: Wise USD and other currencies"
+   },
+   {
+    "id": "interest",
+    "markdown": "## Interest on cash: what each balance earns\n\n| Where | Balance (CAD) | Rate | Interest a year |\n|---|---|---|---|\n| Test Bank Package | $6,500.00 (keep) | 0% | $0.00 |\n\n- Interest a year at today's rates: **$0.00**.\n- Best no-minimum rate in the catalog: EQ Bank Personal Account at 2.75%. Checked 2026-10-19 in a browser on the issuer page. 2.75% when direct-deposited pay totals $2,000+/month (lower base rate otherwise, not shown on the page); no monthly fees or minimum balance.\n- Tax: Interest earned on a foreign-currency balance (for example Wise Interest on USD) is taxable in Canada. Report it in Canadian dollars on line 12100, converted at the Bank of Canada rate on the day it was paid. CAD interest goes on the same line.\n",
+    "title": "Interest on cash: what each balance earns"
+   },
+   {
+    "id": "crypto",
+    "markdown": "## Crypto: market value from your exchanges\n\n- No crypto balances found. Run `bin/cashcast api balances kraken` to read your Kraken balances.\n",
+    "title": "Crypto: market value from your exchanges"
+   },
+   {
+    "id": "invest",
+    "markdown": "## Long-term investing: core, placement and screen\n\n*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. Check facts marked 'estimate' before you act.*\n\n**Core (growth, about 80% stocks):** one diversified, low-fee fund does most of the work.\n- XIC: iShares Core S&P/TSX Capped Composite Index ETF, MER 0.06%. Broad Canadian stocks at very low cost. Eligible dividends get the dividend tax credit in a taxable account.\n- XUU: iShares Core S&P U.S. Total Market Index ETF, MER 0.07%. Whole US market in CAD. Holds US-listed ETFs, so two layers of withholding issue in RRSP; fine in TFSA.\n- VFV: Vanguard S&P 500 Index ETF, MER 0.08%. Cheap S&P 500 in CAD. Holds US shares directly, so 15% US withholding is lost in TFSA/RRSP (recoverable only in non-registered).\n\n**Where each asset goes:**\n- US-listed US equity ETFs (VTI, SCHD, VYM) → RRSP: The Canada-US treaty exempts RRSPs from the 15% US dividend withholding. TFSAs and RESPs are not exempt.\n- Canadian-listed US equity ETFs (VFV, XUU, VUN) → TFSA: Withholding is lost in TFSA and RRSP alike; the cost is small (about 0.2%/yr). In non-registered you can claim the foreign tax credit.\n- Canadian equity (XIC, VDY) → non_registered: Eligible Canadian dividends get the dividend tax credit only in a taxable account. Also fine in a TFSA.\n- Bonds and GICs (ZAG, XBB) → RRSP: Interest is taxed at your full marginal rate; shelter it first.\n- Highest expected growth (all-equity ETFs) → TFSA: Tax-free growth compounds best on the assets that grow most.\n- All-in-one ETFs (XEQT, VEQT, XGRO, VGRO) → any: Simplicity beats small location gains for most people. Hold the same fund everywhere and rebalance by contribution.\n- Short-term cash (CASH, ZMMK, HISA) → TFSA: Interest is fully taxable; a TFSA shelters it and keeps it withdrawable.\n\n- Employer stock EMPL: 71.43% of invested cost, above the 10% guideline.\n  Selling down over time (RSUs right at vest add no gain, since their cost is the vest value) cuts the risk of losing job and savings at once.\n\n- Market value of your accounts: not recorded yet. Read them in the browser (playbook `read-investment-balances`), then `bin/cashcast api record wealthsimple --set TFSA=…,RRSP=…`.\n\n**Watchlist screen** (rules pass / total; a high score is not a recommendation):\n\n| Symbol | Score | Passing rules | Price |\n|---|---|---|---|\n| EMPL | 5/5 | P/E between 0 and 30; Profit margin ≥ 10%; Return on equity ≥ 12%; Revenue growing year over year; Beta ≤ 1.5 | — |\n| XEQT | 1/1 | MER 0.19% ≤ 0.25% | — |\n\nLive prices and fundamentals: run `bin/cashcast strategy --market` after the owner grants `net:market-data` (only ticker symbols are sent).\n",
+    "title": "Long-term investing: core, placement and screen"
+   },
+   {
+    "id": "invest_plan",
+    "markdown": "## Investment moves: ranked, with evidence\n\n**Answer: do move 1.** Move $32,310 above your reserve to a higher-rate safe account you can withdraw in time (first do the steps in move 1). Gain until you need it: $183 to $366 a year. *Not personal advice: you decide.*\n\n*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. No stock picks, no market timing: every gain below is a range from long-run planning assumptions, not a forecast. No provider pays for any recommendation. The ranking is fixed rules in code; chat explanations come from an AI model and can be wrong.*\n\nQuestion any move: say \"challenge `<id>`\" (skill `invest-challenge`). Override one in profile.toml under `[[invest.overrides]]` with `move`, `reason` and an optional `until` date; the plan respects it.\n\n| # | Move | Long-run average gain a year (range, not next year) | One-time cost | Task |\n|---|---|---|---|---|\n| 1 | Keep the $26,947.50 set aside for later months in a safe place, at the best rate (needed in about 10 months) (`cash-drag`) | $183 to $366 a year | — | yes |\n| 2 | Do nothing (`do-nothing`) | $0 (baseline) | — | no |\n\n### 1. Keep the $26,947.50 set aside for later months in a safe place, at the best rate (needed in about 10 months) (`cash-drag`)\n\n- **Do:** Move $32,310 above your reserve to a higher-rate safe account you can withdraw in time; if it is for a first home, put up to $8,000 of it in your FHSA (First Home Savings Account), in savings you can withdraw in time inside it\n- **Gain vs. doing nothing:** $183 to $366 a year.\n- **Why:** You need this money within 10 months, too soon for stocks. A high-interest account, GIC (a deposit with a fixed rate and term) or cash ETF pays about 2.4% versus your 0%. If it is for a first home, up to $8,000 of it can sit in your FHSA in the same safe holdings: the contribution is deductible (about $3,473 less tax once, at your marginal rate (the tax on your next dollar of income)) and a withdrawal for the home is tax-free.\n- **Risk:** GICs lock money until maturity; cash ETFs are not CDIC (the federal deposit insurance)-insured.\n- **Assumes:** After tax at your marginal rate, earned for about 10 months, not a full year. Safe rates near 2.4% (planning assumption; low end half of the gap).\n- **Assumes:** The FHSA tip applies only if this money is for a first home.\n- **Strongest objection:** Markets can fall about 42% in a bad year (estimate, `one-year-drop`); money invested now may be needed before it recovers.\n- **Evidence:**\n  - `short-horizon` (heuristic): Money you need within about 5 years (a down payment, say) stays in safe places: high-interest savings, GICs or cash ETFs. Stocks can take years to recover from a fall. [source](https://www.canada.ca/en/financial-consumer-agency/services/savings-investments/investing-basics.html), as of 2026-11-01, review by 2027-04-30.\n  - `cash-rate-capture` (heuristic): Low end of the gain from a safe account: assume you capture only half the gap between the best safe rate and your current rate (rates change, money moves late). A rule of thumb used only for the low end of a range. No external source: a judgment call, as of 2026-11-09, review by 2027-04-30.\n  - `one-year-drop` (estimate): Global stocks can fall about 40% in one calendar year: the MSCI ACWI lost about 42% (net, USD) in 2008. Money you need within a few years does not belong in stocks. [source](https://www.msci.com/documents/1296102/1636401/ACWI+factsheet/d5d4e6b0-3957-4938-a4aa-dbc956ae93af), as of 2026-11-01, review by 2027-04-30.\n  - `pag-short-term` (verified): Long-run planning assumption for cash and short-term deposits: 2.4% a year. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-04-16, review by 2027-04-30.\n  - `fhsa` (verified): A First Home Savings Account gives a first-time home buyer $8,000 of room in the first year, then $8,000 a year; unused room carries forward, but only up to $8,000, so the most you can add in one year is $16,000, up to $40,000 for life. Room starts only once the account is open. Contributions are generally deductible, and a qualifying withdrawal to buy a first home is tax-free when all its conditions are met. [source](https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account.html), as of 2026-11-09, review by 2027-04-30.\n  - `tax-rules` (verified): Canada personal income tax 2026: capital gains inclusion rate and TFSA (Tax-Free Savings Account), RRSP (Registered Retirement Savings Plan) and FHSA limits. [source](https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html), as of 2026-10-19, review by 2027-01-31.\n  - `investing-data` (verified): Fund fees (MERs) and tickers in knowledge/data/investing.toml. [source](https://www.blackrock.com/ca/investors/en/products/309480/ishares-core-equity-etf-portfolio), as of 2026-10-19, review by 2027-04-30.\n\n### 2. Do nothing (`do-nothing`)\n\n- **Gain vs. doing nothing:** $0 (baseline).\n- **Why:** Zero effort, zero trading cost, no new tax. It is the baseline every move must beat.\n- **Risk:** Your money keeps today's risks: the $32,310 above your reserve earns -2.1% a year after inflation (-$679); EMPL stays 71.4% of your investments.\n- **Strongest objection:** Idle cash and drift compound quietly; doing nothing for years has a real cost.\n- **Evidence:**\n  - `pag-inflation` (verified): Long-run planning assumption for inflation: 2.1% a year. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-04-16, review by 2027-04-30.\n\n## Risk moves (no expected gain; they cut the chance of a large loss)\n\n### 1. Sell down EMPL from 71.4% to 10% of your investments (`concentration:EMPL`)\n\n- **Do:** Decide whether to sell about $7,740 of EMPL (to 10% of investments)\n- **Gain vs. doing nothing:** about $0 (risk move).\n- **Why:** Expected gain about $0: one stock and an index have similar expected returns, but the stock's range is far wider, and your pay depends on the same company. A 50% fall in EMPL would cost you about $4,500 today.\n- **Risk:** Selling can miss a rally in the stock. Keeping it can lose savings and job at once.\n- **Cost:** Tax on the gain you realize: about $0.\n- **Assumes:** EMPL valued at $9,000 (cost base (what you paid, including fees), market value unknown); total investments $12,600.\n- **Strongest objection:** Selling employer stock realizes tax now and may miss its upside. Weakest evidence: `single-stock-drop` is a heuristic only.\n- **Unknown:** How EMPL will do: nobody knows.\n- **Evidence:**\n  - `single-stock-risk` (verified): Most single stocks lose to Treasury bills over their life: in US data from 1926 to 2016, about 58% did, and the best 4% of companies made all the net gain. One stock is a much wider bet than an index with the same expected return. [source](https://econpapers.repec.org/RePEc:eee:jfinec:v:129:y:2018:i:3:p:440-457), as of 2018-06-01, review by 2027-04-30.\n  - `single-stock-drop` (heuristic): A planning stress test for one stock: a 50% fall. Single stocks spread far wider than an index; most lose to Treasury bills over their life, so a fall of half is a plausible bad case, not a forecast. [source](https://econpapers.repec.org/RePEc:eee:jfinec:v:129:y:2018:i:3:p:440-457), as of 2018-06-01, review by 2027-04-30.\n  - `concentration-limit` (heuristic): Keep any one stock, your employer's included, to about 10% of investments. Your job already depends on the same company. [source](https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/diversify-your-investments), as of 2026-10-19, review by 2027-04-30.\n  - `spiva-canada` (verified): 98.8% of Canadian equity funds trailed their benchmark over 10 years to the end of 2025. Professional stock picking rarely beats the index after fees, so this tool does not pick stocks. [source](https://www.spglobal.com/spdji/en/spiva/article/spiva-canada-year-end-2025/), as of 2026-03-31, review by 2027-04-30.\n\n## What this plan does not know\n\n- Your stock/bond mix: only 28.6% of your investments have a known asset class, so drift from your 80% target is not checked.\n- The kind of EMPL: name each under [invest.classes] in profile.toml (`AAPL = \"equity\"`; equity, bond, balanced, cash, crypto or gold), so your whole mix is checked.\n- Today's Bank of Canada rates: none is fresh, so safe-rate and inflation numbers use the yearly planning assumptions. Run `bin/cashcast knowledge refresh`.\n- Debt at 8% a year or more: not recorded, so the debt-first rule is not checked. Set `high_interest_debt` under [invest] in profile.toml (0 when you have none).\n- Market prices per holding: some holdings are valued at cost. Add [invest.prices] to profile.toml for fee, tax and loss moves.\n\nYour whole mix: stocks 28.6% · of unknown kind 71.4% of $12,600. Crypto and gold do not count as stocks.\nTarget mix: 80% stocks, from your risk level (growth, a rule of thumb from `risk-equity-shares`). Agents never move money: each task is yours to do.\nMade on 2026-10-18; oldest evidence as of 2016-08-01.\n",
+    "title": "Investment moves: ranked, with evidence"
+   },
+   {
+    "id": "forecast",
+    "markdown": "## Balance forecast\n\n- 15 months from Oct 2026: income $0.00, expenses $28,837.50.\n- **Can invest $5,362.50** while keeping the $5,800.00 floor.\n- Lowest month-end cash: $5,800.00 in Dec 2027.\n- Full table and editable workbook: `bin/cashcast forecast`.\n",
+    "title": "Balance forecast"
+   },
+   {
+    "id": "payments",
+    "markdown": "## Payments analysis\n\nLast 12 complete months; $1,922.50 per month in total.\n\n| Category | Per month | Share | Trend (3 vs 9 months) | Year over year | Kind |\n|---|---|---|---|---|---|\n| Travel | $600.00 | 31.21% | +200% | — | variable |\n| Food > Groceries | $500.00 | 26.01% | 0% | — | fixed |\n| Income tax | $400.00 | 20.81% | 0% | — | fixed |\n| Food > Restaurants | $337.50 | 17.56% | +50% | — | variable |\n| Bills > Phone | $80.00 | 4.16% | 0% | — | fixed |\n| Fees > Overdraft | $5.00 | 0.26% | 0% | — | avoidable fee |\n\n- Rising fast: Travel (+200%), Food > Restaurants (+50%).\n- Avoidable fees and interest: about $60.00 a year. Find each one's cause in your bank app.\n- Fixed-like costs: $985.00 per month. These are the ones worth renegotiating once a year.\n",
+    "title": "Payments analysis"
+   },
+   {
+    "id": "spending",
+    "markdown": "## Spending checkup\n\n### Is that more than usual?\n\n2026-09 against the 11 months before it:\n\n| Category | This month | Usual month | Change |\n|---|---|---|---|\n| Travel | $1,200.00 | $545.45 | +120% |\n| Food > Restaurants | $450.00 | $327.27 | +37.50% |\n\n### Do I spend more than I earn?\n\n- Yes. In the last 12 months you earned $0.00 and spent $23,070.00: $23,070.00 more than you earned.\n\n### How much interest and fees did I pay?\n\n- $60.00 in the last 12 months, in: Fees > Overdraft.\n- APR is the yearly interest rate on a balance you carry. At 20.99% APR, a $1,000 card balance kept for a year costs about $209.90. Pay the full statement balance each month and it costs $0.\n- Charges billed twice, new subscriptions and price rises: `bin/cashcast charges`.\n",
+    "title": "Spending checkup"
+   },
+   {
+    "id": "budget",
+    "markdown": "## Budget vs actual\n\nMonth Sep 2026 and the year so far (9 months).\n\n| Category | Budget/month | Actual | Over/under | Year so far | Year budget | Used |\n|---|---|---|---|---|---|---|\n| Food | $700.00 | $950.00 | +$250.00 | $7,650.00 | $8,400.00 | 91.07% |\n\n- Over budget by more than 10% last month: Food.\n\n**Budget proposals** (12-month average, rounded up; copy into `[budget]` to adopt):\n\n- \"Travel\" = 600\n- \"Income tax\" = 400\n- \"Bills\" = 80\n- \"Fees\" = 10\n",
+    "title": "Budget vs actual"
+   },
+   {
+    "id": "alternatives",
+    "markdown": "## Alternatives finder\n\n**Verdict: wait.** Your goals say no new credit now (mortgage or credit-building), so skip these for now; the top two are listed for later.\n\n**Cards that would add the most net cash back a year** (only gains above your $50.00 simplicity threshold; smaller ones are not worth the complexity):\n- MBNA Rewards World Elite Mastercard: +$396.07 a year (fee $120.00)\n- Simplii Financial Cash Back Visa: +$76.95 a year (fee $0.00)\n\n**Cards that cost more than they earn you:**\n- Test Costly: -$145.95 a year after its $150.00 fee → product-change to a no-fee card from the same bank (keeps the account age and limit); redeem its cash back first.\n\n**test-rent plan:** the membership costs $150.00 a year and saves $0.00 in fees, so you lose $150.00 a year (before any perks like credit reporting).\n\n**Fees:** Overdraft fees — about $60.00 a year that a no-fee account or on-time payments would remove.\n",
+    "title": "Alternatives finder"
+   },
+   {
+    "id": "review",
+    "markdown": "## Monthly review (5 minutes)\n\nNext review: **Mon, Nov 2**.\n\n1. Import: add last month's exports to your inbox, run `bin/cashcast import`.\n2. Statements: every card closed at or under its target and was paid in full.\n3. Bank minimums: no monthly fee was charged; top accounts back up to their keep amounts.\n4. Rent charges: count this cap year's charges per card; switch the rent card when a count is used up.\n5. Credit scores: check Equifax and TransUnion; any drop → find the cause.\n6. Cash sweep: invest cash above the reserve, in the account order of your strategy.\n7. Cash back: redeem balances of $25+ as a statement credit.\n8. Budget: look at the categories over budget; adjust the budget or the habit.\n",
+    "title": "Monthly review (5 minutes)"
+   },
+   {
+    "id": "net_total",
+    "markdown": "## Net total: $52,600\n\nEverything you have minus everything you owe. Higher is better. Every option below is ranked by what it adds to this number, inside your boundaries.\n\n- Trend: first point saved today. The change shows after 30 days.\n\n| Part | CAD |\n|---|---|\n| Cash | $40,000 |\n| Investments | $12,600 |\n| **Net total** | **$52,600** |\n\n<details><summary>Each source</summary>\n\n| Source | Part | CAD | Oldest reading |\n|---|---|---|---|\n| Bank accounts | cash | $40,000 | - |\n| Investments at cost (no market value recorded) | investment | $12,600 | - |\n\n</details>\n- Not counted yet: investment market values: record them with `bin/cashcast api record wealthsimple --set TFSA=…`.\n\n### Your boundaries\n\n- Work: at most 45 hours a week (now: unknown).\n- Cash floor: $7,690 + 5 % margin, from your reserve (emergency fund + float).\n- Risk: at most growth.\n- New debt: at most $0.\n- Home: kept, never sold.\n- Change them in `[boundaries]` of your profile.toml.\n\n### Options, best first\n\nEach option's net total is a long-run planning estimate, not a forecast; investing can lose money. Education and arithmetic on your own data, not personal financial advice.\n\n| # | Option | Net total a year | From |\n|---|---|---|---|\n| 1 | Keep the $26,947.50 set aside for later months safe, at the best rate (needed in about 10 months) (range $183 to $366 a year; long-run, not a forecast) | +$274 | invest_plan |\n| 2 | Pay each spending category with the card the cash-back section names | +$57 | cashback |\n",
+    "title": "Net total: $52,600"
+   }
+  ],
+  "tasks": [
+   {
+    "action": "",
+    "due": "2026-10-16",
+    "id": "paydown-test-costly-2026-10",
+    "notes": "Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement.",
+    "risk": "money",
+    "service": "",
+    "title": "Pay Test Costly down to $150.00"
+   },
+   {
+    "action": "",
+    "due": "2026-10-18",
+    "id": "fees-review",
+    "notes": "",
+    "risk": "read",
+    "service": "",
+    "title": "Find and stop the fees and interest (about $60.00 a year)"
+   },
+   {
+    "action": "",
+    "due": "2026-10-18",
+    "id": "invest-cash-drag",
+    "notes": "From `bin/cashcast invest-plan` (cash-drag). Gain $183 to $366 a year, a long-run range, not a forecast. Cost: none known. Risk: GICs lock money until maturity; cash ETFs are not CDIC-insured. Not personal advice: you decide. You make the trade. Question it with the invest-challenge skill. Next, once this is done, run the plan again for: Decide whether to sell about $7,740 of EMPL (to 10% of investments).",
+    "risk": "money",
+    "service": "",
+    "title": "Move the $26,947.50 set aside for later months to a higher-rate safe account you can withdraw in time; if it is for a first home, put up to $8,000 of it in your FHSA, in savings you can withdraw in time inside it"
+   },
+   {
+    "action": "",
+    "due": "2026-10-18",
+    "id": "spending-over-income",
+    "notes": "",
+    "risk": "read",
+    "service": "",
+    "title": "Spending was $23,070.00 above income in 12 months: pick one category to cut"
+   },
+   {
+    "action": "",
+    "due": "2026-10-18",
+    "id": "sweep-cash",
+    "notes": "Follow the account order in your strategy. You make the transfer.",
+    "risk": "money",
+    "service": "",
+    "title": "Invest $5,362.50 of the $32,310.00 above the reserve now; keep $26,947.50 for later months"
+   },
+   {
+    "action": "",
+    "due": "2026-10-23",
+    "id": "paydown-test-flat-2026-10",
+    "notes": "Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement.",
+    "risk": "money",
+    "service": "",
+    "title": "Pay Test Flat 2% down to $750.00"
+   },
+   {
+    "action": "",
+    "due": "2026-10-23",
+    "id": "paydown-test-grocery-2026-10",
+    "notes": "Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement.",
+    "risk": "money",
+    "service": "",
+    "title": "Pay Test Grocery 4% down to $450.00"
+   },
+   {
+    "action": "",
+    "due": "2026-11-01",
+    "id": "credit-scores-monthly",
+    "notes": "",
+    "risk": "read",
+    "service": "",
+    "title": "Check both credit scores (Equifax and TransUnion)"
+   },
+   {
+    "action": "",
+    "due": "2026-11-02",
+    "id": "monthly-review-2026-11",
+    "notes": "Run: bin/cashcast review. Import: add last month's exports to your inbox, run `bin/cashcast import`. Statements: every card closed at or under its target and was paid in full. Bank minimums: no monthly fee was charged; top accounts back up to their keep amounts.",
+    "risk": "read",
+    "service": "",
+    "title": "Monthly money review (5 minutes)"
+   },
+   {
+    "action": "",
+    "due": "2027-03-01",
+    "id": "rrsp-deadline",
+    "notes": "The contribution itself is a transfer you make.",
+    "risk": "money",
+    "service": "",
+    "title": "Decide your RRSP contribution for 2026 (deadline 2027-03-01)"
+   },
+   {
+    "action": "",
+    "due": "2027-04-30",
+    "id": "tax-filing-2026",
+    "notes": "Self-employed: file by June 15, but pay any balance by April 30.",
+    "risk": "read",
+    "service": "",
+    "title": "File your 2026 tax return"
+   },
+   {
+    "action": "",
+    "due": "2027-05-16",
+    "id": "mortgage-reports",
+    "notes": "",
+    "risk": "read",
+    "service": "",
+    "title": "Pull Equifax and TransUnion reports; dispute errors"
+   },
+   {
+    "action": "product-change-card",
+    "due": null,
+    "id": "downgrade-test-costly",
+    "notes": "Redeem the cash back first. Call the issuer; keep the same limit.",
+    "risk": "settings",
+    "service": "",
+    "title": "Product-change Test Costly to a no-fee card before its annual fee posts"
+   }
+  ],
+  "today": "2026-10-18",
+  "user": {
+   "display": "Alex",
+   "name": "alex",
+   "province": "ON"
+  }
+ },
+ "users": [
+  {
+   "display": "Alex",
+   "name": "alex",
+   "province": "ON",
+   "ready": true
+  }
+ ]
+}

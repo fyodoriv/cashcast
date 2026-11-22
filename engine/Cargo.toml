@@ -1,0 +1,23 @@
+[package]
+name = "cashcast-engine"
+version = "0.2.0"
+edition = "2024"
+description = "Cashcast engine: reads bank and app exports locally and prints only aggregates."
+publish = false
+
+[dependencies]
+aes-gcm = "0.10"
+calamine = { version = "0.37.0", default-features = false, features = ["dates"] }
+chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
+csv = "1.4.0"
+getrandom = "0.2"
+plist = { version = "1", default-features = false }
+quick-xml = "0.42"
+regex = { version = "1.13", default-features = false, features = ["std", "unicode", "perf"] }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+rust_decimal = "1.43.0"
+rust_xlsxwriter = { version = "0.102.0", default-features = false }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+toml = { version = "1.1.6", features = ["preserve_order"] }
+zip = { version = "9.0", default-features = false, features = ["deflate"] }

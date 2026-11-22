@@ -1,0 +1,172 @@
+{
+  "field": {
+    "m-bc751a63": {
+      "date": "2026-10-26",
+      "errors": 0,
+      "first_day": null,
+      "machine": "m-bc751a63",
+      "median_run_ms": null,
+      "moneywiz_rows_added": 0,
+      "ok_runs": 0,
+      "runs": 0,
+      "tasks_done_elsewhere": 0
+    }
+  },
+  "metrics": {
+    "connectors": {
+      "command": "ls connectors/*.toml",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 13
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "services",
+      "value": 13
+    },
+    "e2e_step_median_seconds": {
+      "command": "median passing e2e step in .metrics/events.jsonl",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 29.0
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "s",
+      "value": 29.0
+    },
+    "e2e_tests": {
+      "command": "run_test cases in tests/e2e/us-*.sh",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 44
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "tests",
+      "value": 44
+    },
+    "engine_tests": {
+      "command": "count of #[test] in engine/",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 86
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "tests",
+      "value": 86
+    },
+    "forecast_tests": {
+      "command": "count of def test_ in forecast/",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 10
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "tests",
+      "value": 10
+    },
+    "gate_step_pass_rate": {
+      "command": "scripts/check.sh steps in .metrics/events.jsonl",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-19",
+          "value": 96.3
+        },
+        {
+          "date": "2026-10-22",
+          "value": 100.0
+        },
+        {
+          "date": "2026-10-25",
+          "value": 94.4
+        },
+        {
+          "date": "2026-10-26",
+          "value": 98.6
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "%",
+      "value": 98.6
+    },
+    "leak_canary_files": {
+      "command": "test files that plant canary strings",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 33
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "test files",
+      "value": 33
+    },
+    "sourced_facts": {
+      "command": "cashcast knowledge check",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 179
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "facts",
+      "value": 179
+    },
+    "stale_fact_files": {
+      "command": "cashcast knowledge check",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 0
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "files",
+      "value": 0
+    },
+    "unit_tests": {
+      "command": "count of #[test] in engine/src",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 613
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "tests",
+      "value": 613
+    },
+    "web_tests": {
+      "command": "count of it(/test( in web/src",
+      "date": "2026-10-26",
+      "history": [
+        {
+          "date": "2026-10-26",
+          "value": 16
+        }
+      ],
+      "kind": "local run, 2026-10-26, macOS arm64",
+      "unit": "tests",
+      "value": 16
+    }
+  }
+}

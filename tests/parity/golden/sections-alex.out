@@ -1,0 +1,405 @@
+strategy sections alex
+=== cashback
+## Cash back: where to pay
+
+| Spending | Per year | Card (in order) | Net rate |
+|---|---|---|---|
+| rent | $36,000.00 | Test Grocery 4% ($24,040.00) → Test Flat 2% ($11,960.00) | 2.50% / 0.50% |
+| other | $28,440.00 | Test Flat 2% | 2% |
+| recurring | $960.00 | Test Grocery 4% | 4% |
+
+- Gross cash back: **$1,808.00** a year (2.76% of card-eligible spend).
+- Card fees not rebated: $150.00. Rent service fees: $540.00. Memberships: $150.00.
+- **Net: $968.00 a year.**
+- Rent rule (count charges, no math): Test Grocery 4% × 8 → Test Flat 2% × 4 per cap year, starting at each card's cap reset.
+
+task keep-active-test-costly | Put one small subscription on Test Costly so it never sits idle | None | Long-idle cards can be closed by the issuer, which shortens credit history. | settings |  | 
+=== banking
+## Bank accounts: hold the minimum or pay the fee
+
+Cash is valued at 2% a year (set by `goals.cash_rate`). Holding a minimum costs that rate minus what the account pays.
+
+| Account | Fee/month | Minimum | Keep | Interest | Holding costs | Fee + rebate lost | Break-even | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| Test Bank Package | $30.95 | $6,000.00 | $6,500.00 | 0% | $120.00 | $491.40 | 8.19% | hold the minimum |
+
+- Cash held at bank minimums: $6,500.00 (counts toward the emergency fund).
+- Minimums are usually the balance at the end of **every** day; one day below means the full monthly fee.
+- Money moves in before it moves out: transfer first, then pay the card the same day.
+
+=== credit
+## Credit score: statement targets and pay-down dates
+
+| Card | Limit | Target at close | Keep balance under (9%) | Usual use if not paid early | Pay down by |
+|---|---|---|---|---|---|
+| Test Flat 2% | $25,000.00 | $750.00 (3%) | $2,250.00 | 13.47% | Oct 23 (closes Oct 24) |
+| Test Grocery 4% | $15,000.00 | $450.00 (3%) | $1,350.00 | 13.89% | Oct 23 (closes Oct 25) |
+| Test Costly | $5,000.00 | $50.00 (1%) | $450.00 | 0% | Oct 16 (closes Oct 18) |
+
+- Combined: $1,250.00 reported on $45,000.00 of limits (2.78%).
+- Every card autopays its **full statement balance** from a chequing account: no interest, perfect history.
+- Never close an old card; product-change it to a no-fee version to keep its age and limit.
+- Mortgage in about 10 months: no new credit or hard pulls from now; pull both bureau reports 3 months before and dispute errors.
+
+task paydown-test-flat-2026-10 | Pay Test Flat 2% down to $750.00 | 2026-10-23 | Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement. | money |  | 
+task paydown-test-grocery-2026-10 | Pay Test Grocery 4% down to $450.00 | 2026-10-23 | Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement. | money |  | 
+task paydown-test-costly-2026-10 | Pay Test Costly down to $50.00 | 2026-10-16 | Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement. | money |  | 
+task mortgage-reports | Pull Equifax and TransUnion reports; dispute errors | 2027-05-16 |  | read |  | 
+task credit-scores-monthly | Check both credit scores (Equifax and TransUnion) | 2026-11-01 |  | read |  | 
+=== tax
+## Tax: rates and moves
+
+- Estimated 2026 income tax on $120,000.00: $27,852.76 (average 23.21%, marginal **43.41%**).
+- Capital gains: half is taxable, so a $1,000 gain costs about $217.05.
+- Payroll contributions on employment income: CPP/QPP $4,646.45, EI $1,123.07.
+- Using all RRSP room ($20,000.00) cuts tax by about **$7,082.21** (35.41% back on each dollar on average: below your 43.41% top rate, because the deduction reaches lower brackets).
+- RRSP contributions for 2026 (window Mar 2, 2026 to Mar 1, 2027): **$0.00** (you $0.00, employer $0.00).
+- No RRSP contributions found. Add your Sun Life transaction history to the inbox (connectors show sunlife), or set `[room] rrsp_other` for contributions no export shows.
+- Limit $20,000.00: **$20,000.00 left**.
+- Within the limit: no contributions so far in this window (to Mar 1, 2027).
+
+task rrsp-deadline | Decide your RRSP contribution for 2026 (deadline 2027-03-01) | 2027-03-01 | The contribution itself is a transfer you make. | money |  | 
+task tax-filing-2026 | File your 2026 tax return | 2027-04-30 | Self-employed: file by June 15, but pay any balance by April 30. | read |  | 
+=== reserve
+## Cash reserve and where new money goes
+
+- Monthly spending: $2,450.00.
+- Emergency fund: **$7,350.00** (3 months). Keep it in cash or a high-interest account.
+- Monthly float: $2,450.00 so card payments never bounce.
+- Invest anything above **$9,800.00** of total cash.
+- Cash now: $73,447.28 → **$63,647.28 can be invested**.
+  - Includes Wise CAD: $75.25.
+  - Includes Wise USD: 1,234.50 USD = $1,760.03 CAD (Bank of Canada 1.4257, 2026-11-13).
+  - Includes Kraken CAD: $12.00.
+
+Order for new money:
+1. FHSA (room $8,000.00): deductible now, tax-free out for a first home.
+2. RRSP (room $20,000.00): deduction at your 43.41% marginal rate.
+3. TFSA (room $7,000.00): tax-free growth, withdraw any time.
+4. Non-registered: after registered room is full.
+- Down-payment money needed within about 2 years stays in cash or GICs, not stocks. The RRSP Home Buyers' Plan needs contributions to sit 90 days before withdrawal.
+
+task sweep-cash | Invest $63,647.28 of cash above the reserve | 2026-10-18 | Follow the account order in your strategy. You make the transfer. | money |  | 
+=== foreign
+## Foreign cash: Wise USD and other currencies
+
+*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. Check facts marked 'estimate' before you act.*
+
+| Balance | Amount | CAD per unit | In CAD | Counted in cash |
+|---|---|---|---|---|
+| Wise CAD | 75.25 CAD | 1.0000 (None) | $75.25 | yes |
+| Wise USD | 1,234.50 USD | 1.4257 (2026-11-13) | $1,760.03 | yes |
+| Kraken CAD | 12.00 CAD | 1.0000 (None) | $12.00 | yes |
+
+**What fits US-dollar cash:**
+- Keep it in USD for USD spending. Every conversion costs a fee or a spread, so money that will be spent in US dollars, or invested in US-listed ETFs, stays in US dollars.
+- US-listed ETFs in an RRSP can be bought with these dollars directly, with no conversion. The Canada-US tax treaty exempts dividends from US-listed ETFs held directly in an RRSP or RRIF from the 15% US withholding tax. A TFSA and Canadian-listed funds of US stocks do not get this exemption. You have $20,000.00 of RRSP room.
+
+**If you convert it to CAD** ($1,760.03):
+- Wise: about $8.10 (0.46% fee), same day.
+- Norbert's gambit: about $20.88 (trades and journal fee about $20.00, spread 0.05%), 3 business days. Buy DLR in Canadian dollars, ask the broker to journal it to DLR.U, then sell it for US dollars (reverse it for USD to CAD). The cost is mostly fixed (trades and a journal fee), so it wins on larger amounts.
+- Break-even: Norbert's gambit is cheaper above about $4,878.05. For this amount: **Wise**.
+
+**Tax checks:**
+- T1135: foreign cash is $1,760.03 of the $100,000.00 threshold (1.76%). File Form T1135 when the total cost of specified foreign property is more than $100,000 CAD at any time in the year. Foreign bank deposits and US shares in non-registered accounts count. RRSP, RRIF and TFSA holdings do not. Ask Wise which entity holds your balance and where: funds held outside Canada count toward the threshold. When in doubt, count them.
+- Interest: Interest earned on a foreign-currency balance (for example Wise Interest on USD) is taxable in Canada. Report it in Canadian dollars on line 12100, converted at the Bank of Canada rate on the day it was paid.
+
+=== interest
+## Interest on cash: what each balance earns
+
+| Where | Balance (CAD) | Rate | Interest a year |
+|---|---|---|---|
+| Wise CAD | $75.25 | 2.22% | $1.67 |
+| Wise USD | $1,760.03 | 3.40% | $59.84 |
+| Kraken CAD | $12.00 | 0% | $0.00 |
+| Test Bank Package | $6,500.00 (keep) | 0% | $0.00 |
+
+- Interest a year at today's rates: **$61.51**.
+- Highest CAD rate you hold: **Wise CAD at 2.22%**. Idle cash above each keep earns the most there.
+- Your emergency fund ($7,350.00) there earns about $163.17 a year.
+- Best no-minimum rate in the catalog: EQ Bank Personal Account at 2.75%. Checked 2026-10-19 in a browser on the issuer page. 2.75% when direct-deposited pay totals $2,000+/month (lower base rate otherwise, not shown on the page); no monthly fees or minimum balance.
+- Wise Interest: variable rates, paid monthly, after you opt in in the Wise app. Wise keeps a portion of the interest to cover costs. Rates as of 2026-02-25 on the issuer page.
+- Tax: Interest earned on a foreign-currency balance (for example Wise Interest on USD) is taxable in Canada. Report it in Canadian dollars on line 12100, converted at the Bank of Canada rate on the day it was paid. CAD interest goes on the same line.
+
+=== crypto
+## Crypto: market value from your exchanges
+
+*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. Check facts marked 'estimate' before you act.*
+
+| Asset | Amount | CAD price (date) | Value | Cost (holdings) |
+|---|---|---|---|---|
+| Kraken BTC | 0.0123 | $128,313.00 (2026-10-16) | $1,578.25 | unknown |
+| Kraken ZZCANARY | 3 | no price | — | — |
+
+- Crypto at market: **$1,578.25**. It is never counted as cash in the reserve.
+- No price for Kraken ZZCANARY: not in the total.
+- Share of cash plus crypto: 2.10%.
+
+=== invest
+## Long-term investing: core, placement and screen
+
+*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. Check facts marked 'estimate' before you act.*
+
+**Core (growth, about 80% stocks):** one diversified, low-fee fund does most of the work.
+- XIC: iShares Core S&P/TSX Capped Composite Index ETF, MER 0.06%. Broad Canadian stocks at very low cost. Eligible dividends get the dividend tax credit in a taxable account.
+- XUU: iShares Core S&P U.S. Total Market Index ETF, MER 0.07%. Whole US market in CAD. Holds US-listed ETFs, so two layers of withholding issue in RRSP; fine in TFSA.
+- VFV: Vanguard S&P 500 Index ETF, MER 0.08%. Cheap S&P 500 in CAD. Holds US shares directly, so 15% US withholding is lost in TFSA/RRSP (recoverable only in non-registered).
+
+**Where each asset goes:**
+- US-listed US equity ETFs (VTI, SCHD, VYM) → RRSP: The Canada-US treaty exempts RRSPs from the 15% US dividend withholding. TFSAs and RESPs are not exempt.
+- Canadian-listed US equity ETFs (VFV, XUU, VUN) → TFSA: Withholding is lost in TFSA and RRSP alike; the cost is small (about 0.2%/yr). In non-registered you can claim the foreign tax credit.
+- Canadian equity (XIC, VDY) → non_registered: Eligible Canadian dividends get the dividend tax credit only in a taxable account. Also fine in a TFSA.
+- Bonds and GICs (ZAG, XBB) → RRSP: Interest is taxed at your full marginal rate; shelter it first.
+- Highest expected growth (all-equity ETFs) → TFSA: Tax-free growth compounds best on the assets that grow most.
+- All-in-one ETFs (XEQT, VEQT, XGRO, VGRO) → any: Simplicity beats small location gains for most people. Hold the same fund everywhere and rebalance by contribution.
+- Short-term cash (CASH, ZMMK, HISA) → TFSA: Interest is fully taxable; a TFSA shelters it and keeps it withdrawable.
+
+**Market value of your accounts** (recorded from their pages):
+
+| Account | Bucket | Value | Recorded |
+|---|---|---|---|
+| Wealthsimple RRSP | RRSP | $2,500.50 | <NOW> |
+| Wealthsimple TFSA | TFSA | $7.00 | <NOW> |
+| Wealthsimple USD | Non-registered | $14.26 | <NOW> |
+| Etrade TFSA | TFSA | $5.00 | <NOW> |
+
+- Total: **$2,526.76** (Non-registered $14.26, RRSP $2,500.50, TFSA $12.00).
+- With crypto from your exchanges ($1,578.25): $4,105.01.
+
+**Watchlist screen** (rules pass / total; a high score is not a recommendation):
+
+| Symbol | Score | Passing rules | Price |
+|---|---|---|---|
+| EMPL | 5/5 | P/E between 0 and 30; Profit margin ≥ 10%; Return on equity ≥ 12%; Revenue growing year over year; Beta ≤ 1.5 | — |
+| XEQT | 1/1 | MER 0.19% ≤ 0.25% | — |
+
+Live prices and fundamentals: run `bin/cashcast strategy --market` after the owner grants `net:market-data` (only ticker symbols are sent).
+
+=== invest_plan
+## Investment moves: ranked, with evidence
+
+**Answer: do move 1.** Move $63,647 above your reserve to a higher-rate safe account you can withdraw in time (first do the steps in move 1). Gain until you need it: $60 to $120 a year. *Not personal advice: you decide.*
+
+*Education and arithmetic on your own data, not personal financial advice. This assistant is not a licensed financial advisor. No stock picks, no market timing: every gain below is a range from long-run planning assumptions, not a forecast. No provider pays for any recommendation. The ranking is fixed rules in code; chat explanations come from an AI model and can be wrong.*
+
+Question any move: say "challenge `<id>`" (skill `invest-challenge`). Override one in profile.toml under `[[invest.overrides]]` with `move`, `reason` and an optional `until` date; the plan respects it.
+
+| # | Move | Long-run average gain a year (range, not next year) | One-time cost | Task |
+|---|---|---|---|---|
+| 1 | Keep the $63,647 above your reserve safe, at the best rate (needed in about 10 months) (`cash-drag`) | $60 to $120 a year | — | yes |
+| 2 | Move $14 from your taxable account into TFSA room (`fill-room`) | $0 to $0 a year | — | no |
+| 3 | Do nothing (`do-nothing`) | $0 (baseline) | — | no |
+
+### 1. Keep the $63,647 above your reserve safe, at the best rate (needed in about 10 months) (`cash-drag`)
+
+- **Do:** Move $63,647 above your reserve to a higher-rate safe account you can withdraw in time; if it is for a first home, put up to $8,000 of it in your FHSA (First Home Savings Account), in savings you can withdraw in time inside it
+- **Gain vs. doing nothing:** $60 to $120 a year.
+- **Why:** You need this money within 10 months, too soon for stocks. A high-interest account, GIC (a deposit with a fixed rate and term) or cash ETF pays about 2.4% versus your 2%. If it is for a first home, up to $8,000 of it can sit in your FHSA in the same safe holdings: the contribution is deductible (about $3,473 less tax once, at your marginal rate (the tax on your next dollar of income)) and a withdrawal for the home is tax-free.
+- **Risk:** GICs lock money until maturity; cash ETFs are not CDIC (the federal deposit insurance)-insured.
+- **Assumes:** After tax at your marginal rate, earned for about 10 months, not a full year. Safe rates near 2.4% (planning assumption; low end half of the gap).
+- **Assumes:** The FHSA tip applies only if this money is for a first home.
+- **Strongest objection:** Markets can fall about 42% in a bad year (estimate, `one-year-drop`); money invested now may be needed before it recovers.
+- **Evidence:**
+  - `short-horizon` (heuristic): Money you need within about 5 years (a down payment, say) stays in safe places: high-interest savings, GICs or cash ETFs. Stocks can take years to recover from a fall. [source](https://www.canada.ca/en/financial-consumer-agency/services/savings-investments/investing-basics.html), as of 2026-11-01, review by 2027-04-30.
+  - `cash-rate-capture` (heuristic): Low end of the gain from a safe account: assume you capture only half the gap between the best safe rate and your current rate (rates change, money moves late). A rule of thumb used only for the low end of a range. No external source: a judgment call, as of 2026-11-09, review by 2027-04-30.
+  - `one-year-drop` (estimate): Global stocks can fall about 40% in one calendar year: the MSCI ACWI lost about 42% (net, USD) in 2008. Money you need within a few years does not belong in stocks. [source](https://www.msci.com/documents/1296102/1636401/ACWI+factsheet/d5d4e6b0-3957-4938-a4aa-dbc956ae93af), as of 2026-11-01, review by 2027-04-30.
+  - `pag-short-term` (verified): Long-run planning assumption for cash and short-term deposits: 2.4% a year. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-04-16, review by 2027-04-30.
+  - `fhsa` (verified): A First Home Savings Account gives a first-time home buyer $8,000 of room in the first year, then $8,000 a year; unused room carries forward, but only up to $8,000, so the most you can add in one year is $16,000, up to $40,000 for life. Room starts only once the account is open. Contributions are generally deductible, and a qualifying withdrawal to buy a first home is tax-free when all its conditions are met. [source](https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account.html), as of 2026-11-09, review by 2027-04-30.
+  - `tax-rules` (verified): Canada personal income tax 2026: capital gains inclusion rate and TFSA (Tax-Free Savings Account), RRSP (Registered Retirement Savings Plan) and FHSA limits. [source](https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html), as of 2026-10-19, review by 2027-01-31.
+  - `investing-data` (verified): Fund fees (MERs) and tickers in knowledge/data/investing.toml. [source](https://www.blackrock.com/ca/investors/en/products/309480/ishares-core-equity-etf-portfolio), as of 2026-10-19, review by 2027-04-30.
+
+### 2. Move $14 from your taxable account into TFSA room (`fill-room`)
+
+- **Gain vs. doing nothing:** $0 to $0 a year.
+- **Why:** Growth in a TFSA is never taxed; in a taxable account it is.
+- **Risk:** None from markets (same investments, new account). Room used now comes back only the next calendar year after a withdrawal.
+- **Cost:** Selling first realizes gains; their tax is unknown without each holding's market price ([invest.prices]).
+- **Assumes:** Your mix returns 3.8% to 7.8% a year; your marginal rate stays 43.4%.
+- **Assumes:** Low end: gains deferred for years. High end: gains realized every year.
+- **Strongest objection:** Registered room never expires; moving money in now only helps if you will not need it back soon. Weakest evidence: `return-band` is a heuristic only.
+- **Evidence:**
+  - `tfsa-shelter` (verified): Growth in a TFSA is never taxed. In a non-registered account, half of each realized gain is taxed at your marginal rate and interest is fully taxed every year. [source](https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4466/tax-free-savings-account-tfsa-guide-individuals.html), as of 2026-10-19, review by 2027-04-30.
+  - `pag-equity` (verified): Long-run planning assumption for a global all-equity mix: about 6.5% a year before fees. By region: Canadian stocks 6.3%, US stocks 6.4%, international developed stocks 6.6%, emerging-market stocks 7.5%. A mix like VEQT (about 46% US, 30% Canada, 18% international developed, 7% emerging, Sep 30 2026) blends to 6.5%. For projections of 10+ years, not a forecast for any one year. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-11-14, review by 2027-04-30.
+  - `return-band` (heuristic): Width of the range around each return assumption: plus or minus 2 points a year. Nobody knows long-run returns; this wide band is a judgment call to keep ranges honest, not a sourced number. No external source: a judgment call, as of 2026-11-01, review by 2027-04-30.
+  - `pag-fixed-income` (verified): Long-run planning assumption for bonds: 3.2% a year before fees. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-04-16, review by 2027-04-30.
+  - `gain-deferral-share` (heuristic): Low end of yearly tax drag on stock gains in a taxable account: about half of the gains are taxed each year when most gains are deferred for years. A rule of thumb used only for the low end of a range. No external source: a judgment call, as of 2026-11-09, review by 2027-04-30.
+  - `tax-rules` (verified): Canada personal income tax 2026: capital gains inclusion rate and TFSA, RRSP and FHSA limits. [source](https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets/current-year.html), as of 2026-10-19, review by 2027-01-31.
+- Below your simplicity threshold ($50 a year): no task.
+
+### 3. Do nothing (`do-nothing`)
+
+- **Gain vs. doing nothing:** $0 (baseline).
+- **Why:** Zero effort, zero trading cost, no new tax. It is the baseline every move must beat.
+- **Risk:** Your money keeps today's risks: the $63,647 above your reserve earns -0.1% a year after inflation (-$64).
+- **Strongest objection:** Idle cash and drift compound quietly; doing nothing for years has a real cost.
+- **Evidence:**
+  - `pag-inflation` (verified): Long-run planning assumption for inflation: 2.1% a year. [source](https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners), as of 2026-04-16, review by 2027-04-30.
+
+## What this plan does not know
+
+- Your stock/bond mix: only 0% of your investments have a known asset class, so drift from your 80% target is not checked.
+- Today's Bank of Canada rates: none is fresh, so safe-rate and inflation numbers use the yearly planning assumptions. Run `bin/cashcast knowledge refresh`.
+- Debt at 8% a year or more: not recorded, so the debt-first rule is not checked. Set `high_interest_debt` under [invest] in profile.toml (0 when you have none).
+
+Target mix: 80% stocks, from your risk level (growth, a rule of thumb from `risk-equity-shares`). Agents never move money: each task is yours to do.
+Made on 2026-10-18; oldest evidence as of 2016-08-01.
+
+task invest-cash-drag | Move $63,647 above your reserve to a higher-rate safe account you can withdraw in time; if it is for a first home, put up to $8,000 of it in your FHSA, in savings you can withdraw in time inside it | 2026-10-18 | From `bin/cashcast invest-plan` (cash-drag). Gain $60 to $120 a year, a long-run range, not a forecast. Cost: none known. Risk: GICs lock money until maturity; cash ETFs are not CDIC-insured. Not personal advice: you decide. You make the trade. Question it with the invest-challenge skill. | money |  | 
+=== forecast
+## Balance forecast
+
+- 15 months from Oct 2026: income $99,000.00, expenses $36,750.00.
+- **Can invest $126,450.00** while keeping the $7,400.00 floor.
+- Lowest month-end cash: $7,400.00 in Oct 2026.
+- Full table and editable workbook: `bin/cashcast forecast`.
+
+=== payments
+## Payments analysis
+
+Last 12 complete months; $2,450.00 per month in total.
+
+| Category | Per month | Share | Trend (3 vs 9 months) | Year over year | Kind |
+|---|---|---|---|---|---|
+| Housing | $1,800.00 | 73.47% | 0% | — | fixed |
+| Food | $570.00 | 23.27% | 0% | — | fixed |
+| Bills | $80.00 | 3.27% | 0% | — | fixed |
+- Fixed-like costs: $2,450.00 per month. These are the ones worth renegotiating once a year.
+
+### Recurring payments
+
+4 payees charge you on a schedule: $29,400.00 a year in total. Your private `data/review.md` shows which payee each one is.
+
+| Payment | Category | Every | Usual charge | Charges | Last seen | Per year |
+|---|---|---|---|---|---|---|
+| Payments #1 | Housing | month | $1,800.00 | 12 | 2026-09-01 | $21,600.00 |
+| Payments #2 | Food | month | $450.00 | 12 | 2026-09-02 | $5,400.00 |
+| Payments #3 | Food | month | $120.00 | 12 | 2026-09-09 | $1,440.00 |
+| Payments #4 | Bills | month | $80.00 | 12 | 2026-09-05 | $960.00 |
+
+=== spending
+## Spending checkup
+
+### Is that more than usual?
+
+- 2026-09: every category was within 25% of its usual month.
+
+### Do I spend more than I earn?
+
+- No. In the last 12 months you earned $78,000.00 and spent $29,400.00: $48,600.00 left over.
+
+### How much interest and fees did I pay?
+
+- None found in the last 12 months.
+- APR is the yearly interest rate on a balance you carry. At 20.99% APR, a $1,000 card balance kept for a year costs about $209.90. Pay the full statement balance each month and it costs $0.
+- Charges billed twice, new subscriptions and price rises: `bin/cashcast charges`.
+
+=== budget
+## Budget vs actual
+
+Month Sep 2026 and the year so far (9 months).
+
+| Category | Budget/month | Actual | Over/under | Year so far | Year budget | Used |
+|---|---|---|---|---|---|---|
+| Food | $700.00 | $570.00 | -$130.00 | $5,130.00 | $8,400.00 | 61.07% |
+
+**Budget proposals** (12-month average, rounded up; copy into `[budget]` to adopt):
+
+- "Housing" = 1800
+- "Bills" = 80
+
+=== alternatives
+## Alternatives finder
+
+**Verdict: wait.** Your goals say no new credit now (mortgage or credit-building), so skip these for now; the top two are listed for later.
+
+**Cards that would add the most net cash back a year** (only gains above your $50.00 simplicity threshold; smaller ones are not worth the complexity):
+- MBNA Rewards World Elite Mastercard: +$182.03 a year (fee $120.00)
+
+**Cards that cost more than they earn you:**
+- Test Costly: -$150.00 a year after its $150.00 fee → product-change to a no-fee card from the same bank (keeps the account age and limit); redeem its cash back first.
+
+**test-rent plan:** the membership costs $150.00 a year and saves $0.00 in fees, so you lose $150.00 a year (before any perks like credit reporting).
+
+**Recurring payments to review** ($7,800.00 a year in total):
+- Review Payments #2: Food, monthly, $5,400.00 a year. Still used? Keep it, move to a cheaper or shared plan, or cancel it.
+- Review Payments #3: Food, monthly, $1,440.00 a year. Still used? Keep it, move to a cheaper or shared plan, or cancel it.
+- Review Payments #4: Bills, monthly, $960.00 a year. Still used? Keep it, move to a cheaper or shared plan, or cancel it.
+
+task downgrade-test-costly | Product-change Test Costly to a no-fee card before its annual fee posts | None | Redeem the cash back first. Call the issuer; keep the same limit. | settings |  | product-change-card
+task recurring-review-2026-10 | Review 3 recurring payments (about $7,800.00 a year) and cancel the ones you no longer use | 2026-10-18 | Your private data/review.md shows which payee each 'Payments #n' is. You cancel with each merchant. | read |  | 
+=== review
+## Monthly review (5 minutes)
+
+Next review: **Mon, Nov 2**.
+
+1. Import: add last month's exports to your inbox, run `bin/cashcast import`.
+2. Statements: every card closed at or under its target and was paid in full.
+3. Bank minimums: no monthly fee was charged; top accounts back up to their keep amounts.
+4. Rent charges: count this cap year's charges per card; switch the rent card when a count is used up.
+5. Credit scores: check Equifax and TransUnion; any drop → find the cause.
+6. Cash sweep: invest cash above the reserve, in the account order of your strategy.
+7. Cash back: redeem balances of $25+ as a statement credit.
+8. Budget: look at the categories over budget; adjust the budget or the habit.
+
+task monthly-review-2026-11 | Monthly money review (5 minutes) | 2026-11-02 | Run: bin/cashcast review. Import: add last month's exports to your inbox, run `bin/cashcast import`. Statements: every card closed at or under its target and was paid in full. Bank minimums: no monthly fee was charged; top accounts back up to their keep amounts. | read |  | 
+task keep-active-test-costly | Put one small subscription on Test Costly so it never sits idle | None | Long-idle cards can be closed by the issuer, which shortens credit history. | settings |  | 
+task paydown-test-flat-2026-10 | Pay Test Flat 2% down to $750.00 | 2026-10-23 | Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement. | money |  | 
+task paydown-test-grocery-2026-10 | Pay Test Grocery 4% down to $450.00 | 2026-10-23 | Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement. | money |  | 
+task paydown-test-costly-2026-10 | Pay Test Costly down to $50.00 | 2026-10-16 | Transfer the card's current balance minus the target to its bank, then pay the card. Autopay still pays the full statement. | money |  | 
+task mortgage-reports | Pull Equifax and TransUnion reports; dispute errors | 2027-05-16 |  | read |  | 
+task credit-scores-monthly | Check both credit scores (Equifax and TransUnion) | 2026-11-01 |  | read |  | 
+task rrsp-deadline | Decide your RRSP contribution for 2026 (deadline 2027-03-01) | 2027-03-01 | The contribution itself is a transfer you make. | money |  | 
+task tax-filing-2026 | File your 2026 tax return | 2027-04-30 | Self-employed: file by June 15, but pay any balance by April 30. | read |  | 
+task sweep-cash | Invest $63,647.28 of cash above the reserve | 2026-10-18 | Follow the account order in your strategy. You make the transfer. | money |  | 
+task invest-cash-drag | Move $63,647 above your reserve to a higher-rate safe account you can withdraw in time; if it is for a first home, put up to $8,000 of it in your FHSA, in savings you can withdraw in time inside it | 2026-10-18 | From `bin/cashcast invest-plan` (cash-drag). Gain $60 to $120 a year, a long-run range, not a forecast. Cost: none known. Risk: GICs lock money until maturity; cash ETFs are not CDIC-insured. Not personal advice: you decide. You make the trade. Question it with the invest-challenge skill. | money |  | 
+task downgrade-test-costly | Product-change Test Costly to a no-fee card before its annual fee posts | None | Redeem the cash back first. Call the issuer; keep the same limit. | settings |  | product-change-card
+task recurring-review-2026-10 | Review 3 recurring payments (about $7,800.00 a year) and cancel the ones you no longer use | 2026-10-18 | Your private data/review.md shows which payee each 'Payments #n' is. You cancel with each merchant. | read |  | 
+=== net_total
+## Net total: $77,552
+
+Everything you have minus everything you owe. Higher is better. Every option below is ranked by what it adds to this number, inside your boundaries.
+
+- Trend: first point saved today. The change shows after 30 days.
+
+| Part | CAD |
+|---|---|
+| Cash | $73,447 |
+| Investments | $2,527 |
+| Crypto | $1,578 |
+| **Net total** | **$77,552** |
+
+<details><summary>Each source</summary>
+
+| Source | Part | CAD | Oldest reading |
+|---|---|---|---|
+| Bank accounts | cash | $71,600 | 2026-10-02 |
+| Etrade TFSA | investment | $5 | <NOW> |
+| Kraken BTC | crypto | $1,578 | 2026-10-16 |
+| Kraken CAD | cash | $12 | 2026-10-16 |
+| Wealthsimple Non-registered | investment | $14 | <NOW> |
+| Wealthsimple RRSP | investment | $2,501 | <NOW> |
+| Wealthsimple TFSA | investment | $7 | <NOW> |
+| Wise CAD | cash | $75 | 2026-10-17 |
+| Wise USD | cash | $1,760 | 2026-10-17 |
+
+</details>
+- Not counted yet: Kraken ZZCANARY: no CAD price.
+
+### Your boundaries
+
+- Work: at most 45 hours a week (now: unknown).
+- Cash floor: $9,800 + 5 % margin, from your reserve (emergency fund + float).
+- Risk: at most growth.
+- New debt: at most $0.
+- Home: kept, never sold.
+- Change them in `[boundaries]` of your profile.toml.
+
+### Options, best first
+
+Each option's net total is a long-run planning estimate, not a forecast; investing can lose money. Education and arithmetic on your own data, not personal financial advice.
+
+| # | Option | Net total a year | From |
+|---|---|---|---|
+| 1 | Pay each spending category with the card the cash-back section names | +$194 | cashback |
+| 2 | Keep the $63,647 above your reserve safe, at the best rate (needed in about 10 months) (range $60 to $120 a year; long-run, not a forecast) | +$90 | invest_plan |
+

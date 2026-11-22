@@ -1,0 +1,17 @@
+Transaction history,CANARY Member Name
+Certificate,####CANARY-SL00
+
+Date,Transaction type,Fund name,Units,Unit price,Amount,Contribution source,Plan,Description
+"Jan 15, 2025",Employee contribution,Target Date 2055 Fund,20.0000,12.5000,$250.00,Member,CANARY-SLP1 Group RRSP,CANARY-SL01 payroll
+"Jan 15, 2025",Employer contribution,Target Date 2055 Fund,10.0000,12.5000,$125.00,Employer,CANARY-SLP1 Group RRSP,CANARY-SL02 match
+"Feb 14, 2025",Employee contribution,Canadian Bond Index Fund,25.0000,10.0000,$250.00,Member,CANARY-SLP1 Group RRSP,CANARY-SL03 payroll
+"Feb 14, 2025",Employer contribution,Canadian Bond Index Fund,12.5000,10.0000,$125.00,Employer,CANARY-SLP1 Group RRSP,CANARY-SL04 match
+"Mar 31, 2025",Recordkeeping fee,Target Date 2055 Fund,-0.4000,12.5000,-$5.00,,CANARY-SLP1 Group RRSP,CANARY-SL05 fee
+"Apr 10, 2025",Fund transfer out,Canadian Bond Index Fund,-10.0000,10.5000,-$105.00,Member,CANARY-SLP1 Group RRSP,CANARY-SL06 switch
+"Apr 10, 2025",Fund transfer in,Money Market Fund,105.0000,1.0000,$105.00,Member,CANARY-SLP1 Group RRSP,CANARY-SL07 switch
+"Jun 30, 2025",Interest,Money Market Fund,1.0500,1.0000,$1.05,Member,CANARY-SLP1 Group RRSP,CANARY-SL08 interest
+"Jul 15, 2025",Withdrawal,Money Market Fund,-50.0000,1.0000,-$50.00,Member,CANARY-SLP1 Group RRSP,CANARY-SL09 cash out
+"Aug 01, 2025",Lump-sum contribution,Target Date 2055 Fund,8.0000,12.5000,$100.00,Member,Tax-Free Savings Account,CANARY-SL10 lump sum
+"Sep 30, 2025",CANARY-SL11 special event,Target Date 2055 Fund,1.0000,12.5000,$12.50,Member,CANARY-SLP1 Group RRSP,CANARY-SL11
+CANARY-SL12,Employee contribution,Target Date 2055 Fund,1.0000,12.5000,$12.50,Member,CANARY-SLP1 Group RRSP,CANARY-SL12
+,Closing balance,,,,"$1,234.56",,,CANARY-SL13 total

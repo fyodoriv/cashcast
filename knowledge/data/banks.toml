@@ -1,0 +1,323 @@
+# Chequing accounts and packages: fee waivers by balance and credit-card fee rebates.
+# monthly_fee: CAD per month before any waiver.
+# waive_min_balance: balance that waives the fee (0 = no balance waiver).
+# card_fee_rebate: max yearly credit-card annual-fee rebate in CAD (0 = none).
+# rebate_card_ids: ids from credit_cards.toml that get the rebate (only cards in that file).
+# interest_rate: annual rate as a decimal (0 = none or negligible).
+# Break-even: holding the minimum balance costs (minimum x your other return).
+#   It beats paying the fee when annual_fee / minimum_balance > your other return.
+
+[meta]
+title = "Canadian chequing packages, fee waivers and card rebates"
+as_of = 2026-10-19
+review_by = 2027-01-31
+sources = [
+  "https://www.scotiabank.com/ca/en/personal/bank-accounts/chequing-accounts/ultimate-package.html",
+  "https://www.scotiabank.com/ca/en/personal/bank-accounts/chequing-accounts/preferred-package.html",
+  "https://www.scotiabank.com/ca/en/personal/bank-accounts/chequing-accounts/basic-bank-account.html",
+  "https://www.td.com/ca/en/personal-banking/products/bank-accounts/chequing-accounts/all-inclusive-banking-plan",
+  "https://www.td.com/ca/en/personal-banking/products/bank-accounts/chequing-accounts/unlimited-chequing-account",
+  "https://www.td.com/ca/en/personal-banking/products/bank-accounts/chequing-accounts/every-day-chequing-account",
+  "https://www.cibc.com/en/personal-banking/bank-accounts/chequing-accounts/smart-account.html",
+  "https://wise.com/ca/interest/",
+  "https://www.rbcroyalbank.com/accounts/vip-banking.html",
+  "https://www.rbcroyalbank.com/accounts/signature-no-limit-banking.html",
+  "https://www.wealthsimple.com/en-ca/chequing",
+  "https://www.simplii.com/en/bank-accounts/no-fee-chequing.html",
+]
+
+# ------------------------------------------------------------ Scotiabank
+
+[[accounts]]
+id = "scotia-ultimate-package"
+bank = "Scotiabank"
+name = "Ultimate Package"
+monthly_fee = 30.95
+waive_min_balance = 6000
+min_balance_rule = "6,000 every day of the month, or a 100,000 Total Relationship Balance every day (chequing, savings, GICs, mutual funds)."
+card_fee_rebate = 150
+rebate_card_ids = ["scotia-momentum-visa-infinite", "scotia-passport-visa-infinite"]
+interest_rate = 0
+notes = "Rebate up to 150 once a year on one eligible card (Gold Amex, Passport VI+, Passport VI Privilege, Momentum VI+, Value Visa). Seniors 60+ pay 23.95. Unlimited transactions, free non-Scotia ABMs in Canada. Break-even: 371.40 fee / 6,000 = 6.2% return."
+source = "https://www.scotiabank.com/ca/en/personal/bank-accounts/chequing-accounts/ultimate-package.html"
+confidence = "verified"
+
+[[accounts]]
+id = "scotia-preferred-package"
+bank = "Scotiabank"
+name = "Preferred Package"
+monthly_fee = 16.95
+waive_min_balance = 4000
+min_balance_rule = "4,000 every day of the month."
+card_fee_rebate = 40
+rebate_card_ids = ["scotia-momentum-visa-infinite", "scotia-passport-visa-infinite"]
+interest_rate = 0
+notes = "40 card rebate needs 15,000 of purchases over the 12 statements before the fee and does not apply to the first-year fee. Seniors pay 12.95. Break-even: 203.40 / 4,000 = 5.1%."
+source = "https://www.scotiabank.com/ca/en/personal/bank-accounts/chequing-accounts/preferred-package.html"
+confidence = "verified"
+
+[[accounts]]
+id = "scotia-basic-bank-account"
+bank = "Scotiabank"
+name = "Basic Bank Account"
+monthly_fee = 3.95
+waive_min_balance = 0
+min_balance_rule = "No balance waiver. Free for seniors and some eligible groups (for example Disability Tax Credit recipients)."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0
+notes = "18 transactions per month; Interac e-Transfers included."
+source = "https://www.scotiabank.com/ca/en/personal/bank-accounts/chequing-accounts/basic-bank-account.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ TD
+
+[[accounts]]
+id = "td-all-inclusive"
+bank = "TD"
+name = "All-Inclusive Banking Plan"
+monthly_fee = 30.95
+waive_min_balance = 6000
+min_balance_rule = "6,000 at the end of every day in the month."
+card_fee_rebate = 139
+rebate_card_ids = ["td-cash-back-visa-infinite"]
+interest_rate = 0
+notes = "Yearly rebate up to 139 primary plus 75 for one additional cardholder, on one card (also Aeroplan and First Class Travel cards). Seniors 60+ pay 22.45. Break-even: 371.40 / 6,000 = 6.2%."
+source = "https://www.td.com/ca/en/personal-banking/products/bank-accounts/chequing-accounts/all-inclusive-banking-plan"
+confidence = "verified"
+
+[[accounts]]
+id = "td-unlimited"
+bank = "TD"
+name = "Unlimited Chequing Account"
+monthly_fee = 17.95
+waive_min_balance = 4000
+min_balance_rule = "4,000 at the end of every day in the month."
+card_fee_rebate = 139
+rebate_card_ids = ["td-cash-back-visa-infinite"]
+interest_rate = 0
+notes = "Card rebate is FIRST YEAR ONLY (up to 139, primary cardholder). Seniors pay 11.95. Break-even: 215.40 / 4,000 = 5.4%."
+source = "https://www.td.com/ca/en/personal-banking/products/bank-accounts/chequing-accounts/unlimited-chequing-account"
+confidence = "verified"
+
+[[accounts]]
+id = "td-every-day"
+bank = "TD"
+name = "Every Day Chequing Account"
+monthly_fee = 11.95
+waive_min_balance = 3000
+min_balance_rule = "3,000 at the end of every day in the month."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0
+notes = "25 transactions per month, 1.25 each extra. Seniors pay 8.20. Break-even: 143.40 / 3,000 = 4.8%."
+source = "https://www.td.com/ca/en/personal-banking/products/bank-accounts/chequing-accounts/every-day-chequing-account"
+confidence = "verified"
+
+# ------------------------------------------------------------ CIBC
+
+[[accounts]]
+id = "cibc-smart-tier1"
+bank = "CIBC"
+name = "Smart Account (Tier 1, under 40,000 total balances)"
+monthly_fee = 16.95
+waive_min_balance = 4000
+min_balance_rule = "4,000 end-of-day balance every day of the month in one Smart Account."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0
+notes = "Fee covers up to 3 accounts. Break-even: 203.40 / 4,000 = 5.1%."
+source = "https://www.cibc.com/en/personal-banking/bank-accounts/chequing-accounts/smart-account.html"
+confidence = "verified"
+
+[[accounts]]
+id = "cibc-smart-tier2"
+bank = "CIBC"
+name = "Smart Account (Tier 2, 40,000 to 99,999 total balances)"
+monthly_fee = 0
+waive_min_balance = 40000
+min_balance_rule = "Average monthly balance of 40,000+ across personal CIBC deposits and investments."
+card_fee_rebate = 50
+rebate_card_ids = ["cibc-dividend-visa-infinite"]
+interest_rate = 0
+notes = "Up to 50 rebate for the primary cardholder on an eligible card. CIBC does not list the eligible cards on the page; the Dividend VI link is an assumption."
+source = "https://www.cibc.com/en/personal-banking/bank-accounts/chequing-accounts/smart-account.html"
+confidence = "verified"
+
+[[accounts]]
+id = "cibc-smart-tier3"
+bank = "CIBC"
+name = "Smart Account (Tier 3, 100,000+ total balances)"
+monthly_fee = 0
+waive_min_balance = 100000
+min_balance_rule = "Average monthly balance of 100,000+ across personal CIBC deposits and investments."
+card_fee_rebate = 139
+rebate_card_ids = ["cibc-dividend-visa-infinite"]
+interest_rate = 0
+notes = "Up to 139 primary plus up to 50 each for 3 authorized users. Eligible-card list not shown on the page."
+source = "https://www.cibc.com/en/personal-banking/bank-accounts/chequing-accounts/smart-account.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ RBC
+
+[[accounts]]
+id = "rbc-vip"
+bank = "RBC"
+name = "VIP Banking"
+monthly_fee = 30
+waive_min_balance = 0
+min_balance_rule = "No balance waiver. Value Program rebate can cut the fee to about 17.05 with another RBC product plus one monthly activity."
+card_fee_rebate = 120
+rebate_card_ids = []
+interest_rate = 0
+notes = "Full fee rebate on Avion VI, Avion Platinum, Rewards Visa Preferred, ION+, British Airways VI, WestJet WE, and RBC Cash Back Preferred World Elite (none of these are in credit_cards.toml yet); 120 partial on Avion VI Privilege. One card per account."
+source = "https://www.rbcroyalbank.com/accounts/vip-banking.html"
+confidence = "verified"
+
+[[accounts]]
+id = "rbc-signature-no-limit"
+bank = "RBC"
+name = "Signature No Limit Banking"
+monthly_fee = 16.95
+waive_min_balance = 0
+min_balance_rule = "No balance waiver. Value Program rebate can cut the fee to as low as 4."
+card_fee_rebate = 48
+rebate_card_ids = []
+interest_rate = 0
+notes = "Full rebate on ION+ (48), Signature Rewards and WestJet MC (39); 35 partial on Avion and other premium RBC cards. RBC Cash Back Mastercard has no fee, so no rebate needed."
+source = "https://www.rbcroyalbank.com/accounts/signature-no-limit-banking.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ BMO
+
+[[accounts]]
+id = "bmo-performance"
+bank = "BMO"
+name = "Performance Chequing"
+monthly_fee = 17.95
+waive_min_balance = 4000
+min_balance_rule = "Minimum daily balance of 4,000 all month."
+card_fee_rebate = 40
+rebate_card_ids = ["bmo-cashback-world-elite"]
+interest_rate = 0
+notes = "Checked 2026-10-19 in a browser on the issuer page. $17.95/month or $0 with a $4,000 minimum balance; unlimited transactions; up to $40/yr rebate on an eligible BMO card."
+source = "https://www.bmo.com/en-ca/main/personal/bank-accounts/chequing-accounts/performance/"
+confidence = "verified"
+
+[[accounts]]
+id = "bmo-plus"
+bank = "BMO"
+name = "Plus Chequing"
+monthly_fee = 12.95
+waive_min_balance = 3000
+min_balance_rule = "Minimum daily balance of 3,000 all month."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0
+notes = "Checked 2026-10-19 in a browser on the issuer page. BMO comparison table: Plus is $12.95/month (was recorded as 11.95) or $0 with a $3,000 minimum balance; 25 transactions; no card rebate."
+source = "https://www.bmo.com/en-ca/main/personal/bank-accounts/chequing-accounts/performance/"
+confidence = "verified"
+
+# ------------------------------------------------------------ Wealthsimple
+
+[[accounts]]
+id = "wealthsimple-chequing-core"
+bank = "Wealthsimple"
+name = "Chequing (Core, under 100,000 assets)"
+monthly_fee = 0
+waive_min_balance = 0
+min_balance_rule = "No fees. Tier is set by total Wealthsimple assets."
+card_fee_rebate = 240
+rebate_card_ids = ["wealthsimple-visa-infinite-plus", "wealthsimple-visa-infinite-privilege"]
+interest_rate = 0.0125
+notes = "+0.5% with 2,000+ direct deposit in 30 days. Card fee (20/month) waived only with 4,000+ monthly direct deposit at this tier. CDIC cover up to 1M via partner banks. ATM fees reimbursed."
+source = "https://www.wealthsimple.com/en-ca/chequing"
+confidence = "verified"
+
+[[accounts]]
+id = "wealthsimple-chequing-premium"
+bank = "Wealthsimple"
+name = "Chequing (Premium, 100,000+ assets)"
+monthly_fee = 0
+waive_min_balance = 100000
+min_balance_rule = "100,000+ total assets with Wealthsimple (all accounts)."
+card_fee_rebate = 240
+rebate_card_ids = ["wealthsimple-visa-infinite-plus", "wealthsimple-visa-infinite-privilege"]
+interest_rate = 0.0175
+notes = "100,000+ assets also waives the credit-card fee. +0.5% with 2,000+ direct deposit. Free USD account."
+source = "https://www.wealthsimple.com/en-ca/chequing"
+confidence = "verified"
+
+[[accounts]]
+id = "wealthsimple-chequing-generation"
+bank = "Wealthsimple"
+name = "Chequing (Generation, 500,000+ assets)"
+monthly_fee = 0
+waive_min_balance = 500000
+min_balance_rule = "500,000+ total assets with Wealthsimple."
+card_fee_rebate = 240
+rebate_card_ids = ["wealthsimple-visa-infinite-plus", "wealthsimple-visa-infinite-privilege"]
+interest_rate = 0.0225
+notes = "Top rate; no direct-deposit boost needed."
+source = "https://www.wealthsimple.com/en-ca/chequing"
+confidence = "verified"
+
+# ------------------------------------------------------------ Wise
+
+[[accounts]]
+id = "wise-cad"
+bank = "Wise"
+name = "CAD balance (Wise Interest)"
+monthly_fee = 0
+waive_min_balance = 0
+min_balance_rule = "No fees, no minimum."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0.0222
+notes = "Checked 2026-11-01 on the issuer page (rates as of 2026-02-25). Variable rate, paid monthly, after opting in to Wise Interest; Wise keeps a portion to cover costs. Held by Wise Payments Canada Inc. at partner banks; eligible CAD balances may get CDIC cover up to 100,000. Other currencies: [interest.wise] in foreign_cash.toml."
+source = "https://wise.com/ca/interest/"
+confidence = "estimate"
+
+# ------------------------------------------------------------ online banks
+
+[[accounts]]
+id = "eq-bank-personal"
+bank = "EQ Bank"
+name = "Personal Account"
+monthly_fee = 0
+waive_min_balance = 0
+min_balance_rule = "No fees, no minimum."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0.0275
+notes = "Checked 2026-10-19 in a browser on the issuer page. 2.75% when direct-deposited pay totals $2,000+/month (lower base rate otherwise, not shown on the page); no monthly fees or minimum balance."
+source = "https://www.eqbank.ca/personal-banking/personal-account"
+confidence = "verified"
+
+[[accounts]]
+id = "tangerine-no-fee-chequing"
+bank = "Tangerine"
+name = "No-Fee Daily Chequing Account"
+monthly_fee = 0
+waive_min_balance = 0
+min_balance_rule = "No fees, no minimum."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0.0001
+notes = "Checked 2026-10-19 in a browser on the issuer page. 0.01% on $0-49,999.99; 0.05% from $50,000; 0.10% from $100,000."
+source = "https://www.tangerine.ca/en/rates/chequing-account-rates"
+confidence = "verified"
+
+[[accounts]]
+id = "simplii-no-fee-chequing"
+bank = "Simplii Financial"
+name = "No Fee Chequing Account"
+monthly_fee = 0
+waive_min_balance = 0
+min_balance_rule = "No fees, no minimum."
+card_fee_rebate = 0
+rebate_card_ids = []
+interest_rate = 0.0001
+notes = "Checked 2026-10-19 in a browser on the issuer page. 0.01% on every balance tier."
+source = "https://www.simplii.com/en/bank-accounts/no-fee-chequing.html"
+confidence = "verified"

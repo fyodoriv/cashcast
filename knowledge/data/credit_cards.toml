@@ -1,0 +1,521 @@
+# Canadian credit cards, mostly cash back.
+#
+# earn: category -> cash value per dollar (0.04 = 4%). Points cards are converted
+#   to cash value with the point value stated in `notes`.
+#   Allowed keys: groceries, gas, ev_charging, transit, rideshare, delivery, dining,
+#   entertainment, recurring, streaming, drugstore, travel, foreign, rent, other.
+#   `other` is the base rate and is always present. A missing key earns `other`.
+#   `foreign` is the earn rate on foreign-currency purchases (before fx_fee).
+# rent_rate_from: the date a card's own `rent` rate starts. Rent posted before it
+#   earned like the profile's `[rent] codes_as` and still counts toward that cap.
+# caps: after `limit` dollars of spend in `categories` within `period`, earn `after_rate`.
+#   per_category = true means each listed category has its own limit.
+#   period: card_year (from the card's anniversary: set `cap_reset = "MM-DD"` on the
+#   card in profile.toml), calendar_year, monthly, or statement (from the day after
+#   the statement closes). `bin/cashcast cards now` counts each cap from its period start.
+# fx_fee: foreign transaction fee as a decimal (0.025 = 2.5%).
+# Welcome bonuses change often; they live in notes, not in earn.
+
+[meta]
+title = "Canadian credit cards (cash back focus)"
+as_of = 2026-11-15
+review_by = 2027-01-31
+sources = [
+  "https://www.wealthsimple.com/en-ca/credit-card",
+  "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/momentum-infinite-card.html",
+  "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html",
+  "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-infinite-card",
+  "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-card",
+  "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-infinite-card.html",
+  "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-card.html",
+  "https://www.tangerine.ca/en/products/spending/creditcard/money-back",
+  "https://www.tangerine.ca/en/products/spending/creditcard/world",
+  "https://www.simplii.com/en/credit-cards/cash-back-visa.html",
+  "https://www.rbcroyalbank.com/credit-cards/cardholders/cash-back-updates.html",
+  "https://www.pcfinancial.ca/en/credit-cards/world-elite",
+  "https://www.neofinancial.com/credit-cards/neo-world-elite-mastercard",
+  "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-world-elite-mastercard",
+  "https://www.nbc.ca/personal/mastercard-credit-cards/world-elite.html",
+  "https://www.desjardins.com/en/credit-cards/cash-back-world-elite-mastercard.html",
+  "https://brimfinancial.com/personal",
+]
+
+# ------------------------------------------------------------ fintech
+
+[[cards]]
+id = "wealthsimple-visa-infinite-plus"
+name = "Wealthsimple Visa Infinite +"
+issuer = "Wealthsimple"
+network = "Visa"
+annual_fee = 240
+first_year_fee_waived = false
+fx_fee = 0.0
+min_income_personal = 80000
+earn = { other = 0.02, foreign = 0.02 }
+caps = []
+cap_reset_note = "No category caps."
+insurance = ["purchase", "extended_warranty", "mobile_device"]
+notes = "Fee is 20/month (240/yr). Waived with 100,000+ in individual Wealthsimple assets or a monthly direct deposit of 4,000+ to Wealthsimple chequing. Needs an active Wealthsimple chequing account. Excludes cash-like transactions. Household income alternative: 150,000."
+source = "https://www.wealthsimple.com/en-ca/credit-card"
+confidence = "verified"
+
+[[cards]]
+id = "wealthsimple-visa-infinite-privilege"
+name = "Wealthsimple Visa Infinite Privilege"
+issuer = "Wealthsimple"
+network = "Visa"
+annual_fee = 240
+first_year_fee_waived = false
+fx_fee = 0.0
+min_income_personal = 150000
+earn = { other = 0.02, foreign = 0.02 }
+caps = []
+cap_reset_note = "No category caps."
+insurance = ["purchase", "extended_warranty", "mobile_device", "rental_car", "travel_medical", "trip_cancellation", "trip_interruption", "flight_delay", "baggage"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. 2% on everything, no FX fees, lounge access, car rental and flight-delay cover. $20/month (240/yr) unless you hold $100,000+ with Wealthsimple or direct-deposit $4,000+/month of pay."
+source = "https://www.wealthsimple.com/en-ca/credit-card"
+confidence = "verified"
+
+[[cards]]
+id = "neo-world-elite"
+name = "Neo World Elite Mastercard"
+issuer = "Neo Financial"
+network = "Mastercard"
+annual_fee = 149
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { groceries = 0.05, recurring = 0.04, streaming = 0.04, gas = 0.03, ev_charging = 0.03, other = 0.01 }
+caps = [
+  { categories = ["groceries"], limit = 1000, period = "monthly", per_category = false, after_rate = 0.01 },
+  { categories = ["recurring", "streaming"], limit = 500, period = "monthly", per_category = false, after_rate = 0.01 },
+  { categories = ["gas", "ev_charging"], limit = 1000, period = "monthly", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "Caps reset each month (reviewer data; issuer page does not show caps)."
+insurance = ["purchase"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. $149 fee; 5% groceries, 4% recurring, 3% gas, 1% else; monthly caps from Neo's rates table. FX fee not shown on the page (2.5% is the industry standard; not re-read)."
+source = "https://www.neofinancial.com/credit-cards/neo-world-elite-mastercard"
+confidence = "verified"
+
+[[cards]]
+id = "home-trust-preferred-visa"
+name = "Home Trust Preferred Visa"
+issuer = "Home Trust"
+network = "Visa"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.0
+min_income_personal = 0
+earn = { other = 0.01 }
+caps = []
+cap_reset_note = "No caps."
+insurance = []
+notes = "Checked 2026-10-19 on hometrust.ca in a browser: no annual fee, no foreign exchange fees, 1% cash back on all eligible purchases with no cap, not available in Quebec. Foreign purchases earn the same 1% (was recorded as 0%)."
+source = "https://www.hometrust.ca/credit-cards/preferred-visa-card/"
+confidence = "verified"
+
+[[cards]]
+id = "brim-world-elite"
+name = "Brim World Elite Mastercard"
+issuer = "Brim Financial"
+network = "Mastercard"
+annual_fee = 89
+first_year_fee_waived = false
+fx_fee = 0.015
+min_income_personal = 0
+earn = { other = 0.01, foreign = 0.01 }
+caps = []
+cap_reset_note = "No caps on base earn."
+insurance = ["mobile_device", "extended_warranty", "purchase", "travel_medical", "flight_delay", "baggage", "hotel_burglary", "rental_car", "trip_cancellation", "trip_interruption"]
+notes = "1 point per dollar, about 1 cent per point as statement credit. FX fee is 1.5% (it was 0% at launch). Up to 30 pts/$ at Brim partner merchants. Fee cut from 199 to 89. Income rule not shown on the page (World Elite cards usually ask 80,000 personal)."
+source = "https://brimfinancial.com/personal"
+confidence = "verified"
+
+# ------------------------------------------------------------ Scotiabank
+
+[[cards]]
+id = "scotia-momentum-visa-infinite"
+name = "Scotia Momentum Visa Infinite"
+issuer = "Scotiabank"
+network = "Visa"
+annual_fee = 120
+first_year_fee_waived = true
+fx_fee = 0.025
+min_income_personal = 60000
+earn = { groceries = 0.04, recurring = 0.04, streaming = 0.04, gas = 0.02, ev_charging = 0.02, transit = 0.02, rideshare = 0.02, delivery = 0.02, rent = 0.01, other = 0.01 }
+rent_rate_from = 2026-10-22
+caps = [
+  { categories = ["groceries", "recurring", "streaming"], limit = 25000, period = "card_year", per_category = false, after_rate = 0.01 },
+  { categories = ["gas", "ev_charging", "transit", "rideshare", "delivery"], limit = 25000, period = "card_year", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "25,000 per year in the 4% group and 25,000 in the 2% group, each separately. T&C: the limit 'resets every 12 months from the statement period of the month of your Account opening date'. Find the month on a statement: the annual-summary statement ('In November, your annual cash back reward will...') ends the year, and the next statement period starts the new one."
+insurance = ["trip_cancellation", "trip_interruption", "travel_medical", "flight_delay", "baggage", "rental_car", "mobile_device", "purchase", "extended_warranty"]
+notes = "Rent and tax: from Oct 22, 2026 rental payments (MCC 6513) and tax payments (MCC 9311) are not eligible Recurring Bill Payments, so rent through Chexy earns 1% (Chexy help article 16433812; T&C effective Oct 22, 2026). Utilities, phone, insurance and subscriptions still earn 4%. First-year fee waiver only for accounts opened July 2 to November 1, 2026. Scotiabank bank packages now call this card 'Visa Infinite +'. Ultimate Package rebates up to 150 of the fee. Travel medical: under 65, 15 days. FX fee not shown on the page (Scotia standard is 2.5%)."
+source = "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/momentum-infinite-card/welcome-kit/terms-conditions-momentum-infinite.html"
+confidence = "verified"
+
+[[cards]]
+id = "scotia-passport-visa-infinite"
+name = "Scotiabank Passport Visa Infinite"
+issuer = "Scotiabank"
+network = "Visa"
+annual_fee = 150
+first_year_fee_waived = false
+fx_fee = 0.0
+min_income_personal = 60000
+earn = { groceries = 0.02, dining = 0.02, entertainment = 0.02, transit = 0.02, rideshare = 0.02, travel = 0.01, foreign = 0.01, other = 0.01 }
+caps = [
+  { categories = ["groceries", "dining", "entertainment", "transit", "rideshare"], limit = 50000, period = "calendar_year", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "Bonus earn applies to the first 50,000 of purchases per calendar year (January 1 to December 31)."
+insurance = ["travel_medical", "trip_cancellation", "trip_interruption", "flight_delay", "baggage", "rental_car", "hotel_burglary", "purchase", "extended_warranty"]
+notes = "0% FX travel card. Scene+ points valued at 1 cent. 3x (3%) at Sobeys-family grocers; 2x at other grocers. Bonus 10,000 points after 40,000 annual spend, then 2,000 per extra 10,000. Six lounge visits per year. Ultimate Package rebates the fee (up to 150)."
+source = "https://www.scotiabank.com/ca/en/personal/credit-cards/visa/passport-infinite-card.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ TD
+
+[[cards]]
+id = "td-cash-back-visa-infinite"
+name = "TD Cash Back Visa Infinite"
+issuer = "TD"
+network = "Visa"
+annual_fee = 139
+first_year_fee_waived = true
+fx_fee = 0.025
+min_income_personal = 60000
+earn = { groceries = 0.03, gas = 0.03, ev_charging = 0.03, transit = 0.03, recurring = 0.03, streaming = 0.03, other = 0.01 }
+caps = [
+  { categories = ["groceries"], limit = 15000, period = "card_year", per_category = false, after_rate = 0.01 },
+  { categories = ["gas", "ev_charging"], limit = 15000, period = "card_year", per_category = false, after_rate = 0.01 },
+  { categories = ["transit"], limit = 15000, period = "card_year", per_category = false, after_rate = 0.01 },
+  { categories = ["recurring", "streaming"], limit = 15000, period = "card_year", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "3% on the first 15,000 of annual purchases in each of four groups. Check the cardholder agreement for the reset date."
+insurance = ["travel_medical", "baggage", "rental_car", "purchase", "extended_warranty", "mobile_device"]
+notes = "First-year rebate needs activation and a purchase within 3 months. TD All-Inclusive Banking Plan rebates the fee every year. Travel medical: 10 days (4 days if 65+). Streaming includes digital gaming and media."
+source = "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-infinite-card"
+confidence = "verified"
+
+[[cards]]
+id = "td-cash-back-visa"
+name = "TD Cash Back Visa Card"
+issuer = "TD"
+network = "Visa"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 0
+earn = { groceries = 0.01, gas = 0.01, ev_charging = 0.01, transit = 0.01, recurring = 0.01, streaming = 0.01, other = 0.005 }
+caps = [
+  { categories = ["groceries", "gas", "ev_charging", "transit", "recurring", "streaming"], limit = 5000, period = "card_year", per_category = true, after_rate = 0.005 },
+]
+cap_reset_note = "1% on the first 5,000 of annual purchases per category."
+insurance = ["purchase", "extended_warranty"]
+notes = "No-fee TD card. FX fee not shown on the page (TD standard is 2.5%)."
+source = "https://www.td.com/ca/en/personal-banking/products/credit-cards/cash-back/cash-back-visa-card"
+confidence = "verified"
+
+# ------------------------------------------------------------ CIBC / Simplii
+
+[[cards]]
+id = "cibc-dividend-visa-infinite"
+name = "CIBC Dividend Visa Infinite"
+issuer = "CIBC"
+network = "Visa"
+annual_fee = 120
+first_year_fee_waived = true
+fx_fee = 0.025
+min_income_personal = 60000
+earn = { groceries = 0.04, gas = 0.04, ev_charging = 0.04, transit = 0.02, rideshare = 0.02, dining = 0.02, recurring = 0.02, streaming = 0.02, other = 0.01 }
+caps = [
+  { categories = ["groceries", "gas", "ev_charging", "transit", "rideshare", "dining", "recurring", "streaming"], limit = 20000, period = "card_year", per_category = false, after_rate = 0.01 },
+  { categories = ["groceries", "gas", "ev_charging", "transit", "rideshare", "dining", "recurring", "streaming", "other"], limit = 50000, period = "card_year", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "CIBC terms: the 4% and 2% rates apply to the first $20,000 of combined spend in the bonus categories or the first $50,000 of all card purchases in the year, whichever comes first; then 1%."
+insurance = ["mobile_device", "purchase", "extended_warranty", "travel_medical", "rental_car"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. Corrected caps from CIBC's own offer terms (was 20,000 per category and 80,000 total). $120 fee, first year rebated."
+source = "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-infinite-card.html"
+confidence = "verified"
+
+[[cards]]
+id = "cibc-dividend-visa"
+name = "CIBC Dividend Visa"
+issuer = "CIBC"
+network = "Visa"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 15000
+earn = { groceries = 0.02, gas = 0.01, ev_charging = 0.01, transit = 0.01, rideshare = 0.01, dining = 0.01, recurring = 0.01, streaming = 0.01, other = 0.005 }
+caps = []
+cap_reset_note = "Issuer page lists no caps; a footnote may add one. Verify in the cardholder agreement."
+insurance = ["purchase", "extended_warranty"]
+notes = "No-fee CIBC card. The 15,000 income is household. FX fee not shown on the page (CIBC standard is 2.5%)."
+source = "https://www.cibc.com/en/personal-banking/credit-cards/all-credit-cards/dividend-visa-card.html"
+confidence = "verified"
+
+[[cards]]
+id = "simplii-cash-back-visa"
+name = "Simplii Financial Cash Back Visa"
+issuer = "Simplii Financial"
+network = "Visa"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 15000
+earn = { dining = 0.04, groceries = 0.015, gas = 0.015, drugstore = 0.015, recurring = 0.015, other = 0.005 }
+caps = [
+  { categories = ["dining"], limit = 5000, period = "calendar_year", per_category = false, after_rate = 0.005 },
+  { categories = ["groceries", "gas", "drugstore", "recurring"], limit = 15000, period = "calendar_year", per_category = false, after_rate = 0.005 },
+]
+cap_reset_note = "Cash back posts once a year on the January statement; caps assumed to follow the calendar year."
+insurance = ["purchase", "extended_warranty"]
+notes = "4% on restaurants, bars and coffee shops. The 15,000 income is household. Rate after cap is assumed to be the 0.5% base."
+source = "https://www.simplii.com/en/credit-cards/cash-back-visa.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ Tangerine
+
+[[cards]]
+id = "tangerine-money-back"
+name = "Tangerine Money-Back Credit Card"
+issuer = "Tangerine"
+network = "Mastercard"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 12000
+pick_categories = 2               # you choose 2 bonus categories (3 with savings deposits)
+earn = { groceries = 0.02, dining = 0.02, gas = 0.02, entertainment = 0.02, recurring = 0.02, drugstore = 0.02, transit = 0.02, foreign = 0.02, other = 0.005 }
+caps = []
+cap_reset_note = "No caps. Categories can change every 90 days."
+insurance = ["purchase", "extended_warranty", "rental_car", "mobile_device"]
+notes = "PICK ONLY 2 of the 2% categories (3 if rewards go to a Tangerine Savings Account); all eligible ones are listed in earn. Other choices: furniture, hotel-motel, home improvement, e-games, fitness. Foreign Currency Spend is a 2% choice but the 2.5% FX fee makes it net negative."
+source = "https://www.tangerine.ca/en/products/spending/creditcard/money-back"
+confidence = "verified"
+
+[[cards]]
+id = "tangerine-world-mastercard"
+name = "Tangerine Money-Back World Mastercard"
+issuer = "Tangerine"
+network = "Mastercard"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 50000
+pick_categories = 2               # you choose 2 bonus categories (3 with savings deposits)
+earn = { groceries = 0.02, dining = 0.02, gas = 0.02, entertainment = 0.02, recurring = 0.02, drugstore = 0.02, transit = 0.02, foreign = 0.02, other = 0.005 }
+caps = []
+cap_reset_note = "No caps. Categories can change every 90 days."
+insurance = ["purchase", "extended_warranty", "rental_car", "mobile_device"]
+notes = "Same earn as Money-Back: PICK ONLY 2 categories (3 with Tangerine Savings deposit). Adds Mastercard Travel Pass lounge access (paid visits). Income alternatives: 80,000 household or 250,000 at Tangerine."
+source = "https://www.tangerine.ca/en/products/spending/creditcard/world"
+confidence = "verified"
+
+# ------------------------------------------------------------ Rogers
+
+[[cards]]
+id = "rogers-red-world-elite"
+name = "Rogers Red World Elite Mastercard"
+issuer = "Rogers Bank"
+network = "Mastercard"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { foreign = 0.03, other = 0.015 }
+caps = [
+  { categories = ["foreign"], limit = 61000, period = "card_year", per_category = false, after_rate = 0.015 },
+]
+cap_reset_note = "No caps reported."
+insurance = ["travel_medical", "trip_cancellation", "trip_interruption", "flight_delay", "purchase", "extended_warranty", "rental_car"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. No annual fee; 1.5% on eligible purchases (2% with a Rogers, Fido, Shaw or Comwave service); 3% on US-dollar purchases. Bonus rates apply to the first $61,000 spent per annual period, then 1.5%."
+source = "https://www.rogersbank.com/en/rogers_red_worldelite_mastercard_details/"
+confidence = "verified"
+
+# ------------------------------------------------------------ BMO
+
+[[cards]]
+id = "bmo-cashback-world-elite"
+name = "BMO CashBack World Elite Mastercard"
+issuer = "BMO"
+network = "Mastercard"
+annual_fee = 139
+first_year_fee_waived = true
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { groceries = 0.05, transit = 0.04, rideshare = 0.04, gas = 0.03, ev_charging = 0.03, recurring = 0.02, streaming = 0.02, other = 0.01 }
+caps = [
+  { categories = ["groceries"], limit = 500, period = "statement", per_category = false, after_rate = 0.01 },
+  { categories = ["transit", "rideshare"], limit = 300, period = "statement", per_category = false, after_rate = 0.01 },
+  { categories = ["gas", "ev_charging"], limit = 300, period = "statement", per_category = false, after_rate = 0.01 },
+  { categories = ["recurring", "streaming"], limit = 500, period = "statement", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "Caps apply per statement period (monthly)."
+insurance = ["travel_medical", "trip_interruption", "rental_car", "purchase", "extended_warranty"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. $139 fee (was recorded as 120), first year waived; rebated with BMO Premium chequing. 5% groceries ($500/statement), 4% transit ($300), 3% gas/EV ($300), 2% recurring ($500), 1% else; $80,000 personal income. FX fee is in the disclosure PDF, not re-read."
+source = "https://www.bmo.com/en-ca/main/personal/credit-cards/bmo-cashback-world-elite-mastercard/"
+confidence = "verified"
+
+[[cards]]
+id = "bmo-cashback-mastercard"
+name = "BMO CashBack Mastercard"
+issuer = "BMO"
+network = "Mastercard"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 0
+earn = { groceries = 0.03, recurring = 0.01, streaming = 0.01, other = 0.005 }
+caps = [
+  { categories = ["groceries"], limit = 500, period = "statement", per_category = false, after_rate = 0.005 },
+  { categories = ["recurring", "streaming"], limit = 500, period = "statement", per_category = false, after_rate = 0.005 },
+]
+cap_reset_note = "Caps reset every statement month."
+insurance = ["purchase", "extended_warranty"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. No annual fee; 3% groceries up to $500 per statement; 1% recurring bills up to $500 per statement; 0.5% base."
+source = "https://www.bmo.com/main/personal/credit-cards/bmo-cashback-mastercard/"
+confidence = "verified"
+
+# ------------------------------------------------------------ RBC
+
+[[cards]]
+id = "rbc-cash-back-mastercard"
+name = "RBC Cash Back Mastercard"
+issuer = "RBC"
+network = "Mastercard"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 0
+earn = { groceries = 0.02, gas = 0.01, ev_charging = 0.01, transit = 0.01, rideshare = 0.01, other = 0.005 }
+caps = []
+cap_reset_note = "Caps removed from October 1, 2026 (before: 6,000 per year)."
+insurance = ["purchase", "extended_warranty"]
+notes = "New unlimited structure from October 1, 2026. Costco and Walmart code as warehouse clubs and earn 0.5%. From December 2, 2026 you can redeem any time with a 1 minimum. Purchase APR rose to 21.99%."
+source = "https://www.rbcroyalbank.com/credit-cards/cardholders/cash-back-updates.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ American Express
+
+[[cards]]
+id = "amex-simplycash-preferred"
+name = "SimplyCash Preferred Card from American Express"
+issuer = "American Express"
+network = "Amex"
+annual_fee = 119.88
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 0
+earn = { groceries = 0.04, gas = 0.04, other = 0.02 }
+caps = [
+  { categories = ["groceries"], limit = 30000, period = "card_year", per_category = false, after_rate = 0.02 },
+]
+cap_reset_note = "4% grocery on up to 30,000 of purchases a year (1,200 cash back), then 2%. Cash back pays out once a year."
+insurance = ["travel_medical", "flight_delay", "baggage", "hotel_burglary", "rental_car", "mobile_device", "purchase", "extended_warranty"]
+notes = "Checked 2026-10-19 in a browser on the issuer page. $9.99/month (119.88/yr; $119/yr in Quebec); 4% gas; 4% groceries up to $1,200 cash back a year (= $30,000 of spend); 2% on everything else."
+source = "https://www.americanexpress.com/en-ca/credit-cards/simply-cash-preferred/"
+confidence = "verified"
+
+[[cards]]
+id = "amex-simplycash"
+name = "SimplyCash Card from American Express"
+issuer = "American Express"
+network = "Amex"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 0
+earn = { groceries = 0.02, gas = 0.02, other = 0.0125 }
+caps = [
+  { categories = ["groceries", "gas"], limit = 15000, period = "card_year", per_category = true, after_rate = 0.0125 },
+]
+cap_reset_note = "2% gas and grocery caps reported at 300 cash back per category per year."
+insurance = ["purchase", "extended_warranty", "rental_car"]
+notes = "Checked 2026-10-19 on Amex Canada's cash back cards page: no annual fee; up to 2% on eligible gas and grocery purchases; 1.25% on everything else. The grocery cap ($300 cash back a year = $15,000 of spend) is in footnote 3, from reviewers."
+source = "https://www.americanexpress.com/en-ca/credit-cards/all-cards/cashback/"
+confidence = "verified"
+
+# ------------------------------------------------------------ PC Financial
+
+[[cards]]
+id = "pc-world-elite"
+name = "PC World Elite Mastercard"
+issuer = "PC Financial"
+network = "Mastercard"
+annual_fee = 0
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { groceries = 0.03, drugstore = 0.03, gas = 0.02, other = 0.01 }
+caps = []
+cap_reset_note = "No caps."
+insurance = ["travel_medical", "rental_car", "purchase", "extended_warranty"]
+notes = "PC Optimum points: 10 pts = 1 cent when redeemed in store (10,000 = 10). Statement credit is worse (10,000 = 7). Groceries 3% only at Loblaw-banner stores. Drugstore 3% at Shoppers (plus 15 pts/$ member base). Gas: 30 pts per litre at Esso/Mobil, about 2% at 1.50/L. 10 pts/$ elsewhere. Household income alternative 150,000. Insurance list from reviewers."
+source = "https://www.pcfinancial.ca/en/credit-cards/world-elite"
+confidence = "verified"
+
+# ------------------------------------------------------------ MBNA
+
+[[cards]]
+id = "mbna-rewards-world-elite"
+name = "MBNA Rewards World Elite Mastercard"
+issuer = "MBNA"
+network = "Mastercard"
+annual_fee = 120
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { dining = 0.0417, groceries = 0.0417, streaming = 0.0417, recurring = 0.0417, other = 0.0083 }
+caps = [
+  { categories = ["dining", "groceries", "streaming", "recurring"], limit = 50000, period = "calendar_year", per_category = true, after_rate = 0.0083 },
+]
+cap_reset_note = "5x applies until 50,000 spend per calendar year in each eligible category."
+insurance = ["travel_medical", "baggage", "flight_delay", "mobile_device", "rental_car"]
+notes = "5 pts/$ on restaurants, groceries, digital media, memberships and household utilities; 1 pt/$ else. Earn shown as cash value (120 pts = 1). Travel redemption is better: 100 pts = 1 (5% / 1%). Birthday bonus 10% of prior-year points, max 15,000. Travel medical: under 65, 21 days. FX fee from reviewers."
+source = "https://www.mbna.ca/en/credit-cards/rewards/mbna-rewards-world-elite-mastercard"
+confidence = "verified"
+
+# ------------------------------------------------------------ National Bank
+
+[[cards]]
+id = "national-bank-world-elite"
+name = "National Bank World Elite Mastercard"
+issuer = "National Bank"
+network = "Mastercard"
+annual_fee = 150
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { groceries = 0.05, dining = 0.05, gas = 0.02, ev_charging = 0.02, recurring = 0.02, travel = 0.02, other = 0.01 }
+caps = [
+  { categories = ["groceries", "dining"], limit = 2500, period = "monthly", per_category = false, after_rate = 0.02 },
+]
+cap_reset_note = "5x on the first 2,500 of gross monthly grocery and restaurant purchases, then 2x."
+insurance = ["travel_medical", "trip_cancellation", "trip_interruption", "flight_delay", "baggage", "rental_car", "mobile_device"]
+notes = "Points valued at 1 cent when booked through A la carte Travel. Statement credit is much worse (25,000 pts = 100). Travel medical: 60 days to age 54, 31 days 55-64, 15 days 65-75. Up to 150/yr travel expense refund (seat selection, lounges, etc.). FX fee not shown on page."
+source = "https://www.nbc.ca/personal/mastercard-credit-cards/world-elite.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ Desjardins
+
+[[cards]]
+id = "desjardins-cash-back-world-elite"
+name = "Desjardins Cash Back World Elite Mastercard"
+issuer = "Desjardins"
+network = "Mastercard"
+annual_fee = 100
+first_year_fee_waived = false
+fx_fee = 0.025
+min_income_personal = 80000
+earn = { groceries = 0.04, dining = 0.03, entertainment = 0.03, transit = 0.03, rideshare = 0.03, foreign = 0.0, other = 0.01 }
+caps = [
+  { categories = ["groceries"], limit = 10000, period = "card_year", per_category = false, after_rate = 0.01 },
+  { categories = ["dining"], limit = 6000, period = "card_year", per_category = false, after_rate = 0.01 },
+]
+cap_reset_note = "Grocery 4% to 10,000 and restaurant 3% to 6,000 of annual purchases."
+insurance = ["travel_medical", "trip_cancellation", "baggage", "rental_car", "mobile_device", "purchase", "extended_warranty"]
+notes = "Foreign-currency purchases earn no cash back. Travel medical covers only 3-day trips. Cash back credits at 100. 'Alternative transportation' (transit, taxis, shared mobility) earns 3%. Also eligible with 400,000 assets."
+source = "https://www.desjardins.com/en/credit-cards/cash-back-world-elite-mastercard.html"
+confidence = "verified"

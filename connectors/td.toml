@@ -1,0 +1,100 @@
+id = "td"
+name = "TD Canada Trust"
+kinds = ["bank", "card"]
+website = "https://www.td.com/ca/en/personal-banking"
+available_in_canada = true
+
+[import]
+formats = ["td-csv", "ofx", "td-credit-pdf", "td-chequing-pdf"]
+ofx_orgs = ["TD", "TD Canada Trust"]
+file_prefixes = ["accountactivity"]
+how_to_export = """
+1. Sign in to EasyWeb in a web browser.
+2. Select the account.
+3. On the Account Activity page, pick the period: 30, 60, 90 or 120 days, or one month under "Search by Month".
+4. Click Download. Pick Spreadsheet (.CSV). If you prefer, pick a Quicken or Money format (QFX or OFX).
+5. Save the file (often named accountactivity.csv) into private/users/<you>/inbox/.
+6. Repeat for each account. The CSV has no header row; cashcast expects that.
+7. Older than 120 days: open the account's Statements and save each monthly PDF statement into the inbox (playbook action download-statements).
+"""
+no_export_reason = ""
+history_limit = "Account Activity: up to 120 days or one month at a time (third-party report). PDF statements: up to 7 years in EasyWeb; cashcast reads them (td-credit-pdf, td-chequing-pdf)."
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API for personal accounts. The CSV option on Account Activity is reported by third-party tools, not in TD's own help. QFX/OFX download and credit card CSV are not confirmed."
+
+[browser]
+login_url = "https://easyweb.td.com/"
+playbook = "playbooks/td.md"
+
+[[actions]]
+id = "download-transactions"
+title = "Download transactions (CSV or QFX)"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "download-statements"
+title = "Download PDF statements for months older than the CSV reaches"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-statement-close-date"
+title = "Check the credit card statement close date and due date"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "change-chequing-package"
+title = "Change the chequing account package"
+risk = "settings"
+via = ["browser", "human"]
+
+[[actions]]
+id = "set-card-autopay-full-balance"
+title = "Set credit card autopay to the full statement balance"
+risk = "money"  # commits future payments or fees
+via = ["human"]
+
+[[actions]]
+id = "redeem-cash-back-statement-credit"
+title = "Redeem cash back as a statement credit"
+risk = "settings"
+via = ["browser"]
+
+[[actions]]
+id = "product-change-card"
+title = "Product-change a credit card"
+risk = "settings"
+via = ["human"]
+
+[[actions]]
+id = "send-etransfer"
+title = "Send an Interac e-Transfer"
+risk = "money"
+via = ["human"]
+
+[[actions]]
+id = "read-balances"
+title = "Read the chequing and credit card balances (for bin/cashcast transfers)"
+risk = "read"
+via = ["browser"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://www.td.com/ca/en/personal-banking/how-to/easy-web/access-online-statement",
+  "https://www.td.com/ca/en/personal-banking/products/credit-cards/pre-authorized-debit",
+  "https://www.td.com/ca/en/personal-banking/how-to/manage-my-credit-card/pay-credit-card-bill-online",
+  "https://beancount.io/tools/csv-to-beancount/td-canada-trust",
+  "https://invoicedataextraction.com/blog/td-bank-statement-to-excel",
+]
+confidence = "estimate"

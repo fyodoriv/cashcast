@@ -1,0 +1,9 @@
+id: rust-only-start-doctor-without-python
+suite: regression
+skill: start-session
+should: act
+grader: cli
+command: ["doctor"]
+no_python: true
+expect_exit: 0
+expect_output: ["✓ Rust:", "✓ Engine built"]

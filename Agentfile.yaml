@@ -1,0 +1,16 @@
+# Agent dependencies for cashcast. Preview: `agentbrew sync --dry-run`. Apply: `agentbrew sync`.
+# Generated per-agent files (.claude/, .cursor/, .codex/) are outputs; edit this file instead.
+# The guided start (`.claude/skills/cashcast`) ships with the repo for agents without agentbrew.
+skills:
+  - report-upstream
+  - test-driven-development
+  - verification-before-completion
+  - writing-plans
+  - next-task
+
+sources:
+  - ./skills
+
+# The /cashcast slash command deploys from here.
+commands:
+  - ./commands

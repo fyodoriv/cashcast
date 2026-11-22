@@ -1,0 +1,67 @@
+id = "chexy"
+name = "Chexy"
+kinds = ["rent", "payments"]
+website = "https://chexy.co"
+available_in_canada = true
+
+[import]
+formats = []
+how_to_export = ""
+no_export_reason = "Chexy has no transaction export we could find. Each rent payment and its fee is charged to your credit card, so it shows up in that card's bank export. Import the card statement instead."
+history_limit = ""
+
+[api]
+available = false
+docs = ""
+auth = "none"
+base_url = ""
+read = []
+write = []
+notes = "No public API. Card fees, eligible card networks and Credit Builder pricing changed during 2026 (a third-party article reports Credit Builder moved to a paid Plus membership on 2026-06-19). Check the live pricing page before advising."
+
+[browser]
+login_url = "https://chexy.co"
+playbook = "playbooks/chexy.md"
+
+[[actions]]
+id = "change-rent-payment-card"
+title = "Change the card that pays rent"
+risk = "settings"
+via = ["browser"]
+
+[[actions]]
+id = "check-next-charge"
+title = "Check the next charge date and amount"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "check-credit-builder-status"
+title = "Check Credit Builder status"
+risk = "read"
+via = ["browser"]
+
+[[actions]]
+id = "renew-or-cancel-membership"
+title = "Renew or cancel the membership"
+risk = "money"  # commits future payments or fees
+via = ["human"]
+
+[[actions]]
+id = "change-rent-amount-or-date"
+title = "Change the rent amount or due date"
+risk = "money"  # commits future payments or fees
+via = ["human"]
+
+[meta]
+as_of = 2026-10-18
+review_by = 2027-04-18
+sources = [
+  "https://intercom.help/chexy/en/articles/10769922-pausing-reactivating-deleting-cancelling-payments",
+  "https://intercom.help/chexyrent/en/articles/10019878-can-i-update-my-rent-amount-or-rent-due-date-with-an-active-credit-builder",
+  "https://intercom.help/chexyrent/en/articles/10807179-paying-your-rent-with-chexy",
+  "https://intercom.help/chexy/en/articles/11072897-payment-methods-pad-e-transfer-bill-pay-compared",
+  "https://www.savvynewcanadians.com/chexy-review/",
+  "https://www.neobanc.com/articles/chexy-alternatives",
+]
+confidence = "estimate"

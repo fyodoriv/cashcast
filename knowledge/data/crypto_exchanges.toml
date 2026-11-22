@@ -1,0 +1,124 @@
+# Crypto trading platforms available to Canadians.
+# registered_in_canada: registered with Canadian securities regulators (CSA members)
+#   as a restricted dealer or investment dealer. Check before sending money.
+# trading_fee: headline fee as a decimal for a small retail trade.
+
+[meta]
+title = "Crypto platforms for Canadians"
+as_of = 2026-10-19
+review_by = 2027-01-31
+sources = [
+  "https://fcnb.ca/en/check-licence-and-registration/registered-crypto-asset-trading-platforms",
+  "https://www.kraken.com/features/fee-schedule",
+  "https://www.wealthsimple.com/en-ca/crypto",
+  "https://www.newton.co/fees",
+  "https://ndax.io/fees",
+]
+
+[[exchanges]]
+id = "kraken"
+name = "Kraken (Payward Canada Inc.)"
+registered_in_canada = true
+trading_fee = 0.004
+spread_note = "Kraken Pro tier 1: maker 0.40%, taker 0.80%. Instant buy: 1% plus spread; custom orders 1.5%. Kraken+ waives instant-buy fees on up to 10,000/month."
+cad_withdrawal = "EFT to a Canadian bank, 2-5 business days. Withdrawal fee not shown on the funding page; check the withdrawal screen."
+staking = false
+notes = "Restricted dealer. Free CAD deposits by e-Transfer. Staking availability for Canadians is account-dependent and not confirmed."
+source = "https://www.kraken.com/features/fee-schedule"
+confidence = "verified"
+
+[[exchanges]]
+id = "wealthsimple-crypto"
+name = "Wealthsimple Crypto (Wealthsimple Investments Inc.)"
+registered_in_canada = true
+trading_fee = 0.005
+spread_note = "Flat 0.5% plus a variable spread shown before you submit. Limit orders have no spread. 1 surcharge on orders under 100. Auto-invest has no fee or spread."
+cad_withdrawal = "Free move to Wealthsimple chequing, then out by e-Transfer or EFT."
+staking = true
+notes = "Investment dealer (CIRO member). Staking takes a percentage of rewards. USD trades add a 1.5% FX fee unless you hold a USD account."
+source = "https://www.wealthsimple.com/en-ca/crypto"
+confidence = "verified"
+
+[[exchanges]]
+id = "newton"
+name = "Newton (Newton Crypto Ltd.)"
+registered_in_canada = true
+trading_fee = 0.01
+spread_note = "All-in fee: 1.00-1.15% for BTC/ETH/USDC, 1.25-1.45% tier 2, 1.50-1.60% others. High-volume program can drop to 0.05%."
+cad_withdrawal = "Free funding and withdrawal options exist; methods not detailed on the fee page."
+staking = true
+notes = "Restricted dealer."
+source = "https://www.newton.co/fees"
+confidence = "verified"
+
+[[exchanges]]
+id = "shakepay"
+name = "Shakepay (Shakepay Inc.)"
+registered_in_canada = true
+trading_fee = 0.0
+spread_note = "No commission; cost is built into a spread. Shakepay does not publish the spread size (reviewers say roughly 0.75-2%)."
+cad_withdrawal = "Interac e-Transfer, free; 5 minimum, 10,000 maximum."
+staking = false
+notes = "Registered as an investment dealer per the FCNB list. BTC and ETH focus. Commission-free trading and free e-Transfer deposits and withdrawals verified on shakepay.com/fees (2026-10-19); the fee page lists no staking."
+source = "https://shakepay.com/fees"
+confidence = "verified"
+
+[[exchanges]]
+id = "coinbase"
+name = "Coinbase (Coinbase Canada, Inc.)"
+registered_in_canada = true
+trading_fee = 0.01875
+spread_note = "Simple buys and sells: a Coinbase fee of up to 1.875% (varies by payment method) plus a spread in the quoted price; limit orders add a 1% execution fee. Advanced Trade is cheaper (not on this page)."
+cad_withdrawal = "Interac e-Transfer and EFT supported (estimate)."
+staking = true
+notes = "Checked 2026-10-19 on Coinbase's Canadian fee disclosure. Staking commission is 35% of rewards (lower tiers for Coinbase One)."
+source = "https://help.coinbase.com/en-ca/coinbase/trading-and-funding/pricing-and-fees/fees"
+confidence = "verified"
+
+[[exchanges]]
+id = "bitbuy"
+name = "Bitbuy (Coinsquare Capital Markets Ltd.)"
+registered_in_canada = true
+trading_fee = 0.005
+spread_note = "Pro Trade 0.50% maker / 0.50% taker at the base tier (0% / 0.10% only at 5M+ volume). Express Trade has no fee; the cost is in an unpublished spread (reviewers say roughly 0.5-2%)."
+cad_withdrawal = "Interac e-Transfer free (20-2,000, one per 24 hours); direct bank deposit or wire 1.5%."
+staking = true
+notes = "Bitbuy is a trade name of Coinsquare Capital Markets Ltd., an investment dealer (CIRO), per the FCNB list. Fees verified on bitbuy.ca/en/fees (2026-10-19). Staking keeps 25-28% of rewards as commission."
+source = "https://bitbuy.ca/en/fees"
+confidence = "verified"
+
+[[exchanges]]
+id = "coinsquare"
+name = "Coinsquare (Coinsquare Capital Markets Ltd.)"
+registered_in_canada = true
+trading_fee = 0.005
+spread_note = "Coinsquare Pro 0.50% maker / 0.50% taker. Coinsquare Trade has no fee; the cost is in an unpublished spread."
+cad_withdrawal = "Interac e-Transfer free (20-2,000, one per 24 hours); direct bank deposit or wire 1.5%."
+staking = true
+notes = "Investment dealer (CIRO member) per the FCNB list. Shares the legal entity with Bitbuy. Fees and staking verified on coinsquare.com/fees (2026-10-19); staking keeps 25-30% of rewards as a fee."
+source = "https://www.coinsquare.com/fees"
+confidence = "verified"
+
+[[exchanges]]
+id = "ndax"
+name = "NDAX (Ndax Canada Inc.)"
+registered_in_canada = true
+trading_fee = 0.002
+spread_note = "Flat 0.20% per buy or sell, no maker/taker split."
+cad_withdrawal = "Interac e-Transfer 1.50 (max 10,000 per transaction); EFT 4.99. Deposits free."
+staking = true
+notes = "Investment dealer. Staking and Auto Earn keep 20% of rewards as an admin fee."
+source = "https://ndax.io/fees"
+confidence = "verified"
+
+[[exchanges]]
+id = "virgocx"
+name = "VirgoCX"
+registered_in_canada = true
+trading_fee = 0.0
+spread_note = "No commission; spread-based (estimate)."
+cad_withdrawal = "Interac e-Transfer and wire (not checked)."
+staking = false
+notes = "Registered restricted dealer under the CSA interim framework (OSC decision; FCNB decision 2025-01-30 extended the relief while it completes CIRO membership). NOT on the FCNB list of registered platforms checked on 2026-10-18. It may hold a different status (for example a pre-registration undertaking) in some provinces. Treat as unregistered until you confirm on the CSA site. 2026-10-19: a search snippet of the CSA list (securities-administrators.ca, Cryp"
+source = "https://osc.ca/en/securities-law/orders-rulings-decisions/virgo-cx-inc-0"
+confidence = "verified"

@@ -1,0 +1,2321 @@
+[
+ {
+  "name": "start",
+  "command": "bin/cashcast start",
+  "help": "set up, start the web app, refresh, and print what matters now (also: no command)",
+  "args": [],
+  "ui": false,
+  "terminal_only": "it starts the web app you are using; run `bin/cashcast` in a terminal",
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "stop",
+  "command": "bin/cashcast stop",
+  "help": "stop the web app that `bin/cashcast` started",
+  "args": [],
+  "ui": false,
+  "terminal_only": "it stops the web app you are using; run `bin/cashcast stop` in a terminal",
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "weekly",
+  "command": "bin/cashcast weekly",
+  "help": "the Sunday session in one run: fresh data, MoneyWiz, forecast, transfers, cards, charges, investing, tasks, and this week's moves",
+  "args": [
+   {
+    "name": "dry_run",
+    "flag": "--dry-run",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "show what MoneyWiz and the task list would change; change neither",
+    "default": null
+   },
+   {
+    "name": "balance",
+    "flag": "--balance",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a balance read today on the bank or card site, for transfers and cards; repeat per account",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": "adds and fixes MoneyWiz rows, marks resolved tasks done and writes them to Reminders, Calendar and Notion (--dry-run changes nothing)",
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "help",
+  "command": "bin/cashcast help",
+  "help": "print the command overview",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "init",
+  "command": "bin/cashcast init",
+  "help": "create your data folder",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "import",
+  "command": "bin/cashcast import",
+  "help": "read the exports in your inbox",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "status",
+  "command": "bin/cashcast status",
+  "help": "import, then the forecast summary",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "forecast",
+  "command": "bin/cashcast forecast",
+  "help": "import, then the month-by-month forecast",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "backtest",
+  "command": "bin/cashcast backtest",
+  "help": "import, then the last forecast vs actual, a backtest per line, and the spending methods learned",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "numbers",
+  "command": "bin/cashcast numbers",
+  "help": "make an Apple Numbers copy of the forecast workbook",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "totals",
+  "command": "bin/cashcast totals",
+  "help": "totals per category and month",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "first-error",
+  "command": "bin/cashcast first-error",
+  "help": "print the first unreadable export row",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": "shows one raw row of your data on screen",
+  "confirm_choices": {},
+  "agent_note": "agents: only with the owner's OK in chat and the agent:raw-row scope"
+ },
+ {
+  "name": "columns",
+  "command": "bin/cashcast columns",
+  "help": "header names and masked cell shapes of each inbox file (no values)",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "holdings",
+  "command": "bin/cashcast holdings",
+  "help": "investments and crypto: quantity, cost base (ACB) and gains",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "actions",
+  "command": "bin/cashcast actions",
+  "help": "list every action with its arguments (for agents: --json)",
+  "args": [
+   {
+    "name": "json",
+    "flag": "--json",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "the catalog as JSON",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "config",
+  "command": "bin/cashcast config",
+  "help": "show the settings and where each value comes from, or set one",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "show",
+     "set"
+    ],
+    "required": false,
+    "help": "",
+    "default": "show"
+   },
+   {
+    "name": "key",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a setting key, for example web.port",
+    "default": null
+   },
+   {
+    "name": "value",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "the new value",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "users",
+  "command": "bin/cashcast users",
+  "help": "list, add or adopt people",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "list",
+     "add",
+     "adopt"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "name",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a short name (letters, digits)",
+    "default": null
+   },
+   {
+    "name": "province",
+    "flag": "--province",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "two-letter province or territory, for example ON",
+    "default": ""
+   },
+   {
+    "name": "display",
+    "flag": "--display",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "the name shown in reports",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "add": "creates a person's data folder",
+   "adopt": "moves the single-user data folder into a person's folder"
+  },
+  "agent_note": null
+ },
+ {
+  "name": "consent",
+  "command": "bin/cashcast consent",
+  "help": "list, grant or revoke what may leave this computer",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "list",
+     "grant",
+     "revoke"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "scope",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "agent:aggregates",
+     "agent:raw-row",
+     "agent:strategy",
+     "cloud:sheets",
+     "cloud:notion",
+     "net:market-data",
+     "net:usage-counts",
+     "local:reminders",
+     "local:calendar",
+     "local:moneywiz",
+     "actions:browser",
+     "agent:browser-read",
+     "actions:api"
+    ],
+    "required": false,
+    "help": "",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {
+   "grant": "consent is typed into your own terminal, so no web page or agent can grant it"
+  },
+  "confirm": null,
+  "confirm_choices": {
+   "revoke": "turns off a consent you granted"
+  },
+  "agent_note": "agents: never grant; give the owner the `consent grant SCOPE` command to run in a terminal"
+ },
+ {
+  "name": "telemetry",
+  "command": "bin/cashcast telemetry",
+  "help": "opt-in anonymous usage counts to PostHog EU: status, on, off, send (--dry-run shows the body)",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "status",
+     "on",
+     "off",
+     "send"
+    ],
+    "required": false,
+    "help": "",
+    "default": "status"
+   },
+   {
+    "name": "dry_run",
+    "flag": "--dry-run",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "send: print the exact body with the key hidden; send nothing",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "send": "sends anonymous usage counts to PostHog EU (with consent net:usage-counts and a key)"
+  },
+  "agent_note": "agents: ask the owner in chat before `telemetry send` (without --dry-run) or `telemetry on`"
+ },
+ {
+  "name": "strategy",
+  "command": "bin/cashcast strategy",
+  "help": "the full money plan (saved to out/strategy.md)",
+  "args": [
+   {
+    "name": "section",
+    "flag": "--section",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "limit the report to one section id",
+    "default": null
+   },
+   {
+    "name": "market",
+    "flag": "--market",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "use live market data (needs net:market-data)",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "net-total",
+  "command": "bin/cashcast net-total",
+  "help": "your net total (all you have minus all you owe), its trend, and the options ranked by what they add, inside your boundaries",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "review",
+  "command": "bin/cashcast review",
+  "help": "the monthly review and checklist",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "budget",
+  "command": "bin/cashcast budget",
+  "help": "the budget section",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "tax",
+  "command": "bin/cashcast tax",
+  "help": "rates, room and tax moves",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "rrsp",
+  "command": "bin/cashcast rrsp",
+  "help": "this year's RRSP contributions (Sun Life and others) against your deduction limit",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "alternatives",
+  "command": "bin/cashcast alternatives",
+  "help": "cheaper cards, banks and services",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "payments",
+  "command": "bin/cashcast payments",
+  "help": "fees, interest and recurring payments",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "spending",
+  "command": "bin/cashcast spending",
+  "help": "spending checkup: more than usual, spend vs earn, interest and fees paid",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "invest-plan",
+  "command": "bin/cashcast invest-plan",
+  "help": "ranked investment moves: gain ranges, evidence, risk, cost and do-nothing (override in [invest])",
+  "args": [],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "invest",
+  "command": "bin/cashcast invest",
+  "help": "long-term investing: core, placement and watchlist screen",
+  "args": [
+   {
+    "name": "market",
+    "flag": "--market",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "use live market data (needs net:market-data)",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "reminders",
+  "command": "bin/cashcast reminders",
+  "help": "preview or sync your tasks to one Apple Reminders list",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "preview",
+     "sync"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "sync": "writes your tasks to Apple Reminders"
+  },
+  "agent_note": "agents: preview here; the owner runs `sync` in Terminal (the sandbox blocks osascript)"
+ },
+ {
+  "name": "calendar",
+  "command": "bin/cashcast calendar",
+  "help": "preview or sync your dated deadlines to one Apple Calendar",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "preview",
+     "sync"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "sync": "writes your dated deadlines to Apple Calendar"
+  },
+  "agent_note": "agents: preview here; the owner runs `sync` in Terminal (the sandbox blocks osascript)"
+ },
+ {
+  "name": "tasks",
+  "command": "bin/cashcast tasks",
+  "help": "your open finance tasks: who does each (list), resolve what cashcast can and name every blocker (resolve), or record an agent check (verdict)",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "list",
+     "resolve",
+     "verdict"
+    ],
+    "required": false,
+    "help": "",
+    "default": "list"
+   },
+   {
+    "name": "id",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "verdict: the check's task id",
+    "default": null
+   },
+   {
+    "name": "result",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "pass",
+     "fail"
+    ],
+    "required": false,
+    "help": "verdict: what the evidence showed",
+    "default": null
+   },
+   {
+    "name": "reason",
+    "flag": "--reason",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "verdict: what the evidence showed, in words; no amounts, balances or scores",
+    "default": null
+   },
+   {
+    "name": "source",
+    "flag": "--source",
+    "kind": "choice",
+    "choices": [
+     "local",
+     "browser"
+    ],
+    "required": false,
+    "help": "verdict: browser needs agent:browser-read",
+    "default": "local"
+   },
+   {
+    "name": "json",
+    "flag": "--json",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "list: one JSON row per task (id, due, lane, step, risk)",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "resolve": "marks due tasks done that cashcast resolved itself (undo: changes undo ID)"
+  },
+  "agent_note": "agents: use /cashcast-tasks; report every BLOCKED task to the owner, never call it done"
+ },
+ {
+  "name": "changes",
+  "command": "bin/cashcast changes",
+  "help": "bank and card settings to change, ready for a browser session",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "list",
+     "show",
+     "done",
+     "undo"
+    ],
+    "required": false,
+    "help": "",
+    "default": "list"
+   },
+   {
+    "name": "id",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a change id from the list",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": "agents: follow skills/bank-change; ask for a yes in chat right before each final click"
+ },
+ {
+  "name": "transfers",
+  "command": "bin/cashcast transfers",
+  "help": "e-Transfers that bring each bank to its keep amount, from balances you read (daily limit, amounts quick to type)",
+  "args": [
+   {
+    "name": "balance",
+    "flag": "--balance",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a balance read from the bank site; repeat per account or card",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "charges",
+  "command": "bin/cashcast charges",
+  "help": "unexpected charges on every account: duplicate subscriptions, new recurring charges, price rises, charges after a pause; find WORD lists one merchant's charges",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "check",
+     "find"
+    ],
+    "required": false,
+    "help": "",
+    "default": "check"
+   },
+   {
+    "name": "word",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "find: a merchant name or billing word, for example anthropic",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "cards",
+  "command": "bin/cashcast cards",
+  "help": "which card to use now per spending category: cap used and left, reset date, rent charges, credit left",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "now"
+    ],
+    "required": false,
+    "help": "",
+    "default": "now"
+   },
+   {
+    "name": "balance",
+    "flag": "--balance",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a card balance read on the card site; repeat per card (default: recorded balances)",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "optimize",
+  "command": "bin/cashcast optimize",
+  "help": "where new money goes to reach your target weights (you place the trades)",
+  "args": [
+   {
+    "name": "input",
+    "flag": "--input",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a TOML file with [optimize]; default: profile.toml",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": "agents: show the plan; the owner places every trade"
+ },
+ {
+  "name": "connectors",
+  "command": "bin/cashcast connectors",
+  "help": "the services cashcast knows, and how to export from each",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "list",
+     "show"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "service",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a service id, for example td",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "action",
+  "command": "bin/cashcast action",
+  "help": "the safe steps for one service action, by risk",
+  "args": [
+   {
+    "name": "service",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": true,
+    "help": "a service id, for example td",
+    "default": null
+   },
+   {
+    "name": "action_id",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": true,
+    "help": "an action id from `connectors show SERVICE`",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": "agents: money actions become reminders; never move money"
+ },
+ {
+  "name": "api",
+  "command": "bin/cashcast api",
+  "help": "read balances or download exports through a service's API, or record balances read in the browser",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "balances",
+     "download",
+     "etrade-auth",
+     "record"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "service",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a service id",
+    "default": "etrade"
+   },
+   {
+    "name": "target",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "Google Sheets: the sheet id",
+    "default": null
+   },
+   {
+    "name": "gid",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "Google Sheets: the tab id",
+    "default": null
+   },
+   {
+    "name": "set",
+    "flag": "--set",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "record: balances read in the browser, NAME=AMOUNT,NAME=AMOUNT (for example TFSA=1000,RRSP=500)",
+    "default": null
+   },
+   {
+    "name": "currency",
+    "flag": "--currency",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "record: the currency of the amounts",
+    "default": "CAD"
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {
+   "etrade-auth": "the E*TRADE code goes to a prompt in your own terminal"
+  },
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "fetch",
+  "command": "bin/cashcast fetch",
+  "help": "which exports are stale and how to get each (plan), or move new downloads into the inbox unopened (collect)",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "plan",
+     "collect"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "all",
+    "flag": "--all",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "plan: every service with an export, not only those in the inbox",
+    "default": null
+   },
+   {
+    "name": "minutes",
+    "flag": "--minutes",
+    "kind": "int",
+    "choices": null,
+    "required": false,
+    "help": "collect: files saved in the last N minutes",
+    "default": 60
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "sync",
+  "command": "bin/cashcast sync",
+  "help": "keep Reminders, Calendar and Notion in step (all, status, install hourly), or write the forecast to a Google Sheet",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "all",
+     "status",
+     "install",
+     "uninstall",
+     "sheets"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "dest",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "sheets: the Google Sheet id",
+    "default": null
+   },
+   {
+    "name": "allow_removals",
+    "flag": "--allow-removals",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "all: remove more than 10 items in one run",
+    "default": null
+   },
+   {
+    "name": "range",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "where to write, for example Cashcast!A1",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "all": "writes your tasks to Reminders, Calendar and Notion, and records the ones you ticked done",
+   "install": "adds a LaunchAgent that runs sync all every hour",
+   "uninstall": "removes the hourly sync",
+   "sheets": "writes the forecast to your Google Sheet"
+  },
+  "agent_note": "agents: run `sync status`; the owner runs `sync all` and `sync install` in Terminal (the sandbox blocks osascript and launchctl)"
+ },
+ {
+  "name": "moneywiz",
+  "command": "bin/cashcast moneywiz",
+  "help": "compare, sync and fix MoneyWiz against your exports",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "status",
+     "coverage",
+     "diagnose",
+     "categorize",
+     "sync",
+     "weekly",
+     "resync",
+     "edit",
+     "probe",
+     "categories"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "dry_run",
+    "flag": "--dry-run",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "show what would change, change nothing",
+    "default": null
+   },
+   {
+    "name": "step",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "list",
+     "suggest",
+     "new",
+     "migrate",
+     "rollback"
+    ],
+    "required": false,
+    "help": "categories: what to do",
+    "default": null
+   },
+   {
+    "name": "name",
+    "flag": "--name",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "categories new: a short name for the migration file",
+    "default": null
+   },
+   {
+    "name": "ops",
+    "flag": "--ops",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "categories new: the changes as JSON, a list of [[op]] tables (the web app sends them)",
+    "default": null
+   },
+   {
+    "name": "yes",
+    "flag": "--yes",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "categories migrate, rollback: change MoneyWiz (after a --dry-run preview)",
+    "default": null
+   },
+   {
+    "name": "ui",
+    "flag": "--ui",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "probe: also check the window fallback",
+    "default": null
+   },
+   {
+    "name": "fixes",
+    "flag": "--fixes",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "edit: also apply the fixes a sync found",
+    "default": null
+   },
+   {
+    "name": "no_download",
+    "flag": "--no-download",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "sync: skip the API downloads",
+    "default": null
+   },
+   {
+    "name": "account",
+    "flag": "--account",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "resync: only this MoneyWiz or export account; edit: the account --archived changes",
+    "default": null
+   },
+   {
+    "name": "archived",
+    "flag": "--archived",
+    "kind": "choice",
+    "choices": [
+     "yes",
+     "no"
+    ],
+    "required": false,
+    "help": "edit: archive the --account in MoneyWiz (yes), or show it again so the sync can add rows (no)",
+    "default": null
+   },
+   {
+    "name": "from",
+    "flag": "--from",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "resync: first day to check again, YYYY-MM-DD",
+    "default": null
+   },
+   {
+    "name": "to",
+    "flag": "--to",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "resync: last day to check again, YYYY-MM-DD",
+    "default": null
+   },
+   {
+    "name": "check",
+    "flag": "--check",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "categorize: hide every 5th row you categorized and report how often learning agrees",
+    "default": null
+   },
+   {
+    "name": "list",
+    "flag": "--list",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "categorize: also list the rows with no category found (private: day, account, amount, payee)",
+    "default": null
+   },
+   {
+    "name": "resend",
+    "flag": "--resend",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "sync: send again the rows MoneyWiz held once and lacks now (deleted there?)",
+    "default": null
+   },
+   {
+    "name": "record_since",
+    "flag": "--record-since",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "categorize: note the rows categorized since this backup folder as cashcast's",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "sync": "adds rows to MoneyWiz",
+   "edit": "changes rows in MoneyWiz"
+  },
+  "agent_note": null
+ },
+ {
+  "name": "notion",
+  "command": "bin/cashcast notion",
+  "help": "import a Notion Markdown & CSV export, offline",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "import"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "source",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": true,
+    "help": "path to the export .zip or folder",
+    "default": null
+   },
+   {
+    "name": "delete_source",
+    "flag": "--delete-source",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "delete the export after the import",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {
+   "import": "imports documents (with delete_source it deletes the export)"
+  },
+  "agent_note": null
+ },
+ {
+  "name": "web",
+  "command": "bin/cashcast web",
+  "help": "run the web app in this terminal",
+  "args": [
+   {
+    "name": "port",
+    "flag": "--port",
+    "kind": "int",
+    "choices": null,
+    "required": false,
+    "help": "0 picks a free port",
+    "default": null
+   }
+  ],
+  "ui": false,
+  "terminal_only": "it is the web app itself",
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "knowledge",
+  "command": "bin/cashcast knowledge",
+  "help": "check, list, propose or refresh (live rates) the sourced facts",
+  "args": [
+   {
+    "name": "action",
+    "flag": null,
+    "kind": "choice",
+    "choices": [
+     "check",
+     "list",
+     "propose",
+     "refresh"
+    ],
+    "required": true,
+    "help": "",
+    "default": null
+   },
+   {
+    "name": "file",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "propose: path to a <topic>.toml",
+    "default": null
+   }
+  ],
+  "ui": true,
+  "terminal_only": null,
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "paperwork",
+  "command": "bin/cashcast paperwork",
+  "help": "citizenship steps, presence count and official sources, sealed on this Mac (terminal only)",
+  "args": [
+   {
+    "name": "verb",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a verb, then its words; `help` lists them",
+    "default": null
+   }
+  ],
+  "ui": false,
+  "terminal_only": "paperwork is private: run `bin/cashcast paperwork` in Terminal on this Mac",
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ },
+ {
+  "name": "citizenship",
+  "command": "bin/cashcast citizenship",
+  "help": "the guided citizenship application: answers, judges, proofs and the local evidence page (terminal only)",
+  "args": [
+   {
+    "name": "verb",
+    "flag": null,
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "a verb, then its words; `help` lists them",
+    "default": null
+   }
+  ],
+  "ui": false,
+  "terminal_only": "the application holds ID numbers: run `bin/cashcast citizenship` in Terminal on this Mac",
+  "terminal_only_choices": {},
+  "confirm": null,
+  "confirm_choices": {},
+  "agent_note": null
+ }
+]
+exit 0
+== users/alex/data/api-balances.json
+{
+  "wise": {"balances": {"USD": 1234.5, "EUR": 0, "CAD": 75.25}, "fetched_on": "2026-10-17"},
+  "kraken": {
+    "balances": {"CAD": 12.0, "BTC": 0.0123, "ZZCANARY": 3.0},
+    "prices": {"BTC": {"price": 90000, "currency": "USD"}},
+    "fetched_on": "2026-10-16"
+  },
+  "wealthsimple": {"balances": {"TFSA": 21000.0, "RRSP (USD)": 400.0}, "fetched_on": "2026-10-15"}
+}
+== users/alex/data/review.md
+# Cashcast review (private)
+
+For your eyes only. It shows short payee samples so you can tell the
+deposit groups and recurring payments apart. It stays in private/ and the app never sends it anywhere.
+
+## Deposit groups
+
+
+## Recurring payments
+
+- Payments #1: RENT CANARY03
+- Payments #2: GROCER CANARY02
+- Payments #3: RESTAURANT CANARY05
+- Payments #4: PHONE CO CANARY04
+== users/alex/data/summary.json
+{
+  "generated_on": "2026-10-18",
+  "base_currency": "",
+  "months": [
+    "2023-10",
+    "2023-11",
+    "2023-12",
+    "2024-01",
+    "2024-02",
+    "2024-03",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10",
+    "2024-11",
+    "2024-12",
+    "2025-01",
+    "2025-02",
+    "2025-03",
+    "2025-04",
+    "2025-05",
+    "2025-06",
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "files": [
+    {
+      "name": "bank.csv",
+      "format": "CSV",
+      "transactions": 75,
+      "errors": 0,
+      "date_min": "2025-10-01",
+      "date_max": "2026-10-02",
+      "notes": [],
+      "accounts": [
+        "bank"
+      ],
+      "error": null,
+      "ledger": false
+    }
+  ],
+  "accounts": [
+    {
+      "name": "bank",
+      "class": "cash",
+      "guessed": true,
+      "class_reason": "bank-like name",
+      "currency": "",
+      "rows": 75,
+      "last_date": "2026-10-02",
+      "balance_cents": 7160000,
+      "balance_source": "running balance",
+      "sum_balance_cents": 5160000
+    }
+  ],
+  "pay": {
+    "schedule": "biweekly",
+    "source": "Income > Salary",
+    "anchor": "2026-09-18",
+    "cycles": [
+      {
+        "nominal": "2025-10-03",
+        "paid_on": "2025-10-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-17",
+        "paid_on": "2025-10-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-10-31",
+        "paid_on": "2025-10-31",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-14",
+        "paid_on": "2025-11-14",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-11-28",
+        "paid_on": "2025-11-28",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-12",
+        "paid_on": "2025-12-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2025-12-26",
+        "paid_on": "2025-12-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-09",
+        "paid_on": "2026-01-09",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-01-23",
+        "paid_on": "2026-01-23",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-06",
+        "paid_on": "2026-02-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-02-20",
+        "paid_on": "2026-02-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-06",
+        "paid_on": "2026-03-06",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-03-20",
+        "paid_on": "2026-03-20",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-03",
+        "paid_on": "2026-04-03",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-04-17",
+        "paid_on": "2026-04-17",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-01",
+        "paid_on": "2026-05-01",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-15",
+        "paid_on": "2026-05-15",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-05-29",
+        "paid_on": "2026-05-29",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-12",
+        "paid_on": "2026-06-12",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-06-26",
+        "paid_on": "2026-06-26",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-10",
+        "paid_on": "2026-07-10",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-07-24",
+        "paid_on": "2026-07-24",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-07",
+        "paid_on": "2026-08-07",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-08-21",
+        "paid_on": "2026-08-21",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-04",
+        "paid_on": "2026-09-04",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      },
+      {
+        "nominal": "2026-09-18",
+        "paid_on": "2026-09-18",
+        "weekday": "Fri",
+        "offset_days": 0,
+        "deposits": 1
+      }
+    ],
+    "half_years": [
+      {
+        "period": "2025-H2",
+        "cheques": 7,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H1",
+        "cheques": 13,
+        "median_cents": 300000,
+        "off_median": 0
+      },
+      {
+        "period": "2026-H2",
+        "cheques": 6,
+        "median_cents": 300000,
+        "off_median": 0
+      }
+    ],
+    "gap_days": {
+      "14": 25
+    },
+    "off_cycle_deposits": 0,
+    "deposit_accounts": {
+      "bank": 26
+    },
+    "cycles_per_month": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      2,
+      2,
+      2,
+      2
+    ]
+  },
+  "income_cents": {},
+  "income_by_category_cents": {},
+  "spending_cents": {
+    "Bills": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000,
+      8000
+    ],
+    "Food": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000,
+      57000
+    ],
+    "Housing": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000,
+      180000
+    ]
+  },
+  "flows_cents": {
+    "card_payments": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "card_spend": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "income_tax": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "invested": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "salary": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      600000,
+      900000,
+      600000,
+      600000,
+      600000,
+      600000
+    ],
+    "salary_off_cycle": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "transfer_unknown": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "uncategorized_in": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "suggested_extra_income": [],
+  "recurring_payments": [
+    {
+      "label": "Payments #1",
+      "cadence": "monthly",
+      "category": "Housing",
+      "median_cents": 180000,
+      "count": 12,
+      "last_seen": "2026-09-01",
+      "yearly_cents": 2160000
+    },
+    {
+      "label": "Payments #2",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 45000,
+      "count": 12,
+      "last_seen": "2026-09-02",
+      "yearly_cents": 540000
+    },
+    {
+      "label": "Payments #3",
+      "cadence": "monthly",
+      "category": "Food",
+      "median_cents": 12000,
+      "count": 12,
+      "last_seen": "2026-09-09",
+      "yearly_cents": 144000
+    },
+    {
+      "label": "Payments #4",
+      "cadence": "monthly",
+      "category": "Bills",
+      "median_cents": 8000,
+      "count": 12,
+      "last_seen": "2026-09-05",
+      "yearly_cents": 96000
+    }
+  ],
+  "category_roles": {
+    "Income > Salary": "income (other)"
+  },
+  "checks": [
+    {
+      "name": "unreadable rows (run first-error to see the first one)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "files that could not be read",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows dropped as duplicates of another file",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "future-dated rows skipped",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows before the window",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "possible duplicate groups inside one file",
+      "count": 0,
+      "detail": "months: "
+    },
+    {
+      "name": "rows left uncategorized (no category, no rule, no keyword)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows matched as own-account transfers",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "transfers to accounts missing from the export",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "own-account transfer pairs that do not net to zero",
+      "count": 0,
+      "detail": "total gap 0.00"
+    },
+    {
+      "name": "salary rows outside cash accounts (income type salary_other_accounts)",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "rows converted to the base currency",
+      "count": 0,
+      "detail": "{\"(none)\": 75}"
+    },
+    {
+      "name": "split-transaction candidates",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "config account names not found in the data",
+      "count": 0,
+      "detail": ""
+    },
+    {
+      "name": "accounts with a guessed class",
+      "count": 1,
+      "detail": ""
+    }
+  ]
+}
+== users/alex/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}
+{"command": "import", "event": "report_shown", "scope": "agent:aggregates"}
+{"command": "import", "event": "command", "result": "ok"}
+== users/sam/logs/events.jsonl
+{"event": "user_created", "user_kind": "added"}

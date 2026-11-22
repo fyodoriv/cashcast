@@ -1,0 +1,431 @@
+# Core ETFs, account priority and asset location for Canadian investors.
+# Education, not personal advice. The assistant is not a licensed advisor.
+# mer: management expense ratio as a decimal (0.0019 = 0.19%). For US ETFs it is
+#   the expense ratio. MERs lag fee cuts until the fund's next fiscal year end.
+
+[meta]
+title = "Investing: core ETFs, account priority, asset location"
+as_of = 2026-10-19
+review_by = 2027-04-30
+sources = [
+  "https://www.blackrock.com/ca/investors/en/products/309480/ishares-core-equity-etf-portfolio",
+  "https://www.blackrock.com/ca/individual/en/literature/fact-sheet/xgro-ishares-core-growth-etf-portfolio-fund-fact-sheet-en-ca.pdf",
+  "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VEQT",
+  "https://www.vanguard.ca/content/dam/intl/americas/canada/en/documents/PressRelease_Vanguard_PriceChanges_Final.pdf",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account.html",
+  "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account.html",
+]
+
+# ------------------------------------------------------------ all-in-one
+
+[[etfs]]
+ticker = "XEQT"
+exchange = "TSX"
+name = "iShares Core Equity ETF Portfolio"
+mer = 0.0019
+asset_class = "equity"
+region = "global"
+domicile = "CA"
+best_account = "TFSA"
+why = "One-ticket global stock portfolio, auto-rebalanced. Management fee 0.17% since Dec 18, 2025."
+source = "https://www.blackrock.com/ca/investors/en/products/309480/ishares-core-equity-etf-portfolio"
+confidence = "verified"
+
+[[etfs]]
+ticker = "VEQT"
+exchange = "TSX"
+name = "Vanguard All-Equity ETF Portfolio"
+mer = 0.0022
+asset_class = "equity"
+region = "global"
+domicile = "CA"
+best_account = "TFSA"
+why = "One-ticket global stock portfolio. Management fee cut to 0.17% on Nov 18, 2025; the MER shown lags that cut."
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VEQT"
+confidence = "verified"
+
+[[etfs]]
+ticker = "ZEQT"
+exchange = "TSX"
+name = "BMO All-Equity ETF"
+mer = 0.0018
+asset_class = "equity"
+region = "global"
+domicile = "CA"
+best_account = "TFSA"
+why = "BMO's one-ticket global stock portfolio; management fee 0.15%."
+source = "https://df.bmogam.com/assets/static/etf-profiles-pdfs/BMO%20All-Equity%20ETF_Factsheet_EN_ZEQT.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "XGRO"
+exchange = "TSX"
+name = "iShares Core Growth ETF Portfolio"
+mer = 0.0019
+asset_class = "balanced"
+equity_share = 0.8
+region = "global"
+domicile = "CA"
+best_account = "any"
+why = "80% stocks / 20% bonds in one fund. Management fee 0.17%."
+source = "https://www.blackrock.com/ca/individual/en/literature/fact-sheet/xgro-ishares-core-growth-etf-portfolio-fund-fact-sheet-en-ca.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "VGRO"
+exchange = "TSX"
+name = "Vanguard Growth ETF Portfolio"
+mer = 0.0022
+asset_class = "balanced"
+equity_share = 0.8
+region = "global"
+domicile = "CA"
+best_account = "any"
+why = "80% stocks / 20% bonds in one fund. Management fee 0.17%."
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VGRO"
+confidence = "verified"
+
+[[etfs]]
+ticker = "VBAL"
+exchange = "TSX"
+name = "Vanguard Balanced ETF Portfolio"
+mer = 0.0022
+asset_class = "balanced"
+equity_share = 0.6
+region = "global"
+domicile = "CA"
+best_account = "any"
+why = "60% stocks / 40% bonds for lower volatility. Management fee 0.17%."
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VBAL"
+confidence = "verified"
+
+[[etfs]]
+ticker = "XBAL"
+exchange = "TSX"
+name = "iShares Core Balanced ETF Portfolio"
+mer = 0.0019
+asset_class = "balanced"
+equity_share = 0.6
+region = "global"
+domicile = "CA"
+best_account = "any"
+why = "60% stocks / 40% bonds. Management fee 0.17% after the Dec 2025 cut; MER 0.19% (ETF Facts, June 19, 2026)."
+source = "https://www.blackrock.com/ca/individual/en/literature/etf-summary/xbal-facts-en-ca.pdf"
+confidence = "verified"
+
+# ------------------------------------------------------------ equity building blocks
+
+[[etfs]]
+ticker = "VFV"
+exchange = "TSX"
+name = "Vanguard S&P 500 Index ETF"
+mer = 0.0008
+asset_class = "equity"
+region = "US"
+domicile = "CA"
+best_account = "TFSA"
+why = "Cheap S&P 500 in CAD. Holds US shares directly, so 15% US withholding is lost in TFSA/RRSP (recoverable only in non-registered)."
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VFV"
+confidence = "verified"
+
+[[etfs]]
+ticker = "XUU"
+exchange = "TSX"
+name = "iShares Core S&P U.S. Total Market Index ETF"
+mer = 0.0007
+asset_class = "equity"
+region = "US"
+domicile = "CA"
+best_account = "TFSA"
+why = "Whole US market in CAD. Holds US-listed ETFs, so two layers of withholding issue in RRSP; fine in TFSA."
+source = "https://www.blackrock.com/ca/individual/en/literature/fact-sheet/xuu-ishares-core-s-p-u-s-total-market-index-etf-fund-fact-sheet-en-ca.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "VUN"
+exchange = "TSX"
+name = "Vanguard U.S. Total Market Index ETF"
+mer = 0.0016
+asset_class = "equity"
+region = "US"
+domicile = "CA"
+best_account = "TFSA"
+why = "Whole US market in CAD via a US-listed Vanguard ETF."
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VUN"
+confidence = "verified"
+
+[[etfs]]
+ticker = "XAW"
+exchange = "TSX"
+name = "iShares Core MSCI All Country World ex Canada Index ETF"
+mer = 0.0022
+asset_class = "equity"
+region = "global_ex_canada"
+domicile = "CA"
+best_account = "TFSA"
+why = "All non-Canadian stocks in one ticket; pair with XIC for a 2-fund portfolio."
+source = "https://www.blackrock.com/ca/investors/en/products/272108/ishares-core-sp-us-total-market-index-etf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "XIC"
+exchange = "TSX"
+name = "iShares Core S&P/TSX Capped Composite Index ETF"
+mer = 0.0006
+asset_class = "equity"
+region = "CA"
+domicile = "CA"
+best_account = "non_registered"
+why = "Broad Canadian stocks at very low cost. Eligible dividends get the dividend tax credit in a taxable account."
+source = "https://www.blackrock.com/ca/investors/en/literature/fact-sheet/xic-ishares-core-s-p-tsx-capped-composite-index-etf-fund-fact-sheet-en-ca.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "VDY"
+exchange = "TSX"
+name = "Vanguard FTSE Canadian High Dividend Yield Index ETF"
+mer = 0.0022
+asset_class = "equity"
+region = "CA"
+domicile = "CA"
+best_account = "non_registered"
+why = "Canadian dividend tilt; the dividend tax credit works only in a taxable account. Concentrated in banks and energy."
+source = "https://www.vanguard.ca/en/advisor/products/products-group/etfs/VDY"
+confidence = "verified"
+
+# ------------------------------------------------------------ bonds and cash
+
+[[etfs]]
+ticker = "ZAG"
+exchange = "TSX"
+name = "BMO Aggregate Bond Index ETF"
+mer = 0.0009
+asset_class = "bond"
+region = "CA"
+domicile = "CA"
+best_account = "RRSP"
+why = "Broad Canadian bonds. Interest is fully taxed, so shelter it in an RRSP."
+source = "https://df.bmogam.com/assets/static/etf-profiles-pdfs/BMO%20Aggregate%20Bond%20Index%20ETF_Factsheet_EN_ZAG.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "XBB"
+exchange = "TSX"
+name = "iShares Core Canadian Universe Bond Index ETF"
+mer = 0.0010
+asset_class = "bond"
+region = "CA"
+domicile = "CA"
+best_account = "RRSP"
+why = "Broad Canadian bonds; management fee 0.09%."
+source = "https://www.blackrock.com/ca/investors/en/products/239493/ishares-canadian-universe-bond-index-etf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "CASH"
+exchange = "TSX"
+name = "Global X High Interest Savings ETF"
+mer = 0.0011
+asset_class = "cash"
+region = "CA"
+domicile = "CA"
+best_account = "any"
+why = "Bank-deposit ETF for short-term money; yield follows the Bank of Canada rate. Not CDIC-insured."
+source = "https://www.globalx.ca/product/CASH"
+confidence = "verified"
+
+[[etfs]]
+ticker = "ZMMK"
+exchange = "TSX"
+name = "BMO Money Market Fund ETF Series"
+mer = 0.0013
+asset_class = "cash"
+region = "CA"
+domicile = "CA"
+best_account = "any"
+why = "Money-market alternative to HISA ETFs; holds short-term T-bills and commercial paper."
+source = "https://df.bmogam.com/assets/static/etf-profiles-pdfs/BMO%20Money%20Market%20Fund%20ETF%20Series_Factsheet_EN_ZMMK.pdf"
+confidence = "verified"
+
+# ------------------------------------------------------------ US-listed (for RRSP)
+
+[[etfs]]
+ticker = "VTI"
+exchange = "NYSE Arca"
+name = "Vanguard Total Stock Market ETF"
+mer = 0.0003
+asset_class = "equity"
+region = "US"
+domicile = "US"
+best_account = "RRSP"
+why = "US-listed and held in an RRSP: no 15% US dividend withholding under the Canada-US treaty. Needs USD (Norbert's gambit keeps FX cheap)."
+source = "https://fund-docs.vanguard.com/F0970.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "VXUS"
+exchange = "NASDAQ"
+name = "Vanguard Total International Stock ETF"
+mer = 0.0005
+asset_class = "equity"
+region = "international"
+domicile = "US"
+best_account = "RRSP"
+why = "Non-US stocks; in an RRSP avoids the US layer of withholding (foreign-country withholding still applies)."
+source = "https://fund-docs.vanguard.com/F3369.pdf"
+confidence = "verified"
+
+[[etfs]]
+ticker = "SCHD"
+exchange = "NYSE Arca"
+name = "Schwab U.S. Dividend Equity ETF"
+mer = 0.0006
+asset_class = "equity"
+region = "US"
+domicile = "US"
+best_account = "RRSP"
+why = "US dividend stocks; dividends lose 15% to withholding in a TFSA but not in an RRSP."
+source = "https://www.schwabassetmanagement.com/products/schd"
+confidence = "verified"
+notes = "Checked 2026-10-19 in a browser on the issuer page. Total expense ratio 0.060%."
+
+[[etfs]]
+ticker = "VYM"
+exchange = "NYSE Arca"
+name = "Vanguard High Dividend Yield ETF"
+mer = 0.0004
+asset_class = "equity"
+region = "US"
+domicile = "US"
+best_account = "RRSP"
+why = "US high-dividend stocks; hold in an RRSP to avoid the 15% withholding."
+source = "https://fund-docs.vanguard.com/F0923.pdf"
+confidence = "verified"
+
+# ------------------------------------------------------------ account priority
+
+[[account_priority]]
+order = 1
+account = "emergency_fund"
+when = "Always first: 3-6 months of essential spending in cash (HISA, chequing with interest, CASH or ZMMK)."
+why = "Stops forced selling or card debt after a surprise bill or job loss. FCAC suggests 3-6 months of expenses (or income) in a low-fee account."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/savings-investments/setting-up-emergency-funds.html"
+confidence = "verified"
+
+[[account_priority]]
+order = 2
+account = "high_interest_debt"
+when = "Pay off credit-card or other debt above about 7-8% before investing."
+why = "Paying a 20% card balance is a guaranteed 20% return."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/debt/paying-debt.html"
+confidence = "verified"
+notes = "FCAC confirms paying the highest-interest debt first saves the most interest. The 7-8% cut-off versus investing is a rule of thumb."
+
+[[account_priority]]
+order = 3
+account = "employer_match"
+when = "If the employer matches RRSP/DPSP/pension contributions."
+why = "A match is an instant 50-100% return."
+source = "https://www.canada.ca/en/financial-consumer-agency/services/retirement-planning/employer-sponsored-pension.html"
+confidence = "heuristic"
+notes = "Rule of thumb: a match is free money. The FCAC page confirms employers may contribute to group RRSPs and pensions; the ordering is judgment."
+
+[[account_priority]]
+order = 4
+account = "FHSA"
+when = "First-time home buyer (no owned home this year or the prior 4 years), age 18+, and could buy a home within about 15 years."
+why = "Deduction on the way in AND tax-free on the way out for a home. 8,000/yr, 40,000 lifetime; unused money can move to an RRSP without using RRSP room."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account.html"
+confidence = "verified"
+
+[[account_priority]]
+order = 5
+account = "RRSP"
+when = "Marginal rate now is higher than the expected rate in retirement (rule of thumb: income above about 58,000 federal 2nd bracket)."
+why = "Deduct at a high rate now, withdraw at a lower rate later. Also best home for US-listed ETFs and bonds."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/rrsps-related-plans/registered-retirement-savings-plan-rrsp.html"
+confidence = "verified"
+notes = "CRA confirms deductible contributions and taxable withdrawals. The 58,000 income cut-off is a rule of thumb."
+
+[[account_priority]]
+order = 6
+account = "TFSA"
+when = "Low or middle income, or after RRSP/FHSA; also for any money you may need before retirement."
+why = "Growth and withdrawals are tax-free; withdrawals do not count as income (no OAS or benefit clawback); room comes back next year."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account.html"
+confidence = "verified"
+
+[[account_priority]]
+order = 7
+account = "non_registered"
+when = "After registered room is full."
+why = "Taxable, but only 50% of capital gains is taxed and Canadian dividends get the dividend tax credit. Track ACB."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/line-12700-capital-gains.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ asset location
+
+[[asset_location]]
+asset = "US-listed US equity ETFs (VTI, SCHD, VYM)"
+best_account = "RRSP"
+why = "The Canada-US treaty exempts RRSPs from the 15% US dividend withholding. TFSAs and RESPs are not exempt."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-40500-federal-foreign-tax-credit.html"
+confidence = "verified"
+
+[[asset_location]]
+asset = "Canadian-listed US equity ETFs (VFV, XUU, VUN)"
+best_account = "TFSA"
+why = "Withholding is lost in TFSA and RRSP alike; the cost is small (about 0.2%/yr). In non-registered you can claim the foreign tax credit."
+source = "https://www.blackrock.com/ca/investors/en/literature/brochure/withholding-tax-reference-guide-en-ca.pdf"
+confidence = "verified"
+notes = "BlackRock Canada withholding-tax guide (2026-10-19): a Canadian-listed ETF holding US stocks has 15% withheld inside the fund in every account type, not recoverable in an RRSP or TFSA; in a non-registered account the foreign tax credit applies (CRA line 40500). The 0.2%/yr size is approximate (15% of a ~1.3% yield)."
+
+[[asset_location]]
+asset = "Canadian equity (XIC, VDY)"
+best_account = "non_registered"
+why = "Eligible Canadian dividends get the dividend tax credit only in a taxable account. Also fine in a TFSA."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-40425-federal-dividend-tax-credit.html"
+confidence = "verified"
+
+[[asset_location]]
+asset = "Bonds and GICs (ZAG, XBB)"
+best_account = "RRSP"
+why = "Interest is taxed at your full marginal rate; shelter it first."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/personal-income/investment-income.html"
+confidence = "verified"
+
+[[asset_location]]
+asset = "Highest expected growth (all-equity ETFs)"
+best_account = "TFSA"
+why = "Tax-free growth compounds best on the assets that grow most."
+source = "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4466/tax-free-savings-account-tfsa-guide-individuals.html"
+confidence = "verified"
+notes = "CRA RC4466: TFSA investment income is generally tax-free, even when withdrawn. Placing growth assets there is a rule of thumb built on that fact."
+
+[[asset_location]]
+asset = "All-in-one ETFs (XEQT, VEQT, XGRO, VGRO)"
+best_account = "any"
+why = "Simplicity beats small location gains for most people. Hold the same fund everywhere and rebalance by contribution."
+source = "https://www.blackrock.com/ca/investors/en/learning-centre/etf-education/asset-allocation-etfs"
+confidence = "verified"
+
+[[asset_location]]
+asset = "Short-term cash (CASH, ZMMK, HISA)"
+best_account = "TFSA"
+why = "Interest is fully taxable; a TFSA shelters it and keeps it withdrawable."
+source = "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/tax-free-savings-account.html"
+confidence = "verified"
+
+# ------------------------------------------------------------ expected returns
+# Long-run planning assumptions, not forecasts for any one year. The net total
+# uses them to rank "invest cash above your floor" against keeping it as cash:
+# a mix returns equity × its share + fixed_income × the rest.
+
+[expected_returns]
+equity = 0.065
+fixed_income = 0.032
+why = "FP Canada 2026 Projection Assumption Guidelines: about 6.5% a year for a global all-equity mix (Canada 6.3%, US 6.4%, international developed 6.6%, emerging 7.5%), 3.2% for bonds, before fees. For 10+ year projections. Same numbers as invest_evidence.toml pag-equity."
+source = "https://www.fpcanada.ca/newsdetail/fp-canada--and-the-institute-of-financial-planning-jointly-publish-the-2026-projection-assumption-guidelines-for-financial-planners"
+as_of = 2026-11-14
+review_by = 2027-04-30
+confidence = "verified"

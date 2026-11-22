@@ -1,0 +1,3 @@
+web /api/moneywiz-sync?user=alex
+200 application/json
+{"error": "error: no MoneyWiz database found on this computer. Open MoneyWiz once on this Mac, or set [moneywiz] db = \"PATH\" in cashcast.toml"}
