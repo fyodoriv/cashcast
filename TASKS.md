@@ -405,6 +405,34 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     0007), sync balance adjustments per account instead of single trades
   - **Anchor**: Basili, Caldiera, Rombach 1994 (GQM); decision 0007
 
+- [ ] Loyalty points and miles show in cashcast next to the money
+  - **ID**: points-awardwallet-connector
+  - **Tags**: points, connector, strategy
+  - **Details**: Owner choice 2026-11-22 ("plan it as a task"): travel points are money-like
+    value, but today they live only in a separate AwardWallet skill outside cashcast. Add an
+    AwardWallet connector: `connectors/awardwallet.toml` + `connectors/playbooks/awardwallet.md`,
+    a consent scope for the AwardWallet Business API (`engine/src/core/consent.rs`, exits table in
+    `docs/privacy.md`), an API client in `engine/src/api.rs` that saves the
+    `GET https://business.awardwallet.com/api/export/v1/connectedUser/<id>` reply unparsed into
+    the inbox (rule 7), a reader for it, and `bin/cashcast points` (program, kind, balance, elite
+    status, expiry, last update error), with a parity row, an e2e story and a web view row.
+    Key and user id go in the person's `.env` (`AWARDWALLET_API_KEY`, `AWARDWALLET_USER_ID`);
+    only the owner adds them. Without them the command names the missing key and the setup step.
+    Later: value points in dollars with a sourced cents-per-point fact in `knowledge/data/` and
+    let `cards now` count them.
+  - **Files**: `engine/src/api.rs`, a new `engine/src/points.rs`, `engine/src/core/commands.rs`,
+    `engine/src/core/cli.rs`, `connectors/`, `tests/e2e/`, `web/src/views/`
+  - **Acceptance**: a synthetic AwardWallet reply fixture with canary program names gives the
+    right table; a canary never reaches any other output; no key means one clear setup line.
+  - **Hypothesis**: questions about points answered from cashcast instead of a separate skill go
+    from 0 of N to N of N, and the owner sees points beside cash in one place.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test points` and
+    `scripts/e2e.sh points`; in use, the `points` event count in `.metrics/events.jsonl`.
+  - **Success**: tests green, and at least one real `points` run a month after the owner adds the key.
+  - **Pivot**: if the Business API needs a paid plan the owner does not want, read the
+    AwardWallet CSV export into the inbox instead of the API.
+  - **Anchor**: Basili, Caldiera, Rombach 1994 (Goal Question Metric).
+
 ## P2
 
 - [ ] Find the flat cash gap in two MoneyWiz investment accounts
