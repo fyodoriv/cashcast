@@ -53,10 +53,10 @@ pub fn fold(open: Vec<Task>, today: NaiveDate, day: Weekday, done: &[String]) ->
     let when = session_day(today, day, done);
     folded.sort_by(|a, b| (a.due, &a.id).cmp(&(b.due, &b.id)));
     let mut lines = vec![
-        "Run `/cashcast weekly` (or `bin/cashcast weekly`): one command refreshes the \
-         banks, syncs MoneyWiz, runs the forecast, plans transfers, reviews your stocks and \
-         crypto against your goals, says what to invest where, clears what it can, and \
-         lists this week's moves."
+        "Ask Claude `/cashcast-weekly`: it downloads every bank, writes MoneyWiz to match \
+         them, plans the fewest transfers, flags charges on the wrong card, updates the \
+         forecast with suggestions, and shows one results page. Nothing goes to Reminders \
+         or Calendar until you confirm. (In a terminal: `bin/cashcast weekly`.)"
             .to_string(),
         String::new(),
         format!("Recurring tasks ({}):", folded.len()),
@@ -615,7 +615,9 @@ Export accounts with no MoneyWiz account: canary-x, canary-y. Link one in cashca
 - kraken (Kraken): stale (crypto: stale after 31 days), newest 2026-10-01 (47 days old), downloaded 2026-10-02. API: k\n";
         assert_eq!(
             not_current(crypto, "", None, None, d("2026-11-17")),
-            ["Export stale: kraken (Kraken), newest 2026-10-01 (47 days old), downloaded 2026-10-02"]
+            [
+                "Export stale: kraken (Kraken), newest 2026-10-01 (47 days old), downloaded 2026-10-02"
+            ]
         );
         let done = "History gaps since 2026-08-01: none.\n";
         assert!(not_current(fresh, done, None, None, d("2026-11-16")).is_empty());

@@ -67,11 +67,11 @@ Rules and fees change. Before you advise on a fee, a day count or a document:
    MANUAL. MANUAL is a page it cannot read as text (a PDF): open it and look for the
    listed quotes by hand.
 2. On CHANGED, read the official page, update the quote, the rule and `CHECKED` in
-   `src/core/paperwork-citizenship.ts`, and run its tests. Cite only `canada.ca`,
+   `engine/src/paperwork/facts.rs`, and run its tests. Cite only `canada.ca`,
    `ircc.canada.ca` or `cic.gc.ca` pages.
 
 ## Add a process
 
-Add a `src/core/paperwork-<name>.ts` with steps, items, rules and sources (official pages
-only, each with a quote and the check date). Add it to `PROCESSES` in
-`src/core/paperwork.ts`, then add tests with synthetic people only.
+Add the process to `engine/src/paperwork/facts.rs` with steps, items, rules and sources (official pages
+only, each with a quote and the check date). Add it to `processes()` in
+the same file, then add tests with synthetic people only.

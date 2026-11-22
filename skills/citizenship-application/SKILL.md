@@ -7,9 +7,9 @@ description: Guides the owner, screen by screen, through the IRCC online applica
 
 The owner opens a Claude session in this repo and the IRCC application in Chrome, then asks
 you to guide them. You read each screen, say what goes in each field, and run a judge before
-they move on. Every rule comes from an official page: `src/core/paperwork-citizenship.ts`
-(quotes, re-checked live). The judges are `scripts/citizenship-judge.ts`
-(logic: `src/core/citizenship-answers.ts`, tests: `tests/unit/citizenship-judge.test.ts`).
+they move on. Every rule comes from an official page: `engine/src/paperwork/facts.rs`
+(quotes, re-checked live). The judges are `bin/cashcast citizenship`
+(logic: `engine/src/paperwork/citizenship/answers.rs`, tests: `engine/tests/citizenship.rs`).
 
 ## Hard rules
 
@@ -173,7 +173,7 @@ they must be the same. If they differ, find the trip that differs before you go 
 2. Fee: the owner pays on the official page when ready to submit. The amount is the
    `pay-fee` item in the facts (`bin/cashcast paperwork show citizenship`); the facts check
    at the start confirmed it. Then the owner uploads the receipt.
-3. Final gate, all fresh: `paperwork sources --live` 0 CHANGED; `citizenship-judge.ts
+3. Final gate, all fresh: `paperwork sources --live` 0 CHANGED; `citizenship
    answers` exit 0 with today's date; every screen judged; every upload ticked off; today is
    the sign day in the answers and the calculator.
 4. The owner signs (the date sets the 5-year window), reads the declaration and submits.

@@ -70,8 +70,13 @@ Seen on a real plan on 2026-10-25 (newer menus):
 - Each transaction is a row with the date, the plan (`RRSP`) and the type in
   bold (`Contribution (Member)`, `Contribution (Employer)`). One line per fund
   follows, with "N units at $P" and the amount.
+- Sign in on `https://www.sunnet.sunlife.com` (the member site behind
+  mysunlife.ca): the password manager matches that domain. A direct link to
+  the history shows a maintenance page; go through the menu. The SMS code goes
+  to the owner, who types it in the tab.
 - An agent builds the CSV inside the page, so the values never reach the
-  model. Its script walks every Next page with `fetch`, writes `Date`
+  model: it runs `connectors/scripts/sunlife-history.js` with the browser
+  tool's JavaScript on the Details page. The script walks every Next page with `fetch`, writes `Date`
   (ISO), `Plan`, `Transaction type`, `Fund name`, `Units`, `Unit price`,
   `Amount`, and saves `sunlife-transactions-<date>.csv` as a download. It
   returns only the page count, the row count, the first and last dates, and

@@ -550,3 +550,102 @@ const NOMADS: &str = r#"{"trips": [
  {"date_start": "2024-02-10", "date_end": "2024-02-20", "place": "Cancun", "country": "Mexico"},
  {"date_start": "2024-02-20", "date_end": "2024-03-01", "place": "Austin", "country": "United States"},
  {"date_start": "2024-03-02", "date_end": "2026-11-01", "place": "Toronto", "country": "Canada"}]}"#;
+
+/// Writes the synthetic example as the sealed draft of a new user.
+fn with_draft(tag: &str) -> PathBuf {
+    let u = user(tag);
+    let scratch = env().join(format!("{tag}-scratch.toml"));
+    std::fs::write(&scratch, D::to_toml(&base())).unwrap();
+    run(&u, &["put", scratch.to_str().unwrap()]).unwrap();
+    u
+}
+
+#[test]
+fn ready_answers_say_yes_and_exit_0() {
+    let u = with_draft("ready");
+    let (o, code) = run(&u, &["answers"]).unwrap();
+    assert!(o.contains("ready: yes"), "{o}");
+    assert_eq!(code, 0);
+    for c in [UCI, SIN, PASSNO] {
+        assert!(!o.contains(c), "canary printed");
+    }
+}
+
+#[test]
+fn a_screen_field_that_differs_exits_1_and_never_echoes() {
+    let u = with_draft("screen-cli");
+    let screen = env().join("screen-cli.json");
+    let ok = json!({"fields": [{"label": "UCI", "value": UCI}]});
+    std::fs::write(&screen, ok.to_string()).unwrap();
+    let (_, code) = run(&u, &["screen", screen.to_str().unwrap()]).unwrap();
+    assert_eq!(code, 0, "a matching screen passes");
+    let bad = json!({"fields": [{"label": "UCI", "value": "0000000099"}, {"label": "Family name", "value": ""}]});
+    std::fs::write(&screen, bad.to_string()).unwrap();
+    let (o, code) = run(&u, &["screen", screen.to_str().unwrap()]).unwrap();
+    assert_eq!(code, 1, "{o}");
+    assert!(o.contains("MISMATCH") && o.contains("EMPTY"), "{o}");
+    assert!(!o.contains(UCI) && !o.contains("0000000099"), "a value was echoed: {o}");
+}
+
+#[test]
+fn an_answers_file_others_can_read_fails() {
+    use std::os::unix::fs::PermissionsExt;
+    let u = user("open-file");
+    let f = env().join("open-answers.toml");
+    std::fs::write(&f, D::to_toml(&base())).unwrap();
+    std::fs::set_permissions(&f, std::fs::Permissions::from_mode(0o644)).unwrap();
+    let (o, code) = run(&u, &["answers", f.to_str().unwrap()]).unwrap();
+    assert_eq!(code, 1);
+    assert!(o.contains("FAIL file: others can read"), "{o}");
+    std::fs::remove_file(&f).unwrap();
+}
+
+#[test]
+fn show_reveal_outside_a_terminal_shows_nothing() {
+    let u = with_draft("reveal");
+    let e = run(&u, &["show", "--reveal"]).unwrap_err();
+    assert!(e.contains("only in your own terminal"), "{e}");
+    let (o, _) = run(&u, &["show"]).unwrap();
+    assert!(!o.contains(UCI) && !o.contains(SIN), "show printed an ID number");
+}
+
+#[test]
+fn restore_brings_back_an_older_draft_and_keeps_the_newer_one() {
+    let u = with_draft("restore");
+    let scratch = env().join("restore-scratch.toml");
+    std::fs::write(&scratch, "city = \"CanaryNewTown\"\n").unwrap();
+    run(&u, &["put", scratch.to_str().unwrap()]).unwrap();
+    let (v, _) = run(&u, &["versions"]).unwrap();
+    let names: Vec<&str> = v.lines().filter(|l| l.ends_with(".sqv")).collect();
+    assert!(!names.is_empty(), "{v}");
+    let before = names.len();
+    let (o, code) = run(&u, &["restore", names[0]]).unwrap();
+    assert_eq!(code, 0, "{o}");
+    let (v2, _) = run(&u, &["versions"]).unwrap();
+    assert!(v2.lines().filter(|l| l.ends_with(".sqv")).count() > before, "the newer draft was not kept");
+    assert!(run(&u, &["restore", "no-such-version.sqv"]).is_err());
+}
+
+#[test]
+fn an_old_evidence_page_is_removed_by_the_next_run() {
+    let u = with_draft("ttl");
+    run(&u, &["report"]).unwrap();
+    let page = D::citizenship_dir(&u).join("evidence.html");
+    assert!(page.exists());
+    // Older than the 10 minutes the page may live.
+    let st = std::process::Command::new("touch").args(["-t", "202001010000"]).arg(&page).status().unwrap();
+    assert!(st.success());
+    run(&u, &["status"]).unwrap();
+    assert!(!page.exists(), "an old evidence page stayed on disk");
+}
+
+#[test]
+fn template_never_writes_over_a_file() {
+    let u = user("template");
+    let f = env().join("template-out.toml");
+    let _ = std::fs::remove_file(&f);
+    let (o, code) = run(&u, &["template", "--out", f.to_str().unwrap()]).unwrap();
+    assert_eq!(code, 0, "{o}");
+    assert!(run(&u, &["template", "--out", f.to_str().unwrap()]).is_err());
+    std::fs::remove_file(&f).unwrap();
+}

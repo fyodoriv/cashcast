@@ -38,6 +38,15 @@
     "default": null
    },
    {
+    "name": "sync",
+    "flag": "--sync",
+    "kind": "flag",
+    "choices": null,
+    "required": false,
+    "help": "also write the week's tasks to Reminders and Calendar (default: only after you confirm)",
+    "default": null
+   },
+   {
     "name": "balance",
     "flag": "--balance",
     "kind": "text",
@@ -948,18 +957,28 @@
  {
   "name": "cards",
   "command": "bin/cashcast cards",
-  "help": "which card to use now per spending category: cap used and left, reset date, rent charges, credit left",
+  "help": "which card to use now per spending category: cap used and left, reset date, rent charges, credit left; missed totals charges that went on a card earning less",
   "args": [
    {
     "name": "action",
     "flag": null,
     "kind": "choice",
     "choices": [
-     "now"
+     "now",
+     "missed"
     ],
     "required": false,
-    "help": "",
+    "help": "now: the card to use per category; missed: charges that went on a card earning less",
     "default": "now"
+   },
+   {
+    "name": "since",
+    "flag": "--since",
+    "kind": "text",
+    "choices": null,
+    "required": false,
+    "help": "missed: the first day to check (default: 7 days ago)",
+    "default": null
    },
    {
     "name": "balance",

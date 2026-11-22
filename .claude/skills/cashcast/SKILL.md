@@ -41,9 +41,10 @@ You run `bin/cashcast` commands, relay what they print, and ask questions.
 
 ## Weekly session (the Sunday reminder)
 
-When the user says "weekly", "weekly session", `/cashcast weekly`, ticks into
-the "Weekly cashcast session" reminder, or asks to "do the weekly", skip the
-intro. One command does the checks; you add only the steps it cannot do.
+When the user says "weekly", "weekly session", `/cashcast-weekly`,
+`/cashcast weekly`, ticks into the "Weekly cashcast session" reminder, or asks
+to "do the weekly", skip the intro. `commands/cashcast-weekly.md` lists the 7
+results the owner expects, in order; this section has the commands. One command does the checks; you add only the steps it cannot do.
 The reminder's notes list the weekly and monthly tasks it holds (setting
 `reminders.weekly`, default `sunday`; `off` syncs each task on its own).
 
@@ -55,9 +56,18 @@ consent grant and the money moves stay with the owner.
 0. Engine: when the checkout is on `main` with a clean tree, `git pull --ff-only`
    (`bin/cashcast` rebuilds the engine). Otherwise use the clean sync worktree
    (`~/.local/state/cashcast/sync`, see the MoneyWiz playbook) and say why.
-1. Sign-ins: one `request_credentials` call that names every browser service in
-   `bin/cashcast fetch plan --all`, so 1Password asks once. Never type a password
-   or code yourself; a 2FA field goes through `enter_verification_code`.
+1. Chrome first: call `tabs_context_mcp`. Only when it says Claude in Chrome is
+   not connected, ask the owner in one line to click the Claude icon in Chrome's
+   toolbar and sign in (a scheduled run puts this ask in its start push). Never
+   ask when it is connected (owner rule, 2026-11-22).
+   Sign-ins: `request_credentials` for every browser service in
+   `bin/cashcast fetch plan --all`, at most 4 logins per call (8 in one call
+   fails as "invalid schema"). Sun Life signs in on `https://www.sunnet.sunlife.com`,
+   so request that site, not mysunlife.ca. Never type a password
+   or code yourself; a 2FA field goes through `enter_verification_code`. When
+   that tool is denied or 1Password says `rate_limited`, ask the owner to type
+   the code in that tab, and do another bank meanwhile. `autosubmit_failed`
+   often still signed in: take a screenshot before retrying.
    1Password works only while a person has the run open ("This tool requires
    an attended session"). A scheduled run first sends a push notification
    ("Sunday cashcast run: open it in Claude to approve the bank sign-ins"),
@@ -68,8 +78,14 @@ consent grant and the money moves stay with the owner.
    when `fetch plan` calls one "fresh" (`skills/fetch-exports`
    step 3, each service's playbook): Wealthsimple (chequing, card, investments),
    Scotiabank, TD, CIBC, Wise (`api`), E*TRADE, Sun Life, Kraken, Casa, PayPal
-   last. Then `bin/cashcast fetch collect`. TD: download the card as QFX (its CSVs
-   are all named `accountactivity`, so the card and the chequing collide).
+   last. Then `bin/cashcast fetch collect`. TD and CIBC: always QFX, never CSV.
+   Their CSVs hold no account, so cashcast names the account after the file
+   (`accountactivity`, `Download (1)`), and each one shows up in "Not up to
+   date" as an export with no MoneyWiz account. TD's Accounts Overview
+   **Download** icon gives one QFX for the chequing and the card (current
+   statement period); the card page's own download gives older statements.
+   Rename each `accountactivity.qfx` in `~/Downloads` before the next download,
+   so Chrome does not add " (1)".
    History: also download every range that last week's "MoneyWiz history gaps
    since …" line (or `bin/cashcast moneywiz coverage`) names, such as "download
    2023-09-30 to 2024-11-03". Use the site's custom date range, in the longest
@@ -84,9 +100,11 @@ consent grant and the money moves stay with the owner.
 2. Run `bin/cashcast weekly --balance ID=AMOUNT …` once (one `--balance` per
    account and card read in step 1; without them it skips transfers). In order it runs: fetch plan, the forecast
    (`forecast`, which imports first), MoneyWiz (`moneywiz weekly`), transfers,
-   `cards now`, `charges`, holdings, `optimize` and `invest-plan` (both only
+   `cards now`, `cards missed` (charges on a card that earns less, last 7 days), `charges`, holdings, `optimize` and `invest-plan` (both only
    when no month dips below the cash floor; otherwise it says "no new money
-   this week"), `tasks resolve`, and `sync all` (`sync status` with `--dry-run`). Then it lists overlaps (two
+   this week"), `tasks resolve`, and `sync status`. It writes Reminders and Calendar
+   only with `--sync`: never pass it before the owner confirms the week's
+   direction (owner rule, 2026-11-22). Then it lists overlaps (two
    tasks asking for the same work) and this week's moves, and a "Not up to date" list. It saves
    `out/weekly.html`. Do not rerun the steps one by one.
    No MoneyWiz on this computer (the weekly page says "Skipped: MoneyWiz is
@@ -96,13 +114,17 @@ consent grant and the money moves stay with the owner.
    moneywiz sync --dry-run`. Rows still listed "to add" were not kept: reopen
    MoneyWiz, run `moneywiz sync --resend`, quit, and dry-run again until it
    shows 0 to add. Then `moneywiz edit --fixes` and `moneywiz categorize`
-   (each `--dry-run` first) and `moneywiz diagnose`. Done means its "Balance
+   (each `--dry-run` first, then the write, without asking: the owner's
+   standing answer is "write away") and `moneywiz diagnose`. When
+   `edit --fixes` says "MoneyWiz did not quit", a MoneyWiz window is open:
+   ask the owner once to quit MoneyWiz, keep working, and rerun it after. Done means its "Balance
    over time" table reads "Last day off: none" for every account. A sync line
    "Archived in MoneyWiz, so MoneyWiz drops their links: NAME" means MoneyWiz
    threw those rows away: run the commands it prints (`moneywiz edit --account
    NAME --archived no`, `moneywiz sync`, then `--archived yes`). If the quit
-   fails with -128, a MoneyWiz window such as Preferences is open: close it
-   (Escape) and quit again. Reopen MoneyWiz at the end.
+   fails with -128, a MoneyWiz window such as Preferences is open: ask the
+   owner once to close it (never by keystrokes) and quit again. Reopen
+   MoneyWiz at the end.
 3. "Not up to date" must be empty before you call the week done. For each
    item: download that export again (step 1b) or link the account
    (`[moneywiz.accounts]` in cashcast.toml), then rerun `weekly`. "MoneyWiz
@@ -115,21 +137,38 @@ consent grant and the money moves stay with the owner.
    `start_month` or `[window] last_month`: remove it from cashcast.toml. Report what is left and why.
    Then relay, answer first: a floor dip; MoneyWiz held accounts and why; steps
    that stopped (each says why); each overlap with the task to remove from
-   the profile (ask, then edit `profile.toml`).
+   the profile (a question on the results page; edit `profile.toml` after the
+   owner's yes). Closing a data gap (download, sync, edit) is part of the
+   results, not an improvement.
 4. Agent checks the run left open: record verdicts the evidence shows
    (`bin/cashcast tasks verdict …`, `--source browser` for a page you read in
-   step 1c), then `bin/cashcast sync all` so the closed checks leave Reminders.
+   step 1c). Run `bin/cashcast sync all` only after the owner confirms the
+   week's direction (step 6).
    When a sync line says Calendar or Reminders "is not responding", run
    `killall Calendar` (or `Reminders`), `open -g -a Calendar`, wait 10 s, and
    run `bin/cashcast sync all` once more (task `sync-restart-hung-app`).
 4b. Learn: `bin/cashcast backtest`. While task `forecast-spending-double-count`
    is open in `TASKS.md`, call the forecast unreliable and do not trust its
-   "no new money" verdict. When the miss grew since last week, add a `TASKS.md`
-   task with its cause and the pre-registered fields.
-5. End with the "Money moves you make" and "Other things for you" lists as
-   printed, each with its date (cashcast never moves money). Tell the user to
-   tick each one, then the weekly reminder. If `sync status` shows Reminders
-   out of step, give them `bin/cashcast sync all` to run in Terminal.
+   "no new money" verdict. When the miss grew since last week, name its cause
+   on the results page and add the `TASKS.md` task in step 6.
+4c. Card lesson: `bin/cashcast cards missed` (this week) and `cards missed
+   --since <30 days ago>`. Totals per card and category only.
+4d. Verdict: can this weekly replace typing into MoneyWiz, except cash? Yes
+   only when `moneywiz coverage` reads 100 % and 0 bank rows missing, and
+   `diagnose` reads "Last day off: none" (or each exception has a cause).
+5. Results page first: one self-contained HTML file in
+   `~/.local/state/cashcast/reports/sunday-YYYY-MM-DD.html` (private, never an
+   Artifact) covering the 7 results of `commands/cashcast-weekly.md`: data per
+   bank, MoneyWiz state, the fewest moves with dates (cashcast never moves
+   money), card lesson, forecast with suggestions and pivots, and the verdict.
+   Send it with SendUserFile, then ask which next actions to take.
+   Every question and every hand step explains itself (owner rule, 2026-11-22):
+   say what the thing is in plain words (for example "a MoneyWiz category is
+   the label on a row, such as Housing > Rent, that its reports group by"),
+   why it needs the owner, each choice and what it changes, and where to do it.
+6. After the page is sent: improvements (code and logic fixes, PRs, new
+   `TASKS.md` tasks). On the owner's yes to the direction, and not before:
+   `bin/cashcast sync all` (in Terminal if the sandbox blocks it).
 
 ## Step 0: Introduce
 

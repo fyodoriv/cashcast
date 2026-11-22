@@ -125,6 +125,27 @@ fn categorize_writes_an_edits_file_and_never_overwrites_one() {
 }
 
 #[test]
+fn categorize_parks_an_edits_file_moneywiz_already_shows() {
+    let (home, store, exports, plan) = setup("applied");
+    let (picks, _) = moneywiz_categorize::picks(&store, &exports, &plan);
+    let inbox = home.join("inbox");
+    let path = inbox.join("moneywiz-edits.toml");
+    // Only a category add MoneyWiz already has: nothing left to apply.
+    let done = store.categories[0].join("/");
+    std::fs::write(&path, format!("[[category]]\nadd = \"{done}\"\n")).unwrap();
+    let (written, _) = moneywiz_categorize::write_edits(&store, &picks, &path).unwrap();
+    assert_eq!(written, 4);
+    let parked: Vec<_> = std::fs::read_dir(&inbox)
+        .unwrap()
+        .filter_map(|e| e.ok())
+        .map(|e| e.file_name().to_string_lossy().into_owned())
+        .filter(|n| n.starts_with("moneywiz-edits-applied-"))
+        .collect();
+    assert_eq!(parked.len(), 1, "{parked:?}");
+    let _ = std::fs::remove_dir_all(home);
+}
+
+#[test]
 fn rows_the_sync_adds_get_the_learned_category() {
     let (home, store, exports, plan) = setup("add");
     let links = moneywiz::add_links(&store, &exports, &plan);

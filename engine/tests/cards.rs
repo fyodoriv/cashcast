@@ -587,3 +587,41 @@ cap_reset = "02-01"
     // Rent never picks Scotia now: 1% minus the 1.5% fee.
     assert_eq!(pick(&r, "rent").card, "td-cash-back-visa-infinite");
 }
+
+#[test]
+fn missed_totals_charges_on_a_card_that_earns_less_since_a_day() {
+    let rows = [
+        // On the 3 % card while the 4 % card had cap left: missed.
+        row("Beta Card", "2026-11-18", "Food & Dining > Groceries", 100),
+        row("Beta Card", "2026-11-19", "Food & Dining > Groceries", 50),
+        // On the best card: fine.
+        row("Alpha Card", "2026-11-19", "Food & Dining > Groceries", 80),
+        // Before the period: not checked.
+        row("Beta Card", "2026-11-01", "Food & Dining > Groceries", 999),
+        // Not a card in the wallet: not checked.
+        row("CANARYCHQ", "2026-11-19", "Food & Dining > Groceries", 70),
+    ];
+    let (w, r) = run(SCOTIA_TD, &rows, "2026-11-22");
+    let (found, checked) = cards::missed(&w, &r, &rows, d("2026-11-15"));
+    // Every period charge on a wallet card is counted once.
+    assert_eq!(checked.values().sum::<usize>(), 3, "{checked:?}");
+    assert_eq!(found.len(), 1, "{found:?}");
+    let m = &found[0];
+    assert_eq!(
+        (m.card.as_str(), m.category.as_str(), m.better.as_str()),
+        (
+            "td-cash-back-visa-infinite",
+            "groceries",
+            "scotia-momentum-visa-infinite"
+        )
+    );
+    // 150.00 at 1 point less: 1.50 missed.
+    assert_eq!((m.count, m.spend, m.lost), (2, 15_000, 150));
+    let text = cards::render_missed(&w, &found, &checked, d("2026-11-15"), d("2026-11-22"));
+    assert!(text.contains("| 2 | 150.00 | 1.50 |"), "{text}");
+    assert!(text.contains("Total missed: 1.50."), "{text}");
+    assert!(!text.contains("CANARYCHQ"), "{text}");
+    // Nothing on a worse card: says so.
+    let none = cards::render_missed(&w, &[], &checked, d("2026-11-15"), d("2026-11-22"));
+    assert!(none.contains("None: every imported card charge"), "{none}");
+}

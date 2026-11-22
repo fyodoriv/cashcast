@@ -35,7 +35,8 @@ pub fn view(
     let mw = cfg.moneywiz.as_ref();
     let mode = moneywiz::mode(mw)?;
     let store: Store = moneywiz::open(db)?;
-    let plan = moneywiz::plan(&store, inbox, mw)?;
+    let mut plan = moneywiz::plan(&store, inbox, mw)?;
+    moneywiz::add_pending_trades(&mut plan, &store, inbox, cfg, home);
     let links = moneywiz::links_for(&store, inbox, &plan, mode);
     let sent = SentList::load(&home.join("data"), today, false)?;
     let ledger = crate::moneywiz_ledger::Ledger::load(&home.join("data"));

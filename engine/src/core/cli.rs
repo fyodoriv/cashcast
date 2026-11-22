@@ -81,7 +81,8 @@ Web app (the main view; this computer only):
 enum Cmd {
     Actions(bool),
     /// `weekly [--dry-run] [--balance ID=AMOUNT ...]`: the Sunday session in one run.
-    Weekly(bool, Vec<String>),
+    /// `--dry-run`, balances, `--sync` (write Reminders and Calendar).
+    Weekly(bool, Vec<String>, bool),
     /// `api record SERVICE --set NAME=AMOUNT,... [--currency CAD]`
     ApiRecord {
         service: Option<String>,
@@ -101,7 +102,8 @@ enum Cmd {
     FirstError,
     Numbers,
     /// `cards now --balance CARD=AMOUNT ...` and `--today`, as given.
-    Cards(Vec<String>, Option<String>),
+    /// Balances, `--today`, then the engine words (`missed`, `--since DATE`).
+    Cards(Vec<String>, Option<String>, Vec<String>),
     /// `charges [find WORD]` and `--today`, as given.
     Charges(Option<String>, Option<String>),
     /// `grocery ACTION [NAME] [options]`: the grocery price database.
@@ -394,7 +396,7 @@ fn build(command: &str, ns: &Namespace) -> Cmd {
         "spending" => Cmd::Section("spending"),
         "net-total" => Cmd::NetTotal,
         "invest-plan" => Cmd::InvestPlan,
-        "weekly" => Cmd::Weekly(ns.flag("dry_run"), ns.list("balance")),
+        "weekly" => Cmd::Weekly(ns.flag("dry_run"), ns.list("balance"), ns.flag("sync")),
         "rrsp" => Cmd::Rrsp,
         "reminders" => Cmd::Preview(if action == "sync" {
             "reminders-sync"
@@ -419,7 +421,16 @@ fn build(command: &str, ns: &Namespace) -> Cmd {
             id: s("id"),
         },
         "transfers" => Cmd::Transfers(ns.list("balance")),
-        "cards" => Cmd::Cards(ns.list("balance"), None),
+        "cards" => {
+            let mut extra = Vec::new();
+            if ns.str("action").as_deref() == Some("missed") {
+                extra.push("missed".to_string());
+                if let Some(d) = ns.str("since") {
+                    extra.extend(["--since".to_string(), d]);
+                }
+            }
+            Cmd::Cards(ns.list("balance"), None, extra)
+        }
         "charges" => Cmd::Charges(
             (action == "find").then(|| s("word").unwrap_or_default()),
             None,
@@ -528,7 +539,7 @@ fn reads_today(cmd: &Cmd) -> bool {
         // The engine subprocesses get `--today` only when it is given.
         Cmd::Report(_, given)
         | Cmd::Forecast(_, given)
-        | Cmd::Cards(_, given)
+        | Cmd::Cards(_, given, _)
         | Cmd::Charges(_, given) => given.is_some(),
         // Only `coverage` and `sync` pass `--today` on.
         Cmd::Moneywiz(mw) => {
@@ -646,7 +657,7 @@ pub fn run(argv: &[String]) -> i32 {
     if let Cmd::Moneywiz(mw) = &mut cmd {
         mw.today.clone_from(&engine_arg);
     }
-    if let Cmd::Cards(_, given) | Cmd::Charges(_, given) = &mut cmd {
+    if let Cmd::Cards(_, given, _) | Cmd::Charges(_, given) = &mut cmd {
         given.clone_from(&engine_arg);
     }
     if let Cmd::Report(name, given) | Cmd::Forecast(name, given) = &mut cmd
@@ -874,7 +885,9 @@ fn execute(cmd: &Cmd, user: &UserHome, day: NaiveDate) -> Result<i32, AppError> 
             );
         }
         Cmd::Start(who) => return crate::tasks::start::run(who.as_deref(), day),
-        Cmd::Weekly(dry_run, balances) => return weekly(user, day, *dry_run, balances),
+        Cmd::Weekly(dry_run, balances, sync) => {
+            return weekly(user, day, *dry_run, balances, *sync);
+        }
         Cmd::Moneywiz(mw) => return moneywiz(user, mw),
         Cmd::Notion { source, delete } => return notion(user, source, *delete),
         Cmd::Web { port } => {
@@ -919,7 +932,7 @@ fn execute(cmd: &Cmd, user: &UserHome, day: NaiveDate) -> Result<i32, AppError> 
             super::gate::emit(user, &out, "agent:strategy", "transfers", day)?;
             return Ok(code);
         }
-        Cmd::Cards(given, today_given) => {
+        Cmd::Cards(given, today_given, extra) => {
             let (mut args, _) = card_inputs(user, given)?;
             let catalog = paths::root()
                 .join("knowledge")
@@ -928,6 +941,7 @@ fn execute(cmd: &Cmd, user: &UserHome, day: NaiveDate) -> Result<i32, AppError> 
                 .to_string_lossy()
                 .to_string();
             let mut full: Vec<&str> = vec!["cards", "--catalog", catalog.as_str()];
+            full.extend(extra.iter().map(String::as_str));
             full.extend(args.iter_mut().map(|a| a.as_str()));
             if let Some(d) = today_given {
                 full.extend(["--today", d.as_str()]);
@@ -1076,11 +1090,21 @@ impl Drop for OwnerRun {
 /// its own `cli` child (so each keeps its consent gate and a failed step
 /// does not stop the rest); then the overlaps and this week's moves. The
 /// whole page is saved to `out/weekly.md` and `out/weekly.html`.
+/// The weekly's task-list step: `sync all` only with `--sync` on a real run.
+fn weekly_sync_step(dry_run: bool, sync: bool) -> &'static [&'static str] {
+    if sync && !dry_run {
+        &["sync", "all"]
+    } else {
+        &["sync", "status"]
+    }
+}
+
 fn weekly(
     user: &UserHome,
     day: NaiveDate,
     dry_run: bool,
     balances: &[String],
+    sync_tasks: bool,
 ) -> Result<i32, AppError> {
     use crate::tasks::{changes, weekly as wk};
     let back = |e: crate::strategy::situation::Unported| AppError::new("crash", e.0);
@@ -1169,6 +1193,10 @@ fn weekly(
         ("MoneyWiz", mw),
         ("Transfers between your banks", &transfers),
         ("Which card to use now", &cards),
+        (
+            "Charges on a card that earns less (last 7 days)",
+            &["cards", "missed"],
+        ),
         ("Charges you did not expect", &["charges"]),
         ("Investments against your targets", &["holdings"]),
     ];
@@ -1236,6 +1264,13 @@ fn weekly(
             ));
             continue;
         }
+        if args.starts_with(&["cards", "missed"]) && card_ids.is_empty() {
+            page.push(format!(
+                "\n## {title} · `bin/cashcast cards missed`\n\nSkipped: no cards in profile.toml yet, so there is \
+                 no better card to compare with."
+            ));
+            continue;
+        }
         // No investment downloads yet: a plain skip line, not a failed step.
         if args == ["holdings"] {
             let (code, out) = run(args);
@@ -1295,12 +1330,9 @@ fn weekly(
 
     }
     step(&mut page, "Tasks cashcast closes itself", resolve);
-    // A real run writes what it resolved to Reminders, Calendar and Notion.
-    let sync: &[&str] = if dry_run {
-        &["sync", "status"]
-    } else {
-        &["sync", "all"]
-    };
+    // Reminders and Calendar change only after the owner confirms the week's
+    // direction (`weekly --sync`, or `sync all` later); owner rule, 2026-11-22.
+    let sync = weekly_sync_step(dry_run, sync_tasks);
     // Nothing turned on yet is a setup choice, not a failed step.
     let (sync_code, sync_out) = run(sync);
     page.push(format!(
@@ -1308,10 +1340,18 @@ fn weekly(
         sync.join(" ")
     ));
     page.push(sync_out.trim_end().to_string());
+    let reads_only = sync == ["sync", "status"];
+    if reads_only && !dry_run {
+        page.push(
+            "\nNot written to Reminders or Calendar yet: confirm this week's direction, then run \
+             `bin/cashcast sync all` (or next time `bin/cashcast weekly --sync`)."
+                .into(),
+        );
+    }
     if holdings_failed {
         failed.push("holdings".into());
     }
-    if sync_code != 0 && !(dry_run && sync_out.contains("Nothing is on yet")) {
+    if sync_code != 0 && !(reads_only && sync_out.contains("Nothing is on yet")) {
         page.push(format!(
             "\n(This step stopped with exit {sync_code}; the rest still ran.)"
         ));
@@ -2562,7 +2602,9 @@ fn coverage_counts(report: &str) -> Vec<i64> {
 
 #[cfg(test)]
 mod tests {
-    use super::{Cmd, Mw, coverage_counts, engine_today, iso_date, reads_today};
+    use super::{
+        Cmd, Mw, coverage_counts, engine_today, iso_date, reads_today, weekly_sync_step,
+    };
     use chrono::NaiveDate;
 
     #[test]
@@ -2582,13 +2624,20 @@ mod tests {
         let t = Some("x".to_string());
         assert!(reads_today(&Cmd::Report("import", t.clone())));
         assert!(reads_today(&Cmd::Forecast("forecast", t.clone())));
-        assert!(reads_today(&Cmd::Cards(Vec::new(), t.clone())));
+        assert!(reads_today(&Cmd::Cards(Vec::new(), t.clone(), Vec::new())));
         let mw = Mw {
             today: t,
             ..Mw::default()
         };
         assert!(reads_today(&Cmd::Moneywiz(Box::new(mw))));
         assert!(!reads_today(&Cmd::Report("totals", None)));
+    }
+
+    #[test]
+    fn weekly_writes_reminders_only_after_the_owner_confirms() {
+        assert_eq!(weekly_sync_step(false, false), ["sync", "status"]);
+        assert_eq!(weekly_sync_step(true, true), ["sync", "status"]);
+        assert_eq!(weekly_sync_step(false, true), ["sync", "all"]);
     }
 
     #[test]

@@ -444,6 +444,7 @@ fn merge_moves_rows_in_the_targets_currency_and_drops_hand_trades() {
             plan,
             problems: vec![],
             already: 0,
+            rows_already: 0,
         },
         "data/p.json",
     );
@@ -586,6 +587,7 @@ fn archive_edit_shows_an_archived_account_and_verify_checks_it() {
         },
         problems: vec![],
         already: 0,
+        rows_already: 0,
     };
     assert!(!moneywiz_edit::is_empty(&r.plan));
     assert!(moneywiz_edit::render(&r, "plan.json").contains("1 archived account to show again"));
@@ -599,4 +601,39 @@ fn archive_edit_shows_an_archived_account_and_verify_checks_it() {
     let (report, missing) = moneywiz_edit::verify(&shown, &plan);
     assert_eq!(missing, 0, "{report}");
     assert!(report.starts_with("Verified 1 of 1 changes"), "{report}");
+}
+
+#[test]
+fn a_row_edit_already_in_moneywiz_is_not_planned_again() {
+    // CINEMA (103) already sits in "Fun": the edit is done, so a second
+    // run plans nothing and says so (2026-11-22: 382 no-op category edits
+    // showed up as changes on every `edit --fixes`).
+    let s = store("already");
+    let r = moneywiz_edit::resolve(
+        &s,
+        &file(
+            r#"
+            [[row]]
+            account = "Chequing"
+            date = "2026-09-03"
+            amount = -30.00
+            set_category = "Fun"
+
+            [[row]]
+            account = "Chequing"
+            date = "2026-09-03"
+            amount = -30.00
+            set_category = "Food/Groceries"
+            "#,
+        ),
+        None,
+    );
+    assert_eq!(r.rows_already, 1, "the Fun edit is already there");
+    assert_eq!(r.plan.rows.len(), 1, "only the real change stays");
+    assert_eq!(
+        r.plan.rows[0].category.as_deref(),
+        Some(&["Food".to_string(), "Groceries".to_string()][..])
+    );
+    let out = moneywiz_edit::render(&r, "plan.json");
+    assert!(out.contains("(1 already done)"), "{out}");
 }
