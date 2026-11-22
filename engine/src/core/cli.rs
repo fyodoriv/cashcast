@@ -1264,6 +1264,13 @@ fn weekly(
             ));
             continue;
         }
+        if args.starts_with(&["cards", "missed"]) && card_ids.is_empty() {
+            page.push(format!(
+                "\n## {title} · `bin/cashcast cards missed`\n\nSkipped: no cards in profile.toml yet, so there is \
+                 no better card to compare with."
+            ));
+            continue;
+        }
         // No investment downloads yet: a plain skip line, not a failed step.
         if args == ["holdings"] {
             let (code, out) = run(args);
