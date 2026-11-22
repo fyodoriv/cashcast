@@ -179,6 +179,7 @@ Run from the repo root.
 | 2026-11-22 | `request_credentials` with 8 logins failed "invalid schema"; PayPal sign-in hung on a passkey prompt | at most 4 logins per call; PayPal needs the owner's Touch ID (task `paypal-passkey-signin`). Kraken exports a ZIP: unzip it before `fetch collect` (task `kraken-zip-and-prices`) |
 | 2026-11-22 | `cards missed` checked 0 charges in a week with many card rows | the forecast import ended weeks earlier and uses export account names; `cards missed` now reads MoneyWiz rows mapped through `[moneywiz.accounts]` (task `cards-now-fresh-rows` for `cards now`) |
 | 2026-11-22 | `moneywiz edit --fixes` exited 3 "MoneyWiz did not quit" | an open MoneyWiz window blocks the scripted quit (-128); nothing was written. Ask the owner to quit MoneyWiz (Cmd-Q), then rerun. The Sunday weekly writes MoneyWiz without asking, but never closes its windows by keystrokes |
+| 2026-11-22 | `moneywiz categorize` refused: "moneywiz-edits.toml exists", though every edit in it was already in MoneyWiz | nothing moved an applied edits file out of the inbox, and agents may not touch the inbox; categorize now parks a file MoneyWiz already shows in full as `moneywiz-edits-applied-YYYYMMDD.toml` (test `categorize_parks_an_edits_file_moneywiz_already_shows`) |
 | 2026-10-02 | the pre-push privacy gate flags a word | do not add accounting-file formats that match it; see memory |
 
 ## Cloud sessions

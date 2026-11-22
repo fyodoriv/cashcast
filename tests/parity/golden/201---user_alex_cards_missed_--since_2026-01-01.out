@@ -4313,6 +4313,10 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "net_total"}
 {"command": "spending", "event": "report_shown", "scope": "agent:strategy"}
 {"command": "spending", "event": "command", "result": "ok"}
+{"command": "grocery", "event": "command", "result": "ok"}
+{"command": "grocery", "event": "command", "result": "failed"}
+{"command": "grocery", "event": "command", "result": "ok"}
+{"command": "grocery", "event": "command", "result": "failed"}
 {"command": "cards", "event": "report_shown", "scope": "agent:strategy"}
 {"command": "cards", "event": "command", "result": "ok"}
 == users/sam/data/invest-plan-input.json

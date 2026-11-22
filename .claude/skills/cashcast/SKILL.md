@@ -162,6 +162,10 @@ consent grant and the money moves stay with the owner.
    bank, MoneyWiz state, the fewest moves with dates (cashcast never moves
    money), card lesson, forecast with suggestions and pivots, and the verdict.
    Send it with SendUserFile, then ask which next actions to take.
+   Every question and every hand step explains itself (owner rule, 2026-11-22):
+   say what the thing is in plain words (for example "a MoneyWiz category is
+   the label on a row, such as Housing > Rent, that its reports group by"),
+   why it needs the owner, each choice and what it changes, and where to do it.
 6. After the page is sent: improvements (code and logic fixes, PRs, new
    `TASKS.md` tasks). On the owner's yes to the direction, and not before:
    `bin/cashcast sync all` (in Terminal if the sandbox blocks it).

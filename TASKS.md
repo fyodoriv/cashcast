@@ -407,6 +407,21 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
 
 ## P2
 
+- [ ] Find the flat cash gap in two MoneyWiz investment accounts
+  - **ID**: moneywiz-invest-cash-gap
+  - **Tags**: moneywiz, investments
+  - **Details**: Found 2026-11-22 after the weekly `edit --fixes`. Units match the broker in both
+    accounts, but `moneywiz diagnose` "Gap by month" shows a flat cash gap: SunLife RRSP since
+    2025-11 and Non-registered simple since its first buy (its opening-balance fix was skipped
+    because another fix already sets it). A flat gap is a wrong start, not a missing row.
+  - **Files**: `engine/src/moneywiz_invest.rs`, `engine/src/moneywiz_edit.rs`, `engine/tests/moneywiz_edit.rs`
+  - **Acceptance**: a failing synthetic test where two fixes touch one opening balance, then the fix.
+  - **Hypothesis**: `moneywiz diagnose` "Last day off: none" goes from 17 of 19 accounts to 19 of 19.
+  - **Measurement**: `bin/cashcast moneywiz diagnose` (count of "Last day off" cells reading none)
+  - **Success**: 19 of 19 after one weekly `edit --fixes`
+  - **Pivot**: if the gap is a cash leg the broker file lacks, report it as a hand entry and stop
+  - **Anchor**: Fellegi & Sunter 1969, *JASA* 64(328) (record linkage with match weights)
+
 - [ ] Paperwork and the citizenship judge share one presence-day counter
   - **ID**: paperwork-one-presence-counter
   - **Tags**: paperwork, refactor

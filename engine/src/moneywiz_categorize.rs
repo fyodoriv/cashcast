@@ -443,6 +443,27 @@ pub fn write_edits_into(
     path: &Path,
     mut record: Option<&mut Record>,
 ) -> Result<(usize, usize), String> {
+    // An edits file MoneyWiz already shows in full is parked next to it, so
+    // an applied file never blocks the next weekly.
+    if path.exists() {
+        let r = crate::moneywiz_edit::resolve(store, &crate::moneywiz_edit::load(path)?, None);
+        if r.problems.is_empty() && crate::moneywiz_edit::is_empty(&r.plan) {
+            let day = chrono::Local::now().format("%Y%m%d");
+            let parked = (0..)
+                .map(|n| {
+                    let suffix = if n == 0 {
+                        String::new()
+                    } else {
+                        format!("-{n}")
+                    };
+                    path.with_file_name(format!("moneywiz-edits-applied-{day}{suffix}.toml"))
+                })
+                .find(|p| !p.exists())
+                .expect("a free name");
+            std::fs::rename(path, &parked)
+                .map_err(|e| format!("cannot park the applied edits file: {e}"))?;
+        }
+    }
     if path.exists() {
         return Err(format!(
             "{} exists: apply it (`bin/cashcast moneywiz edit`) or move it away, then run categorize again",

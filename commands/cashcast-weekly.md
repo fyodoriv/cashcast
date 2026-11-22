@@ -31,6 +31,11 @@ The owner expects exactly these 7 results, in this order:
    `~/.local/state/cashcast/reports/` (private, never published), sent to the owner. Then ask which
    next actions to take.
 
+Every question and every hand step explains itself (owner rule, 2026-11-22): say what the thing is
+in plain words (for example "a MoneyWiz category is the label on a row, such as Housing > Rent,
+that its reports group by"), why it needs the owner, each choice and what it changes, and where to
+do it.
+
 Closing a data gap (a download, a sync, an edit) is part of the results. Only after the owner has
 the page: work on improvements (code and logic fixes, PRs, new tasks). Results first,
 improvements second (owner rule, 2026-11-22).

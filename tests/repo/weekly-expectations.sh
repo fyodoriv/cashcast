@@ -21,6 +21,7 @@ done
 has "$cmd" "Put nothing
    into Reminders or Calendar until the owner confirms" "commands/cashcast-weekly.md"
 has "$cmd" "bin/cashcast cards missed" "commands/cashcast-weekly.md"
+has "$cmd" "Every question and every hand step explains itself" "commands/cashcast-weekly.md"
 has "$cmd" "Results first,
 improvements second" "commands/cashcast-weekly.md"
 echo "ok /cashcast-weekly lists the owner's 7 results in order"
@@ -31,6 +32,7 @@ has "$skill" "never pass it before the owner confirms" "skill Weekly session"
 has "$skill" '"write away"' "skill Weekly session"
 has "$skill" "Results page first" "skill Weekly session"
 has "$skill" "cards missed" "skill Weekly session"
+has "$skill" "Every question and every hand step explains itself" "skill Weekly session"
 grep -qF -- "bin/cashcast sync all\` so the closed checks leave Reminders" <<< "$skill" \
   && fail "skill Weekly session still syncs Reminders before the owner confirms"
 grep -qF -- "(Escape)" <<< "$skill" && fail "skill Weekly session closes MoneyWiz windows by keystrokes"
