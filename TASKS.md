@@ -66,6 +66,9 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     extra income (Mar -5,093, Sep -5,571, Oct +6,620): RSU and ESPP money counts only when it
     moves from the stock plan account to cash, and that month varies. Next: model stock-plan
     income at the month it reaches cash (or keep it out of net cash flow until it does).
+    Owner, 2026-11-22: from now on every new vest moves to cash as soon as it lands, so the
+    vest months in `[extra_income]` are the cash months going forward. Past misses stay in the
+    backtest; recheck the WAPE after the next vests (Dec 2026, Jan 2027).
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows
