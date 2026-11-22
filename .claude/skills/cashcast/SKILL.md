@@ -122,8 +122,9 @@ consent grant and the money moves stay with the owner.
    "Archived in MoneyWiz, so MoneyWiz drops their links: NAME" means MoneyWiz
    threw those rows away: run the commands it prints (`moneywiz edit --account
    NAME --archived no`, `moneywiz sync`, then `--archived yes`). If the quit
-   fails with -128, a MoneyWiz window such as Preferences is open: close it
-   (Escape) and quit again. Reopen MoneyWiz at the end.
+   fails with -128, a MoneyWiz window such as Preferences is open: ask the
+   owner once to close it (never by keystrokes) and quit again. Reopen
+   MoneyWiz at the end.
 3. "Not up to date" must be empty before you call the week done. For each
    item: download that export again (step 1b) or link the account
    (`[moneywiz.accounts]` in cashcast.toml), then rerun `weekly`. "MoneyWiz
@@ -136,7 +137,9 @@ consent grant and the money moves stay with the owner.
    `start_month` or `[window] last_month`: remove it from cashcast.toml. Report what is left and why.
    Then relay, answer first: a floor dip; MoneyWiz held accounts and why; steps
    that stopped (each says why); each overlap with the task to remove from
-   the profile (ask, then edit `profile.toml`).
+   the profile (a question on the results page; edit `profile.toml` after the
+   owner's yes). Closing a data gap (download, sync, edit) is part of the
+   results, not an improvement.
 4. Agent checks the run left open: record verdicts the evidence shows
    (`bin/cashcast tasks verdict …`, `--source browser` for a page you read in
    step 1c). Run `bin/cashcast sync all` only after the owner confirms the
@@ -146,8 +149,8 @@ consent grant and the money moves stay with the owner.
    run `bin/cashcast sync all` once more (task `sync-restart-hung-app`).
 4b. Learn: `bin/cashcast backtest`. While task `forecast-spending-double-count`
    is open in `TASKS.md`, call the forecast unreliable and do not trust its
-   "no new money" verdict. When the miss grew since last week, add a `TASKS.md`
-   task with its cause and the pre-registered fields.
+   "no new money" verdict. When the miss grew since last week, name its cause
+   on the results page and add the `TASKS.md` task in step 6.
 4c. Card lesson: `bin/cashcast cards missed` (this week) and `cards missed
    --since <30 days ago>`. Totals per card and category only.
 4d. Verdict: can this weekly replace typing into MoneyWiz, except cash? Yes
@@ -159,9 +162,9 @@ consent grant and the money moves stay with the owner.
    bank, MoneyWiz state, the fewest moves with dates (cashcast never moves
    money), card lesson, forecast with suggestions and pivots, and the verdict.
    Send it with SendUserFile, then ask which next actions to take.
-6. On the owner's yes to the direction: `bin/cashcast sync all` (in Terminal
-   if the sandbox blocks it). Only then start improvements (gap fixes, PRs,
-   tasks).
+6. After the page is sent: improvements (code and logic fixes, PRs, new
+   `TASKS.md` tasks). On the owner's yes to the direction, and not before:
+   `bin/cashcast sync all` (in Terminal if the sandbox blocks it).
 
 ## Step 0: Introduce
 

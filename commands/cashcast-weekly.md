@@ -12,7 +12,8 @@ The owner expects exactly these 7 results, in this order:
 
 1. **Real data from every bank today.** Fresh downloads of all accounts, cards and investments
    (Wealthsimple, Scotiabank, TD and CIBC as QFX, Wise, E*TRADE, Sun Life, Kraken, Casa, PayPal), and
-   today's balances. Name each one you could not get and why.
+   today's balances. Investments too: Kraken daily prices and the Sun Life history (their playbooks
+   in `connectors/playbooks/`). Name each one you could not get and why.
 2. **MoneyWiz matches the banks from the last analyzed row on. Write it, do not ask.** Run
    `moneywiz sync`, then `moneywiz edit --fixes` (each after its dry run) and `moneywiz categorize`.
    Done when a dry run shows 0 to add and `moneywiz diagnose` reads "Last day off: none" per account,
@@ -30,5 +31,6 @@ The owner expects exactly these 7 results, in this order:
    `~/.local/state/cashcast/reports/` (private, never published), sent to the owner. Then ask which
    next actions to take.
 
-Only after the owner has the page: work on improvements (gap fixes, PRs, tasks). Results first,
+Closing a data gap (a download, a sync, an edit) is part of the results. Only after the owner has
+the page: work on improvements (code and logic fixes, PRs, new tasks). Results first,
 improvements second (owner rule, 2026-11-22).

@@ -33,6 +33,9 @@ has "$skill" "Results page first" "skill Weekly session"
 has "$skill" "cards missed" "skill Weekly session"
 grep -qF -- "bin/cashcast sync all\` so the closed checks leave Reminders" <<< "$skill" \
   && fail "skill Weekly session still syncs Reminders before the owner confirms"
+grep -qF -- "(Escape)" <<< "$skill" && fail "skill Weekly session closes MoneyWiz windows by keystrokes"
+grep -qF -- "ask, then edit" <<< "$skill" && fail "skill Weekly session asks a question before the results page"
+has "$skill" "After the page is sent: improvements" "skill Weekly session"
 echo "ok the skill's Weekly session follows the command and waits for the owner"
 
 grep -qF '/cashcast-weekly' engine/src/tasks/weekly.rs \
