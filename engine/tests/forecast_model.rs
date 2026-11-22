@@ -578,3 +578,19 @@ fn month_end_ranges_use_backtest_percentiles_then_widen() {
     );
     assert!(month_end_ranges(&[], 3).is_empty());
 }
+
+#[test]
+fn by_method_scores_every_method_on_the_same_history() {
+    let h = long_history(30);
+    let all = backtest::by_method(&inputs(), &h);
+    assert_eq!(
+        all.iter().map(|(m, _)| *m).collect::<Vec<_>>(),
+        cashcast_engine::forecast::model::METHODS.to_vec()
+    );
+    let now = backtest::backtest(&inputs(), &h).unwrap();
+    let net: Vec<_> = now.iter().filter(|m| m.line == "net_cash_flow").collect();
+    let current = inputs().method;
+    let row = all.iter().find(|(m, _)| *m == current).unwrap();
+    assert_eq!(row.1, backtest::score(&net).wape);
+    assert!(all.iter().all(|(_, w)| w.is_some()));
+}

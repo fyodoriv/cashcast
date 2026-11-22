@@ -58,6 +58,14 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     some months only. The salary floor (`[pay] min_salary`) moves rows between salary and
     other income, so it does not change net cash flow. Next lever: forecast lumpy categories
     and stock-plan income by month of year, not as a flat average.
+    2026-11-22 evening: `backtest` now scores every method ("Net cash flow WAPE by method"):
+    same month last year 66.4 %, trailing-12 average 69.2 %, median 74.4 %, flat baseline
+    75.5 %. Two blends were tried and dropped (pre-registered pivot: none beat 66.4 % by 3
+    points): half average + half last 3 months 69.0 %, half average + half same month 66.4 %.
+    So the spending method is not the lever. The largest misses by calendar month are in
+    extra income (Mar -5,093, Sep -5,571, Oct +6,620): RSU and ESPP money counts only when it
+    moves from the stock plan account to cash, and that month varies. Next: model stock-plan
+    income at the month it reaches cash (or keep it out of net cash flow until it does).
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows

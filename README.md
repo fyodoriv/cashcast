@@ -287,7 +287,8 @@ licensed financial advice.
   12-month median, the same month last year, or a flat baseline. Set it in
   `cashcast.toml` as `[forecast] method = "trailing-12 median"`. The median
   ignores one-off spike months; the average spreads them over every month.
-  Compare both with `bin/cashcast backtest` before you switch.
+  Before you switch, read "Net cash flow WAPE by method" in `bin/cashcast backtest`:
+  it scores all four methods on your own history, and the lowest misses least.
 - **Baseline:** `[forecast] baseline` is your total monthly spending, rent
   included. Only `method = "flat baseline"` scales the categories to it. With
   any other method it is a floor: when the categories add up to less, the
