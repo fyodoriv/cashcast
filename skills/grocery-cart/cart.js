@@ -57,8 +57,9 @@ window.ddCards = () =>
 
 // PC Express cart page (/en/cartReview, No Frills and Loblaws): set a
 // preferred substitute per line. pcEdits() lists the lines; pcSet(i, [regex…])
-// picks the first suggestion that matches, never jalapeño.
-//   await pcSet(3, [/Miss Vickie.*Original/i, /chip/i])
+// picks the first suggestion that matches and skips names that match
+// window.sqAvoid (a regex built from the person's `grocery prefs` rules, or unset).
+//   await pcSet(3, [/kettle.*original/i, /chip/i])
 window.pcDlg = () =>
   [...document.querySelectorAll("section,[role=dialog]")]
     .filter((e) => /Substitution preferences/.test(e.innerText))
@@ -83,7 +84,7 @@ window.pcSet = async (i, prefs) => {
   const cards = window.pcCards();
   let hit = null;
   for (const p of prefs) {
-    hit = cards.find((x) => p.test(x.t) && !/jalape/i.test(x.t));
+    hit = cards.find((x) => p.test(x.t) && !(window.sqAvoid && window.sqAvoid.test(x.t)));
     if (hit) break;
   }
   const btn = (re) =>
@@ -130,7 +131,7 @@ window.uePick = async (prefs) => {
     ...document.querySelector("[role=dialog]").querySelectorAll("h1,h2,h3,h4,h5,h6"),
   ].slice(1);
   for (const p of prefs) {
-    const h = hs.find((e) => p.test(e.textContent) && !/jalape/i.test(e.textContent));
+    const h = hs.find((e) => p.test(e.textContent) && !(window.sqAvoid && window.sqAvoid.test(e.textContent)));
     if (h) {
       (h.closest("button,[role=button],li,label") || h).click();
       await wait(1800);

@@ -139,7 +139,8 @@ database, and say them in the report.
 
 ## Speed
 
-Paste [`cart.js`](cart.js) and call one helper per line:
+Paste [`cart.js`](cart.js) and call one helper per line. When the person's
+rules say "never X", first set `window.sqAvoid = /X/i` so replacements skip it.
 
 - Instacart: `icAddN(/name/, n)` adds and sets the count in one call.
 - PC Express replacements: `pcSet(i, [regex…])` on `/en/cartReview`, 3 lines per JS call.
