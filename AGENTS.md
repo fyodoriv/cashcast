@@ -33,7 +33,8 @@ Run from the repo root.
 | Task | Command |
 |---|---|
 | Start the app (auto-updates a clean checkout; `tests/repo/auto-update.sh`) | `bin/cashcast` · then `config`, `actions` · `bin/cashcast update` |
-| One-line setup (idempotent) | `scripts/setup.sh` |
+| One-line setup (idempotent; installs missing tools via `scripts/install-tools.sh`) | `scripts/setup.sh` |
+| A new person's Mac: README one-liner in a fresh HOME, then first use (CI job `fresh-mac`) | `scripts/fresh-mac.sh` |
 | Public readiness (leaks, private paths, workflows, licence; `--history` for every commit) | `scripts/public-readiness.sh` (gate step `readiness`; rules in `SECURITY.md`) |
 | Health check | `scripts/doctor.sh` (repo) · `bin/cashcast doctor` (app, builds the engine) |
 | Checkup (open PRs and branches, health, cached gate, stories, speed, P0s, monthly audit) | `scripts/checkup.sh` |
@@ -183,6 +184,7 @@ Run from the repo root.
 | 2026-11-22 | MoneyWiz showed 400+ "pending" rows at the top of All transactions | the writer added broker trades with no status (MoneyWiz `status` 1 = pending, 2 = cleared); it now saves them cleared, and `edit --fixes` clears pending rows (test `fixes_mark_pending_rows_cleared`) |
 | 2026-11-22 | 8 "cashcast fix" offsets for $1 card checks MoneyWiz already held | a charge of $1 or less and its same-day reversal (same account and text) is skipped on the bank side and the MoneyWiz side (tests `a_same_day_charge_and_its_reversal_are_not_bank_rows`, `a_card_check_pair_moneywiz_holds_needs_no_bank_row`) |
 | 2026-11-22 | the transfer plan said to pay a card in full that the owner had already paid | it used a 6-day-old download's balance; skill step 2c: compare each sync balance with the live site and plan transfers from live balances only |
+| 2026-11-22 | a test with a bare `PATH` still found the real `jq` and `curl` (and ran the real rustup installer) | this Mac's `BASH_ENV` hook prepends tool folders to every bash; run such tests with `/usr/bin/env -i` (`tests/repo/install-tools.sh`) |
 | 2026-10-02 | the pre-push privacy gate flags a word | do not add accounting-file formats that match it; see memory |
 
 ## Cloud sessions

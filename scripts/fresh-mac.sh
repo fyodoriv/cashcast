@@ -25,7 +25,9 @@ export RUSTUP_HOME="${RUSTUP_HOME:-$HOME/.rustup}" CARGO_HOME="${CARGO_HOME:-$HO
 HOME="$(mktemp -d "${TMPDIR:-/tmp}/fresh-mac.XXXXXX")"
 export HOME
 unset CASHCAST_HOME CASHCAST_USER CASHCAST_PRIVATE CASHCAST_ROOT
-export CASHCAST_POSTHOG_KEY="" CASHCAST_LIVE=off
+# An empty telemetry key, so nothing can send.
+printf -v CASHCAST_POSTHOG_KEY '%s' ''
+export CASHCAST_POSTHOG_KEY CASHCAST_LIVE=off
 echo "fresh HOME: $HOME"
 
 for tool in ${FRESH_MAC_REMOVE:-}; do
