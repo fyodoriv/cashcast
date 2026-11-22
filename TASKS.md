@@ -489,6 +489,17 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
 
 ## P3
 
+- [ ] Grocery browser steps wait for product cards, not a fixed sleep
+  - **ID**: grocery-wait-for-cards
+  - **Tags**: grocery, speed
+  - **Details**: Moved from sidequest on 2026-11-22. Uber Eats and DoorDash steps slept 5-6 s per page (25 pages a run). `cardsReady()` in `skills/grocery-cart/cart.js` polls for the first card for up to 6 s. The measurement needs one live grocery run in the owner's signed-in Chrome: ask Claude to order groceries for 5 items on Uber Eats and DoorDash, then time the browser batches.
+  - **Hypothesis**: a 5-item, 2-app search drops from about 3 min to under 2 min.
+  - **Measurement**: the browser batch times in `node ~/.config/agentbrew/scripts/agent-perf.mjs report --session <id>` for that run.
+  - **Success**: under 2 min.
+  - **Pivot**: pages still render late, so keep the sleep.
+  - **Anchor**: Card, Moran, Newell 1983, keystroke-level model (task time).
+
+
 - [ ] The standards score reaches 38 of 38 (`check-setup.sh --profile assistant --strict`)
   - **ID**: standards-score-full
   - **Tags**: docs, setup
