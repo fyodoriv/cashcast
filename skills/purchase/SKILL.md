@@ -10,6 +10,12 @@ plugin on 2026-11-22. Sizes and the people they belong to stay in sidequest
 (`sidequest sizes show`); everything about price, shops and which card to pay
 with lives here.
 
+This file is the one source. The owner's claude.ai plugin skill
+`shopping-comparison` holds the same text word for word, so chats outside this
+repo follow the same recipe. After you change this file, paste it into that
+plugin on claude.ai (Plugins > Shopping comparison > Files > SKILL.md >
+Edit) and keep its `name: "shopping-comparison"` line.
+
 ## Hard rules
 
 - Never pay, check out, sign in, or type card, address or account data. Stop at
