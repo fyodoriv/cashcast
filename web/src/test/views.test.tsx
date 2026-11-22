@@ -6,11 +6,12 @@ import { friendlyDates } from "../format";
 import { Markdown } from "../markdown";
 import type { Plan, UserSummary } from "../types";
 import type { Action } from "../types";
-import type { ActionResult, BankSync as BankSyncData, MoneyWizCategories } from "../types";
+import type { ActionResult, BankSync as BankSyncData, Groceries as GroceriesData, MoneyWizCategories } from "../types";
 import { Actions, type ActionsApi } from "../views/Actions";
 import { BankSync, type BankSyncApi, accountState } from "../views/BankSync";
 import { Categories, type CategoriesApi, buildOps } from "../views/Categories";
 import { type DocsApi, Documents } from "../views/Documents";
+import { Groceries, type GroceriesApi, belowPriciest, parseItems } from "../views/Groceries";
 import { applyWhatIf } from "../views/PlanAhead";
 
 // jsdom has no ResizeObserver; Recharts' ResponsiveContainer needs one.
@@ -47,12 +48,13 @@ const EXPECT: Record<string, RegExp> = {
   documents: /Documents/,
   categories: /Categories/,
   banksync: /Bank sync/,
+  groceries: /Groceries/,
   actions: /bin\/cashcast actions/,
 };
 
 describe("every view renders the synthetic plan", () => {
-  it("has 20 views, each with an expectation", () => {
-    expect(VIEWS).toHaveLength(20);
+  it("has 21 views, each with an expectation", () => {
+    expect(VIEWS).toHaveLength(21);
     expect(Object.keys(EXPECT).sort()).toEqual(VIEWS.map((v) => v.id).sort());
   });
 
@@ -490,5 +492,85 @@ describe("round-13 design notes stay fixed", () => {
     const cells = [...table.querySelectorAll("td.num")].map((c) => c.textContent ?? "");
     expect(cells.length).toBeGreaterThan(0);
     for (const c of cells) expect(c).toMatch(/^-?\$/);
+  });
+});
+
+describe("groceries", () => {
+  const price = (store: string, name: string, p: number) => ({
+    item: "oats",
+    store,
+    name,
+    price: p,
+    was: null,
+    organic: false,
+    per100: p / 10,
+    checked: "2026-11-20",
+    link: null,
+  });
+  const basket = (store: string, total: number | null, missing: string[] = []) => ({
+    store,
+    lines: [{ item: "oats", best: price(store, `Oats at ${store}`, 4), sub: null }],
+    missing,
+    subtotal: 4,
+    discount: 0,
+    delivery: total === null ? null : total - 4,
+    service: 0,
+    total,
+    fee_note: "no fee rule saved",
+  });
+  const data: GroceriesData = {
+    items: [{ item: "oats", stores: 2, checked: "2026-11-20" }],
+    fees: [
+      {
+        store: "store-a",
+        delivery: 5,
+        service: 1,
+        free_over: 30,
+        pct_off: null,
+        max_off: null,
+        min_order: null,
+        note: "",
+        checked: "2026-11-20",
+      },
+    ],
+    months: [{ month: "2026-11", orders: 2, total: 160.25 }],
+    orders: [{ day: "2026-11-15", store: "store-a", total: 60, note: "" }],
+    compare: [],
+    asked: [],
+    freshDays: 3,
+    rules: ["rules:", "  - never anchovies"],
+  };
+
+  it("reads items and ranks full baskets against the priciest", () => {
+    expect(parseItems(" Oats, ,tea ")).toEqual(["oats", "tea"]);
+    const below = belowPriciest([basket("a", 80), basket("b", 100), basket("c", 10, ["tea"])]);
+    expect(below.get("a")).toBe(20);
+    expect(below.get("b")).toBe(0);
+    expect(below.has("c")).toBe(false);
+  });
+
+  it("shows spend, fees and rules, then compares the asked items", async () => {
+    const asked: string[][] = [];
+    const api: GroceriesApi = {
+      load: async (_u, items) => {
+        asked.push(items);
+        return items.length ? { ...data, asked: items, compare: [basket("store-a", 9), basket("store-b", 12)] } : data;
+      },
+    };
+    render(<Groceries user="alex" api={api} />);
+    expect(await screen.findAllByText("$160.25")).toHaveLength(2);
+    expect(screen.getByRole("table", { name: "store fees after memberships" }).textContent).toMatch(
+      /\$5\.00 \(free over \$30\.00\) \+ \$1\.00 service/,
+    );
+    expect(screen.getByText(/never anchovies/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "+ oats" }));
+    fireEvent.click(screen.getByRole("button", { name: "Compare" }));
+    expect(await screen.findByText(/store-a: \$9\.00 · 25 % below the priciest/)).toBeTruthy();
+    expect(asked.at(-1)).toEqual(["oats"]);
+  });
+
+  it("says how to start when there are no prices", async () => {
+    render(<Groceries user="alex" api={{ load: async () => ({ ...data, items: [], months: [], orders: [] }) }} />);
+    expect(await screen.findByText(/grocery import --from OLD\.sqlite/)).toBeTruthy();
   });
 });

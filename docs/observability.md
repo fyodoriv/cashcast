@@ -41,6 +41,7 @@ Rules for app events:
 | `change_done` / `change_reopened` | `changes done ID` / `changes undo ID` | none |
 | `tasks_resolved` | `tasks resolve` ran | `resolved`, `blocked` |
 | `weekly` | `bin/cashcast weekly` finished | `overlaps`, `failed_steps` |
+| `grocery` | `grocery save`, `compare`, `order` or `import` ran | `action`, `rows` |
 | `task_verdict` | `tasks verdict` recorded an agent check | `result` (`pass`, `fail`), `source` (`local`, `browser`) |
 | `optimize` | `bin/cashcast optimize` ran | `trades`, `sells` |
 | `invest_plan` | `bin/cashcast invest-plan` ran | `moves`, `do_nothing_wins` |

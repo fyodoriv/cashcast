@@ -365,7 +365,13 @@ or `bin/cashcast numbers` in Terminal.
    Canada, checked against the plan's assumptions ("are your numbers still
    current?"): `bin/cashcast knowledge refresh`. Charges the user did not expect (duplicate
    subscriptions, new or pricier charges): `bin/cashcast charges`; one
-   merchant on every account: `bin/cashcast charges find WORD`.
+   merchant on every account: `bin/cashcast charges find WORD`. Groceries
+   ("order groceries", "where is X cheapest delivered", "how much did I spend
+   on groceries"): the `grocery-cart` skill (`bin/cashcast grocery compare
+   --items a,b`, `grocery orders`; carts in the user's Chrome, they check
+   out). Buying anything else ("find the best X", "what size should I get"):
+   the `purchase` skill (3-5 options, one options page, the card to pay with
+   from `cards now`).
 5. Notion: if the user kept finance pages in Notion, follow the `notion-import`
    skill in `skills/`. They export the pages themselves and run
    `bin/cashcast notion import`, offline. Never fetch the pages through a

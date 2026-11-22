@@ -19,6 +19,11 @@ Strategy (the main number is your net total; every option is ranked by what it a
   holdings                                  investments and crypto: ACB and gains
   cards now [--balance CARD=AMOUNT ...]     which card to use now: cap left, reset date, credit left
   charges [find WORD]                       duplicate subscriptions, new or pricier charges; find: one merchant's charges
+Groceries (prices you read on store pages; carts filled in your browser, you check out):
+  grocery items | grocery show ITEM | grocery best ITEM | grocery stale --items A,B
+  grocery compare --items A,B [--days N]   each store's total with fees and promos, full baskets first
+  grocery save --file ROWS.json | grocery fee STORE --delivery N [--free-over N] [--service N] | grocery fees
+  grocery order STORE --total N | grocery orders | grocery prefs | grocery import --from OLD.sqlite
 MoneyWiz (record cash by hand; one command adds and fixes the rest):
   moneywiz status | moneywiz coverage | moneywiz sync [--dry-run] [--no-download] [--resend]
   moneywiz edit [--dry-run] [--fixes] [--account NAME --archived yes|no] | moneywiz probe [--ui]

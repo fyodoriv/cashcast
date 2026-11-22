@@ -7,7 +7,7 @@ use super::consent;
 use super::pyjson::Json;
 
 /// One line per command, in parser order.
-pub const SUMMARY: [(&str, &str); 49] = [
+pub const SUMMARY: [(&str, &str); 50] = [
     (
         "start",
         "set up, start the web app, refresh, and print what matters now (also: no command)",
@@ -106,6 +106,10 @@ pub const SUMMARY: [(&str, &str); 49] = [
     (
         "charges",
         "unexpected charges on every account: duplicate subscriptions, new recurring charges, price rises, charges after a pause; find WORD lists one merchant's charges",
+    ),
+    (
+        "grocery",
+        "grocery prices per store: best pack per 100 g, substitutes, store totals with fees and promos, orders and spend per month",
     ),
     (
         "cards",
@@ -224,7 +228,11 @@ const CONFIRM: [(&str, &str); 16] = [
     ),
 ];
 
-const AGENT_NOTES: [(&str, &str); 10] = [
+const AGENT_NOTES: [(&str, &str); 11] = [
+    (
+        "grocery",
+        "agents: follow skills/grocery-cart; fill carts in the owner's Chrome, never check out or pay",
+    ),
     (
         "telemetry",
         "agents: ask the owner in chat before `telemetry send` (without --dry-run) or `telemetry on`",
@@ -374,6 +382,34 @@ fn command_args(name: &str) -> Vec<Arg> {
             Arg::positional("word")
                 .maybe()
                 .help("find: a merchant name or billing word, for example anthropic"),
+        ],
+        "grocery" => vec![
+            Arg::positional("action")
+                .maybe()
+                .default(s("items"))
+                .choices(&[
+                    "items", "show", "best", "stale", "compare", "save", "fee", "fees", "order",
+                    "orders", "prefs", "import",
+                ]),
+            Arg::positional("name")
+                .maybe()
+                .help("show, best: an item; fee, order: a store"),
+            Arg::option("--items").help("stale, compare: items, comma-separated"),
+            Arg::option("--file").help("save: a JSON array of {item, store, name, price, ...}"),
+            Arg::option("--from").help("import: an older groceries.sqlite (left unchanged)"),
+            Arg::option("--days")
+                .int()
+                .help("show, best, stale, compare: prices no older than N days (default: profile, else 3)"),
+            Arg::option("--organic-premium")
+                .help("best, compare: organic wins within this share above the cheapest (default 0.75)"),
+            Arg::option("--delivery").help("fee: delivery after memberships"),
+            Arg::option("--free-over").help("fee: free delivery from this subtotal"),
+            Arg::option("--service").help("fee: service fee"),
+            Arg::option("--pct-off").help("fee: store promo percent off"),
+            Arg::option("--max-off").help("fee: promo cap"),
+            Arg::option("--min-order").help("fee: promo minimum order"),
+            Arg::option("--total").help("order: the checkout total paid"),
+            Arg::option("--note").help("fee, order: a short note"),
         ],
         "cards" => vec![
             Arg::positional("action")

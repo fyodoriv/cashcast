@@ -407,3 +407,15 @@ story and its tests in the same commit.
 |---|---|---|
 | happy | `tests/e2e/us-37-new-user-no-moneywiz.sh` (a fresh HOME with no MoneyWiz; RBC chequing and Tangerine card CSVs; import, spending, forecast, strategy; the weekly dry run skips MoneyWiz, cards, holdings and an unset sync with plain lines; no canary on disk) | `weekly` |
 | error | `engine/tests/app_strategy_sections.rs` `spending_counts_salary_as_earned` (salary alone is income, so no false "spent more than you earned" task) | `strategy` |
+
+## US-38: Buy groceries at the cheapest full basket
+
+- **As** a person who orders groceries for delivery, **I want** every store price the agent reads kept on my computer, the best pack per 100 g/ml with a substitute, each store's total with its delivery fee, service fee and promo, and my grocery spend per month, **so that** I order from the cheapest store that has everything, without the agent searching every store again.
+- **Metric**: stores ranked out of order by `grocery compare` (a store with a missing item above a full one, or a dearer full basket above a cheaper one) and free delivery or a promo given to a partial basket (`engine/tests/groceries.rs`). **Target**: 0 and 0. In use: the `grocery` event's `action` and `rows` (`compare`, `save`, `order`).
+
+| Case | Test | Log event |
+|---|---|---|
+| happy | `tests/e2e/us-38-groceries.sh` (save, fee rules, best pack and substitute, compare full baskets first, stale prices, an order and spend per month, the database at mode 600; an older database imports and stays unchanged) and `engine/tests/groceries.rs` (price per 100 from labels and pack sizes, organic premium, promos) | `grocery` |
+| error | `tests/e2e/us-38-groceries.sh` (orders withheld without `agent:strategy`; usage lines for compare without items, a bad fee, no fresh prices, a missing import file) | `report_withheld` |
+| edge | `engine/tests/groceries.rs` (free delivery and a promo need a full basket; reading creates no database; an import twice makes no doubles) and `web/src/test/views.test.tsx` (Groceries view: spend, fees, rules, compare) | none |
+| agent | `skills/grocery-cart/SKILL.md` and `evals/cases/grocery-cart.yaml` (fills carts, ranks by checkout total, never checks out) | none |

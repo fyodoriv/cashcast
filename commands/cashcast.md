@@ -36,6 +36,10 @@ Which card to use right now (caps left, rent count, credit left): `bin/cashcast 
 Charges the person did not expect (duplicate subscriptions, new or pricier charges, charges after a cancel):
 `bin/cashcast charges`; one merchant on every account, for example "do I pay Anthropic twice?":
 `bin/cashcast charges find anthropic`. Both need `agent:strategy`; without it, give the person the command.
+Groceries ("order groceries", "where is oat milk cheapest delivered?", "how much did I spend on groceries?"):
+follow `skills/grocery-cart` (`bin/cashcast grocery compare --items "oat milk,eggs"`, `bin/cashcast grocery orders`);
+it fills carts in the person's Chrome and they check out. Buying anything else ("find me the best rain jacket",
+"which monitor stand fits?"): follow `skills/purchase` (3-5 options, one options page, the card to pay with).
 
 To change a default the person asks for, use `bin/cashcast config set KEY VALUE` (see `bin/cashcast config`).
 

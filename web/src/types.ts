@@ -304,3 +304,50 @@ export interface BankSync {
   };
   moneywizExports: number;
 }
+
+/** One saved store price (`/api/groceries`). */
+export interface GroceryPrice {
+  item: string;
+  store: string;
+  name: string;
+  price: number;
+  was: number | null;
+  organic: boolean;
+  per100: number | null;
+  checked: string;
+  link: string | null;
+}
+
+export interface GroceryBasket {
+  store: string;
+  lines: { item: string; best: GroceryPrice | null; sub: GroceryPrice | null }[];
+  missing: string[];
+  subtotal: number;
+  discount: number;
+  delivery: number | null;
+  service: number | null;
+  total: number | null;
+  fee_note: string;
+}
+
+export interface Groceries {
+  error?: string;
+  items: { item: string; stores: number; checked: string }[];
+  fees: {
+    store: string;
+    delivery: number;
+    service: number;
+    free_over: number | null;
+    pct_off: number | null;
+    max_off: number | null;
+    min_order: number | null;
+    note: string;
+    checked: string;
+  }[];
+  months: { month: string; orders: number; total: number }[];
+  orders: { day: string; store: string; total: number; note: string }[];
+  compare: GroceryBasket[];
+  asked: string[];
+  freshDays: number;
+  rules: string[];
+}
