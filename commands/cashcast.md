@@ -15,7 +15,8 @@ Then, answer first:
    in a terminal (`bin/cashcast consent grant SCOPE`); never grant it yourself.
 3. The next action. For a first run or a full session, follow `.claude/skills/cashcast/SKILL.md` from Step 0.
 
-The Sunday session ("weekly", "do the weekly", `/cashcast weekly`, or the scheduled Sunday run): follow the
+The Sunday session ("weekly", "do the weekly", `/cashcast-weekly`, `/cashcast weekly`, or the scheduled Sunday run):
+follow `commands/cashcast-weekly.md` (the 7 results the owner expects) and the
 "Weekly session" section of `.claude/skills/cashcast/SKILL.md` from step 0 without asking: fresh exports from every
 bank, today's balances, `bin/cashcast weekly --balance …` once, MoneyWiz checked on disk, agent checks, and end with
 this week's moves.

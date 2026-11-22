@@ -177,6 +177,8 @@ Run from the repo root.
 | 2026-11-22 | `moneywiz sync` held a deposit into an investment account ("moves MoneyWiz away from the bank's balance"), and `edit --fixes` held the buy it paid for | the gate counted the deposit but not the buy `edit --fixes` adds; it now counts pending broker trades whose cash leg the export holds (test `a_deposit_spent_on_a_buy_the_edit_adds_is_not_held`) |
 | 2026-11-22 | "Not up to date" listed MoneyWiz accounts named `Download (1)` and `accountactivity`; `edit --fixes` planned 382 category edits every week | TD and CIBC CSVs name no account: download QFX (the sync now lists such files apart). Row edits MoneyWiz already shows are now counted as "already done" |
 | 2026-11-22 | `request_credentials` with 8 logins failed "invalid schema"; PayPal sign-in hung on a passkey prompt | at most 4 logins per call; PayPal needs the owner's Touch ID (task `paypal-passkey-signin`). Kraken exports a ZIP: unzip it before `fetch collect` (task `kraken-zip-and-prices`) |
+| 2026-11-22 | `cards missed` checked 0 charges in a week with many card rows | the forecast import ended weeks earlier and uses export account names; `cards missed` now reads MoneyWiz rows mapped through `[moneywiz.accounts]` (task `cards-now-fresh-rows` for `cards now`) |
+| 2026-11-22 | `moneywiz edit --fixes` exited 3 "MoneyWiz did not quit" | an open MoneyWiz window blocks the scripted quit (-128); nothing was written. Ask the owner to quit MoneyWiz (Cmd-Q), then rerun. The Sunday weekly writes MoneyWiz without asking, but never closes its windows by keystrokes |
 | 2026-10-02 | the pre-push privacy gate flags a word | do not add accounting-file formats that match it; see memory |
 
 ## Cloud sessions

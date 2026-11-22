@@ -1073,3 +1073,175 @@ pub fn render(wallet: &Wallet, report: &Report) -> String {
     }
     o
 }
+
+/// Charges on one card in one category that another card pays more for.
+/// Totals only: never one row.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Missed {
+    pub card: String,
+    pub category: String,
+    pub better: String,
+    pub better_rate: f64,
+    pub used_rate: f64,
+    pub count: usize,
+    pub spend: i64,
+    /// Cash back the better card would have paid on top, in cents.
+    pub lost: i64,
+}
+
+/// Card charges from `since` to the report day that went on a card earning
+/// less than today's pick for their category, grouped per (card, category).
+/// Rates and caps are as they stand on the report day. Also returns the
+/// charges checked per card id.
+pub fn missed(
+    wallet: &Wallet,
+    report: &Report,
+    rows: &[SpendRow],
+    since: NaiveDate,
+) -> (Vec<Missed>, BTreeMap<String, usize>) {
+    let today = report.today;
+    let mut out: BTreeMap<(String, String), Missed> = BTreeMap::new();
+    let mut checked: BTreeMap<String, usize> = BTreeMap::new();
+    for r in rows {
+        if r.cents <= 0 || r.date < since || r.date > today {
+            continue;
+        }
+        let Some(i) = wallet
+            .cards
+            .iter()
+            .position(|c| c.accounts.iter().any(|a| a == &r.account))
+        else {
+            continue;
+        };
+        let cat = if r.foreign {
+            "foreign"
+        } else {
+            reward_category(&r.category, &wallet.overrides)
+        };
+        if cat == "bank_only" {
+            continue;
+        }
+        let Some(pick) = report.picks.iter().find(|p| p.category == cat) else {
+            continue;
+        };
+        let (card, state) = (&wallet.cards[i], &report.cards[i]);
+        *checked.entry(card.id.clone()).or_insert(0) += 1;
+        if pick.card.is_empty() || pick.card == card.id {
+            continue;
+        }
+        let used = rate_now(card, state, cat, wallet, today).0.max(0.0);
+        if pick.rate - used < 1e-9 {
+            continue;
+        }
+        let m = out
+            .entry((card.id.clone(), cat.to_string()))
+            .or_insert_with(|| Missed {
+                card: card.id.clone(),
+                category: cat.to_string(),
+                better: pick.card.clone(),
+                better_rate: pick.rate,
+                used_rate: used,
+                count: 0,
+                spend: 0,
+                lost: 0,
+            });
+        m.count += 1;
+        m.spend += r.cents;
+        m.lost += (r.cents as f64 * (pick.rate - used)).round() as i64;
+    }
+    let mut v: Vec<Missed> = out.into_values().collect();
+    v.sort_by(|a, b| b.lost.cmp(&a.lost).then(a.card.cmp(&b.card)));
+    (v, checked)
+}
+
+pub fn render_missed(
+    wallet: &Wallet,
+    found: &[Missed],
+    checked: &BTreeMap<String, usize>,
+    since: NaiveDate,
+    today: NaiveDate,
+) -> String {
+    let name = |id: &str| {
+        wallet
+            .cards
+            .iter()
+            .find(|c| c.id == id)
+            .map_or(id.to_string(), |c| c.name.clone())
+    };
+    let mut o = String::new();
+    let _ = writeln!(
+        o,
+        "# Charges on a card that earns less ({} to {})\n",
+        day(since),
+        day(today)
+    );
+    let per_card: Vec<String> = wallet
+        .cards
+        .iter()
+        .map(|c| format!("{} {}", c.name, checked.get(&c.id).copied().unwrap_or(0)))
+        .collect();
+    let _ = writeln!(o, "Charges checked: {}.\n", per_card.join(", "));
+    if found.is_empty() {
+        let _ = writeln!(
+            o,
+            "None: every imported card charge in this period went on the card that pays most for its category."
+        );
+        return o;
+    }
+    let _ = writeln!(
+        o,
+        "| Card used | Spending | Better card | Charges | Spend | Cash back missed |"
+    );
+    let _ = writeln!(o, "|---|---|---|---|---|---|");
+    for m in found {
+        let _ = writeln!(
+            o,
+            "| {} ({}) | {} | **{}** ({}) | {} | {} | {} |",
+            name(&m.card),
+            pct(m.used_rate),
+            m.category,
+            name(&m.better),
+            pct(m.better_rate),
+            m.count,
+            fmt_cents(m.spend),
+            fmt_cents(m.lost)
+        );
+    }
+    let total: i64 = found.iter().map(|m| m.lost).sum();
+    let _ = writeln!(o, "\nTotal missed: {}.", fmt_cents(total));
+    let _ = writeln!(
+        o,
+        "\nTotals per card and category only. Rates and caps are as they stand today (`bin/cashcast cards now`), so a charge made before a cap filled can read as missed. Next time, pay that category with the better card."
+    );
+    o
+}
+
+/// Card spending rows from MoneyWiz: rows on an account a wallet card names
+/// (by its MoneyWiz name, or the export name `[moneywiz.accounts]` links it
+/// to), not transfers, as positive charges (refunds left out).
+pub fn moneywiz_rows(
+    wallet: &Wallet,
+    store: &crate::moneywiz::Store,
+    links: &BTreeMap<String, String>,
+) -> Vec<SpendRow> {
+    store
+        .txns
+        .iter()
+        .filter(|t| t.cents < 0 && t.other_account.is_none())
+        .filter_map(|t| {
+            let account = store.account(t.account)?;
+            let name = links.get(&account.name).unwrap_or(&account.name);
+            wallet
+                .cards
+                .iter()
+                .any(|c| c.accounts.iter().any(|a| a == name))
+                .then(|| SpendRow {
+                    account: name.clone(),
+                    date: t.date,
+                    category: t.category.join(" > "),
+                    cents: -t.cents,
+                    foreign: !account.currency.is_empty() && account.currency != "CAD",
+                })
+        })
+        .collect()
+}

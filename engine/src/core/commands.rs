@@ -113,7 +113,7 @@ pub const SUMMARY: [(&str, &str); 50] = [
     ),
     (
         "cards",
-        "which card to use now per spending category: cap used and left, reset date, rent charges, credit left",
+        "which card to use now per spending category: cap used and left, reset date, rent charges, credit left; missed totals charges that went on a card earning less",
     ),
     (
         "optimize",
@@ -331,6 +331,9 @@ fn command_args(name: &str) -> Vec<Arg> {
         "weekly" => vec![
             Arg::switch("--dry-run")
                 .help("show what MoneyWiz and the task list would change; change neither"),
+            Arg::switch("--sync").help(
+                "also write the week's tasks to Reminders and Calendar (default: only after you confirm)",
+            ),
             Arg::option("--balance")
                 .append()
                 .metavar("ID=AMOUNT")
@@ -415,7 +418,11 @@ fn command_args(name: &str) -> Vec<Arg> {
             Arg::positional("action")
                 .maybe()
                 .default(s("now"))
-                .choices(&["now"]),
+                .choices(&["now", "missed"])
+                .help("now: the card to use per category; missed: charges that went on a card earning less"),
+            Arg::option("--since")
+                .metavar("YYYY-MM-DD")
+                .help("missed: the first day to check (default: 7 days ago)"),
             Arg::option("--balance").append().metavar("CARD=AMOUNT").help(
                 "a card balance read on the card site; repeat per card (default: recorded balances)",
             ),

@@ -306,7 +306,45 @@ fn run() -> Result<(), String> {
             let inbox = inbox::load_dir(&inbox_dir, &cfg)?;
             let rows = summarize::summarize(&inbox, &cfg, today)?.charges;
             let report = cards::now(&wallet, &rows, &balances, &pending, today);
-            print!("{}", cards::render(&wallet, &report));
+            if args.iter().any(|a| a == "missed") {
+                let since = match flag("--since") {
+                    Some(d) => chrono::NaiveDate::parse_from_str(&d, "%Y-%m-%d")
+                        .map_err(|_| "--since must be YYYY-MM-DD")?,
+                    None => today - chrono::Days::new(7),
+                };
+                // MoneyWiz holds this week's card rows with their categories once
+                // the sync ran; the forecast import ends at its last full month.
+                let mw_rows = moneywiz::find_db(cfg.moneywiz.as_ref())
+                    .and_then(|db| moneywiz::open(&db))
+                    .map(|store| {
+                        let links = cfg.moneywiz.as_ref().map(|m| m.accounts.clone());
+                        cards::moneywiz_rows(&wallet, &store, &links.unwrap_or_default())
+                    });
+                let (rows, from) = match mw_rows {
+                    Ok(r) if !r.is_empty() => (r, "MoneyWiz"),
+                    Ok(_) => (
+                        rows,
+                        "the imported exports (no MoneyWiz rows on these cards)",
+                    ),
+                    Err(e) => (
+                        rows,
+                        if e.is_empty() {
+                            "the imported exports"
+                        } else {
+                            "the imported exports (MoneyWiz not read)"
+                        },
+                    ),
+                };
+                let report = cards::now(&wallet, &rows, &balances, &pending, today);
+                let (found, checked) = cards::missed(&wallet, &report, &rows, since);
+                print!(
+                    "{}",
+                    cards::render_missed(&wallet, &found, &checked, since, today)
+                );
+                println!("\nRows read from {from}.");
+            } else {
+                print!("{}", cards::render(&wallet, &report));
+            }
         }
         "moneywiz" => {
             let today = match flag("--today") {

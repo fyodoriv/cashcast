@@ -566,6 +566,39 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     indexation page still ends at 2026, 2.0 %; usually mid to late November). Look again 2026-11-20.
   - **Anchor**: CRA "Canadian income tax rates for individuals" (yearly release)
 
+- [ ] `cards now` reads the same fresh rows as `cards missed`
+  - **ID**: cards-now-fresh-rows
+  - **Tags**: cards, bug, moneywiz
+  - **Details**: Found 2026-11-22 in the Sunday weekly. `cards now` counts caps and rent from the
+    forecast import, which can end weeks before today and uses export account names. `cards
+    missed` now reads MoneyWiz rows mapped through `[moneywiz.accounts]` (engine/src/main.rs
+    `cards`), so the two can disagree on this month's spend toward a cap.
+  - **Files**: `engine/src/main.rs` (`cards`), `engine/src/cards.rs` (`now`, `moneywiz_rows`), `engine/tests/cards.rs`
+  - **Acceptance**: a failing synthetic test first: import rows that end before this month,
+    MoneyWiz rows inside it; `cards now` counts the MoneyWiz rows toward the cap.
+  - **Hypothesis**: weeks where `cards now` reports 0 spend this month while MoneyWiz holds card
+    rows fall from 1 (2026-11-22) to 0.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test cards`
+  - **Success**: the new test passes and the next weekly's `cards now` cap spend is above 0
+  - **Pivot**: if MoneyWiz rows lack the reward category the cap needs, map categories with
+    `knowledge/data/merchants.toml` instead of switching the source
+  - **Anchor**: Kimball & Ross 2013, *The Data Warehouse Toolkit*, ch. 1 (one conformed source per fact)
+
+- [ ] Review nits from the 2026-11-22 MoneyWiz sync fixes
+  - **ID**: moneywiz-sync-review-nits
+  - **Tags**: moneywiz, quality
+  - **Details**: Found 2026-11-22 in the review of the weekly sync fixes. (1) a sell trade with a
+    commission rarely pairs with its cash leg in `add_pending_trades`; (2) `file_named` also
+    matches PDF statements; (3) `rows_already` does not compare the payee.
+  - **Files**: `engine/src/moneywiz.rs`, `engine/tests/moneywiz.rs`
+  - **Acceptance**: one failing synthetic test per nit first, then the fix.
+  - **Hypothesis**: false holds and false "already done" counts in the dry run fall to 0 on the
+    three synthetic cases.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test moneywiz`
+  - **Success**: three new tests pass and parity shows 0 mismatches
+  - **Pivot**: if a commission makes the pair ambiguous, keep the hold and name the trade in the report
+  - **Anchor**: Fellegi & Sunter 1969, *JASA* 64(328) (record linkage with match weights)
+
 ## P3
 
 - [ ] Grocery browser steps wait for product cards, not a fixed sleep

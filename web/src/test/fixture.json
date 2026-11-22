@@ -39,6 +39,15 @@
     {
      "choices": null,
      "default": null,
+     "flag": "--sync",
+     "help": "also write the week's tasks to Reminders and Calendar (default: only after you confirm)",
+     "kind": "flag",
+     "name": "sync",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
      "flag": "--balance",
      "help": "a balance read today on the bank or card site, for transfers and cards; repeat per account",
      "kind": "text",
@@ -951,13 +960,23 @@
    "args": [
     {
      "choices": [
-      "now"
+      "now",
+      "missed"
      ],
      "default": "now",
      "flag": null,
-     "help": "",
+     "help": "now: the card to use per category; missed: charges that went on a card earning less",
      "kind": "choice",
      "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--since",
+     "help": "missed: the first day to check (default: 7 days ago)",
+     "kind": "text",
+     "name": "since",
      "required": false
     },
     {
@@ -973,7 +992,7 @@
    "command": "bin/cashcast cards",
    "confirm": null,
    "confirm_choices": {},
-   "help": "which card to use now per spending category: cap used and left, reset date, rent charges, credit left",
+   "help": "which card to use now per spending category: cap used and left, reset date, rent charges, credit left; missed totals charges that went on a card earning less",
    "name": "cards",
    "terminal_only": null,
    "terminal_only_choices": {},

@@ -50,6 +50,8 @@ us35_happy_one_run_checks_overlaps_and_moves() {
   has '## Transfers between your banks · `bin/cashcast transfers --balance nope=1`'
   # `cards now` gets card ids only: a bank balance must not stop that step.
   has '## Which card to use now · `bin/cashcast cards now`'
+  # Charges on a card that earns less, totals only.
+  has '## Charges on a card that earns less (last 7 days) · `bin/cashcast cards missed`'
   lacks '`bin/cashcast cards now --balance nope=1`'
   lacks 'is not a card in [[wallet.cards]]'
   ok weekly --dry-run --today 2026-11-17

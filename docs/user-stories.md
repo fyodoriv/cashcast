@@ -319,6 +319,7 @@ story and its tests in the same commit.
 |---|---|---|
 | happy | `tests/e2e/us-29-cards-now.sh` (cap used since `cap_reset` with a refund netted; rent before a card's `rent_rate_from` still uses its cap; the rent rule moves rent on; a recorded card balance is used; no payee text) and `engine/tests/cards.rs` (one test per cap period: card year, calendar year, monthly, statement; per-category and combined caps; rent posted before a card's `rent_rate_from` still uses its cap) | `report_shown` |
 | error | `tests/e2e/us-29-cards-now.sh` (an unknown card; withheld without `agent:strategy`) and `engine/tests/cards.rs` (a card not in the catalog; a bad `cap_reset`) | `report_withheld` |
+| happy: missed | `engine/tests/cards.rs` `missed_totals_charges_on_a_card_that_earns_less_since_a_day` (`cards missed`: charges on a card that earns less, per card and category, totals only; rows before the period and off the wallet are not checked) | `report_shown` |
 | edge | `engine/tests/cards.rs` (unknown reset counts the last 12 months and says so; stale rows; a car rental under "rent" is not a rent charge; a pending product change keeps the old card; a cap shared with rent is saved for the rent charges left; room beyond them stays usable) and `tests/e2e/us-29-cards-now.sh` (`cards now` and the strategy route groceries off the rent cap alike) and `engine/tests/app_tasks.rs` (the engine's category rules match the strategy's; a done change is no longer pending) | none |
 | agent | `evals/cases/cards-now.yaml` (needs consent; the agent never changes the rent card or applies for a card) | none |
 
@@ -387,6 +388,7 @@ story and its tests in the same commit.
 |---|---|---|
 | happy | `tests/e2e/us-35-weekly.sh` (every step under its own heading; two pay-downs of one card are one overlap; a refresh task is the weekly's own work; moves by day with the overdue one; notes; `weekly.html` saved at mode 600) and the tests in `engine/src/tasks/weekly.rs` (overlaps, the floor line, the moves list) | `weekly` |
 | error | `tests/e2e/us-35-weekly.sh` (without `agent:strategy` the steps run but the moves are withheld) | `report_withheld` |
+| agent | `tests/repo/weekly-expectations.sh` (`/cashcast-weekly` lists the owner's 7 results in order; MoneyWiz is written without asking; nothing goes to Reminders or Calendar before the owner confirms; the results page comes before improvements) and `engine/src/core/cli.rs` `weekly_writes_reminders_only_after_the_owner_confirms` | none |
 
 ## US-36: Track my citizenship paperwork privately on this Mac
 
