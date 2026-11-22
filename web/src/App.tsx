@@ -6,6 +6,7 @@ import { BankSync } from "./views/BankSync";
 import { Categories } from "./views/Categories";
 import { Documents } from "./views/Documents";
 import { Forecast } from "./views/Forecast";
+import { Groceries } from "./views/Groceries";
 import { Overview } from "./views/Overview";
 import { PlanAhead } from "./views/PlanAhead";
 import { HoldingsView, KnowledgeView, PrivacyView, ServicesView } from "./views/Reference";
@@ -39,6 +40,7 @@ export const VIEWS: View[] = [
   section("budget", "Budget", ["budget"]),
   section("alternatives", "Alternatives", ["alternatives", "banking"]),
   { id: "banksync", label: "Bank sync", group: "Plan", render: (plan) => <BankSync user={plan.user.name} /> },
+  { id: "groceries", label: "Groceries", group: "Plan", render: (plan) => <Groceries user={plan.user.name} /> },
   { id: "documents", label: "Documents", group: "Reference", render: (plan) => <Documents user={plan.user.name} /> },
   {
     id: "categories",
@@ -79,6 +81,7 @@ const ICONS: Record<string, string> = {
   documents: "M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6",
   categories: "M4 6h7v5H4zM13 13h7v5h-7zM11 8h4v5",
   actions: "M5 4l14 8-14 8z",
+  groceries: "M3 4h2l2.5 11h11L21 7H6.2M9 20h.01M17 20h.01",
   banksync: "M20 8a8 8 0 0 0-14.5-3M4 4v4h4M4 16a8 8 0 0 0 14.5 3M20 20v-4h-4",
   more: "M4 7h16M4 12h16M4 17h16",
 };

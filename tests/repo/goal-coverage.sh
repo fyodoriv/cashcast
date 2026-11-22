@@ -55,5 +55,7 @@ need "one command starts cashcast, with one settings table" engine/src/tasks/sta
 need "set up and update Apple Reminders and Calendar" engine/src/tasks/apple.rs engine/tests/app_apple.rs skills/apple-sync/SKILL.md
 need "needed bank changes in the browser" engine/src/tasks/changes.rs engine/tests/app_tasks.rs skills/bank-change/SKILL.md
 need "refund a missing item without paying twice" skills/refund/SKILL.md evals/cases/refund.yaml
+need "groceries and purchases: best store basket, never paying" engine/src/groceries.rs skills/grocery-cart/SKILL.md \
+  skills/purchase/SKILL.md tests/e2e/us-38-groceries.sh evals/cases/grocery-cart.yaml
 need "optimize stocks from the owner's inputs" engine/src/strategy/optimize.rs skills/optimize-stocks/SKILL.md docs/optimize.md
 echo "ok each of $n goal requirements is backed by files"

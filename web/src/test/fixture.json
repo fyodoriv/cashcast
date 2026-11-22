@@ -786,6 +786,167 @@
    "ui": true
   },
   {
+   "agent_note": "agents: follow skills/grocery-cart; fill carts in the owner's Chrome, never check out or pay",
+   "args": [
+    {
+     "choices": [
+      "items",
+      "show",
+      "best",
+      "stale",
+      "compare",
+      "save",
+      "fee",
+      "fees",
+      "order",
+      "orders",
+      "prefs",
+      "import"
+     ],
+     "default": "items",
+     "flag": null,
+     "help": "",
+     "kind": "choice",
+     "name": "action",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": null,
+     "help": "show, best: an item; fee, order: a store",
+     "kind": "text",
+     "name": "name",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--items",
+     "help": "stale, compare: items, comma-separated",
+     "kind": "text",
+     "name": "items",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--file",
+     "help": "save: a JSON array of {item, store, name, price, ...}",
+     "kind": "text",
+     "name": "file",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--from",
+     "help": "import: an older groceries.sqlite (left unchanged)",
+     "kind": "text",
+     "name": "from",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--days",
+     "help": "show, best, stale, compare: prices no older than N days (default: profile, else 3)",
+     "kind": "int",
+     "name": "days",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--organic-premium",
+     "help": "best, compare: organic wins within this share above the cheapest (default 0.75)",
+     "kind": "text",
+     "name": "organic_premium",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--delivery",
+     "help": "fee: delivery after memberships",
+     "kind": "text",
+     "name": "delivery",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--free-over",
+     "help": "fee: free delivery from this subtotal",
+     "kind": "text",
+     "name": "free_over",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--service",
+     "help": "fee: service fee",
+     "kind": "text",
+     "name": "service",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--pct-off",
+     "help": "fee: store promo percent off",
+     "kind": "text",
+     "name": "pct_off",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--max-off",
+     "help": "fee: promo cap",
+     "kind": "text",
+     "name": "max_off",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--min-order",
+     "help": "fee: promo minimum order",
+     "kind": "text",
+     "name": "min_order",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--total",
+     "help": "order: the checkout total paid",
+     "kind": "text",
+     "name": "total",
+     "required": false
+    },
+    {
+     "choices": null,
+     "default": null,
+     "flag": "--note",
+     "help": "fee, order: a short note",
+     "kind": "text",
+     "name": "note",
+     "required": false
+    }
+   ],
+   "command": "bin/cashcast grocery",
+   "confirm": null,
+   "confirm_choices": {},
+   "help": "grocery prices per store: best pack per 100 g, substitutes, store totals with fees and promos, orders and spend per month",
+   "name": "grocery",
+   "terminal_only": null,
+   "terminal_only_choices": {},
+   "ui": true
+  },
+  {
    "agent_note": null,
    "args": [
     {

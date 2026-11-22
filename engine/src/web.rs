@@ -742,6 +742,10 @@ fn api_get(path: &str, q: &str, token: &str, today: NaiveDate) -> Result<Json, R
             Err(read_file(&u, &query(q, "path").unwrap_or_default())
                 .unwrap_or_else(|| text(404, "not found")))
         }
+        "/api/groceries" => {
+            let u = who()?;
+            Ok(groceries_payload(&u, query(q, "items").as_deref(), today))
+        }
         "/api/moneywiz-categories" => {
             let u = who()?;
             Ok(engine_json(&u, &["moneywiz", "categories", "json"], None))
@@ -763,6 +767,45 @@ fn api_get(path: &str, q: &str, token: &str, today: NaiveDate) -> Result<Json, R
             ))
         }
         _ => Err(text(404, "not found")),
+    }
+}
+
+/// The Groceries view: known items, fee rules, orders and spend per month,
+/// and each store's basket when `items` (comma-separated) is given.
+fn groceries_payload(user: &UserHome, items: Option<&str>, today: NaiveDate) -> Json {
+    use crate::groceries as gr;
+    let path = gr::file(&user.home);
+    let prefs = crate::core::users::load_profile(user)
+        .map(|p| gr::prefs(&p))
+        .unwrap_or_else(|_| gr::prefs(&toml::Table::new()));
+    let list: Vec<String> = items
+        .unwrap_or("")
+        .split(',')
+        .map(|x| x.trim().to_lowercase())
+        .filter(|x| !x.is_empty())
+        .collect();
+    let build = || -> Result<serde_json::Value, String> {
+        let orders = gr::orders(&path)?;
+        let compare = if list.is_empty() {
+            Vec::new()
+        } else {
+            gr::compare(&path, &list, prefs.organic_premium, prefs.fresh_days, today)?
+        };
+        Ok(serde_json::json!({
+            "items": gr::known(&path)?,
+            "fees": gr::fees(&path)?,
+            "months": gr::months(&orders),
+            "orders": orders.iter().take(20).collect::<Vec<_>>(),
+            "compare": compare,
+            "asked": list,
+            "freshDays": prefs.fresh_days,
+            "rules": prefs.lines,
+        }))
+    };
+    match build() {
+        Ok(v) => pyjson::loads(&v.to_string())
+            .unwrap_or_else(|| obj(vec![("error", s("bad grocery JSON"))])),
+        Err(e) => obj(vec![("error", s(e))]),
     }
 }
 

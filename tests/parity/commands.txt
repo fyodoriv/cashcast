@@ -200,3 +200,7 @@ nosuch
 --user alex charges
 --user alex charges find anthropic
 --user alex spending
+--user alex grocery
+--user alex grocery compare
+--user alex grocery prefs
+--user alex grocery best oats

@@ -1,4 +1,14 @@
-import type { Action, ActionResult, BankSync, Doc, DocEntry, MoneyWizCategories, Plan, UserSummary } from "./types";
+import type {
+  Action,
+  ActionResult,
+  BankSync,
+  Doc,
+  DocEntry,
+  Groceries,
+  MoneyWizCategories,
+  Plan,
+  UserSummary,
+} from "./types";
 
 // The token comes in the URL fragment (#t=...) that `bin/cashcast web` prints.
 // Fragments never reach a server log; we keep it for this tab only.
@@ -44,6 +54,9 @@ export async function fetchDocFile(user: string, path: string): Promise<string> 
 
 export const fetchBankSync = (user: string) => get<BankSync>(`/api/moneywiz-sync?${q(user)}`);
 export const fetchCategories = (user: string) => get<MoneyWizCategories>(`/api/moneywiz-categories?${q(user)}`);
+
+export const fetchGroceries = (user: string, items: string[] = []) =>
+  get<Groceries>(`/api/groceries?${q(user)}${items.length ? `&items=${encodeURIComponent(items.join(","))}` : ""}`);
 
 export const fetchActions = () => get<Action[]>("/api/actions");
 /** Runs one CLI action as the owner. A 400 carries the reason (a missing field, a needed confirm). */

@@ -49,6 +49,11 @@ Strategy (the main number is your net total; every option is ranked by what it a
   holdings                                  investments and crypto: ACB and gains
   cards now [--balance CARD=AMOUNT ...]     which card to use now: cap left, reset date, credit left
   charges [find WORD]                       duplicate subscriptions, new or pricier charges; find: one merchant's charges
+Groceries (prices you read on store pages; carts filled in your browser, you check out):
+  grocery items | grocery show ITEM | grocery best ITEM | grocery stale --items A,B
+  grocery compare --items A,B [--days N]   each store's total with fees and promos, full baskets first
+  grocery save --file ROWS.json | grocery fee STORE --delivery N [--free-over N] [--service N] | grocery fees
+  grocery order STORE --total N | grocery orders | grocery prefs | grocery import --from OLD.sqlite
 MoneyWiz (record cash by hand; one command adds and fixes the rest):
   moneywiz status | moneywiz coverage | moneywiz sync [--dry-run] [--no-download] [--resend]
   moneywiz edit [--dry-run] [--fixes] [--account NAME --archived yes|no] | moneywiz probe [--ui]
@@ -99,6 +104,8 @@ enum Cmd {
     Cards(Vec<String>, Option<String>),
     /// `charges [find WORD]` and `--today`, as given.
     Charges(Option<String>, Option<String>),
+    /// `grocery ACTION [NAME] [options]`: the grocery price database.
+    Grocery(Box<Grocery>),
     Help,
     Stop,
     Init,
@@ -173,6 +180,26 @@ enum Cmd {
     },
 }
 
+/// `grocery ACTION [NAME]` and its options, as argparse reads them.
+#[derive(Debug, Default)]
+pub struct Grocery {
+    action: String,
+    name: Option<String>,
+    items: Option<String>,
+    file: Option<String>,
+    from: Option<String>,
+    days: Option<i64>,
+    organic_premium: Option<String>,
+    delivery: Option<String>,
+    free_over: Option<String>,
+    service: Option<String>,
+    pct_off: Option<String>,
+    max_off: Option<String>,
+    min_order: Option<String>,
+    total: Option<String>,
+    note: Option<String>,
+}
+
 /// `moneywiz ACTION [STEP]` and its options, as argparse reads them.
 #[derive(Debug, Default)]
 pub struct Mw {
@@ -230,6 +257,7 @@ impl Cmd {
             Cmd::Numbers => "numbers",
             Cmd::Cards(..) => "cards",
             Cmd::Charges(..) => "charges",
+            Cmd::Grocery(_) => "grocery",
             Cmd::Stop => "stop",
             Cmd::Init => "init",
             Cmd::Report(name, _) | Cmd::Forecast(name, _) => name,
@@ -396,6 +424,26 @@ fn build(command: &str, ns: &Namespace) -> Cmd {
             (action == "find").then(|| s("word").unwrap_or_default()),
             None,
         ),
+        "grocery" => Cmd::Grocery(Box::new(Grocery {
+            action,
+            name: s("name"),
+            items: s("items"),
+            file: s("file"),
+            from: s("from"),
+            days: match ns.get("days") {
+                Val::Int(n) => Some(*n),
+                _ => None,
+            },
+            organic_premium: s("organic_premium"),
+            delivery: s("delivery"),
+            free_over: s("free_over"),
+            service: s("service"),
+            pct_off: s("pct_off"),
+            max_off: s("max_off"),
+            min_order: s("min_order"),
+            total: s("total"),
+            note: s("note"),
+        })),
         "optimize" => Cmd::Optimize(s("input")),
         "connectors" => Cmd::Connectors(action, s("service")),
         "action" => Cmd::Action(
@@ -475,6 +523,7 @@ fn reads_today(cmd: &Cmd) -> bool {
         | Cmd::Tasks { .. }
         | Cmd::Start(_)
         | Cmd::Weekly(..)
+        | Cmd::Grocery(_)
         | Cmd::FetchPlan(_) => true,
         // The engine subprocesses get `--today` only when it is given.
         Cmd::Report(_, given)
@@ -912,6 +961,7 @@ fn execute(cmd: &Cmd, user: &UserHome, day: NaiveDate) -> Result<i32, AppError> 
             super::gate::emit(user, &out, "agent:strategy", "charges", day)?;
             return Ok(code);
         }
+        Cmd::Grocery(g) => return grocery(user, g, day),
         Cmd::FirstError => {
             if consent::agent_context() && !consent::allowed(user, "agent:raw-row", today())? {
                 consent::require(user, "agent:raw-row", today())?;
@@ -2650,4 +2700,219 @@ fn weekly_fold(
             None => open,
         },
     )
+}
+
+/// `grocery …`: the grocery price database (moved from sidequest). Usage
+/// mistakes print one line and exit 2; "nothing found" exits 1.
+fn grocery(user: &UserHome, g: &Grocery, day: NaiveDate) -> Result<i32, AppError> {
+    use crate::groceries as gr;
+    let fail = |e: String| AppError::new("runtimeerror", e);
+    let usage = |msg: &str| {
+        println!("{msg}");
+        Ok(2)
+    };
+    let num = |flag: &str, v: &Option<String>| -> Result<Option<f64>, String> {
+        match v.as_deref() {
+            None => Ok(None),
+            Some(t) => match t.trim().trim_start_matches('$').parse::<f64>() {
+                Ok(n) if n.is_finite() && n >= 0.0 => Ok(Some(n)),
+                _ => Err(format!("{flag} must be a number of 0 or more, got '{t}'")),
+            },
+        }
+    };
+    let prefs = users::load_profile(user)
+        .map(|p| gr::prefs(&p))
+        .unwrap_or_else(|_| gr::prefs(&toml::Table::new()));
+    let days = match g.days {
+        Some(n) if n < 0 => return usage(&format!("--days must be a whole number of 0 or more, got '{n}'")),
+        Some(n) => n,
+        None => prefs.fresh_days,
+    };
+    let premium = match num("--organic-premium", &g.organic_premium) {
+        Ok(v) => v.unwrap_or(prefs.organic_premium),
+        Err(e) => return usage(&e),
+    };
+    let path = gr::file(&user.home);
+    let name = g.name.as_deref().map(str::trim).filter(|n| !n.is_empty());
+    let items: Vec<String> = g
+        .items
+        .as_deref()
+        .or(name)
+        .unwrap_or("")
+        .split(',')
+        .map(|x| x.trim().to_lowercase())
+        .filter(|x| !x.is_empty())
+        .collect();
+    let event = |action: &str, n: usize| {
+        events::log(
+            user,
+            "grocery",
+            &[
+                ("action", Json::Str(action.into())),
+                ("rows", Json::Int(n as i64)),
+            ],
+        );
+    };
+    match g.action.as_str() {
+        "show" | "best" => {
+            let Some(item) = name else {
+                return usage(&format!("grocery {} needs an item, for example: bin/cashcast grocery {} oats", g.action, g.action));
+            };
+            let rows = gr::latest(&path, item, days, day).map_err(fail)?;
+            if rows.is_empty() {
+                println!("no fresh prices for '{item}' (last {days} days). Search the stores, then: bin/cashcast grocery save --file rows.json");
+                return Ok(1);
+            }
+            if g.action == "show" {
+                for r in &rows {
+                    println!("{:<26} {}", r.store, gr::line(r));
+                }
+            } else {
+                let stores: std::collections::BTreeSet<&str> = rows.iter().map(|r| r.store.as_str()).collect();
+                for st in stores {
+                    let here: Vec<gr::Priced> = rows.iter().filter(|r| r.store == st).cloned().collect();
+                    let (best, sub) = gr::pick(&here, premium).expect("rows at this store");
+                    println!("{st}\n  best: {}\n  sub:  {}", gr::line(&best), sub.as_ref().map_or_else(|| "-".into(), gr::line));
+                }
+            }
+        }
+        "stale" | "compare" => {
+            if items.is_empty() {
+                return usage(&format!("grocery {} needs --items, for example: bin/cashcast grocery {} --items oats,tea", g.action, g.action));
+            }
+            if g.action == "stale" {
+                let st = gr::stale(&path, &items, days, day).map_err(fail)?;
+                println!("{}", if st.is_empty() { "all fresh".to_string() } else { st.join("\n") });
+            } else {
+                let res = gr::compare(&path, &items, premium, days, day).map_err(fail)?;
+                if res.is_empty() {
+                    println!("no fresh prices for {} (last {days} days)", items.join(", "));
+                    return Ok(1);
+                }
+                println!("{}", gr::render_compare(&res));
+                event("compare", res.len());
+            }
+        }
+        "save" => {
+            let Some(file) = g.file.as_deref() else {
+                return usage("grocery save needs --file ROWS.json (a JSON array of {item, store, name, price, ...})");
+            };
+            let text = std::fs::read_to_string(file).map_err(AppError::io)?;
+            let rows: Vec<gr::Row> = serde_json::from_str(&text)
+                .map_err(|e| AppError::new("valueerror", format!("{file}: {e}")))?;
+            let n = gr::save(&path, &rows, day).map_err(fail)?;
+            event("save", n);
+            println!("saved {n} prices -> {}", paths::rel(&path));
+            return Ok(if n > 0 { 0 } else { 1 });
+        }
+        "fee" => {
+            let (Some(store), Some(_)) = (name, g.delivery.as_ref()) else {
+                return usage("usage: bin/cashcast grocery fee STORE --delivery N [--free-over N] [--service N] [--pct-off N --max-off N --min-order N] [--note TEXT]");
+            };
+            let parsed = (|| -> Result<gr::Fee, String> {
+                Ok(gr::Fee {
+                    store: store.to_string(),
+                    delivery: num("--delivery", &g.delivery)?.unwrap_or(0.0),
+                    service: num("--service", &g.service)?.unwrap_or(0.0),
+                    free_over: num("--free-over", &g.free_over)?,
+                    pct_off: num("--pct-off", &g.pct_off)?,
+                    max_off: num("--max-off", &g.max_off)?,
+                    min_order: num("--min-order", &g.min_order)?,
+                    note: g.note.clone().unwrap_or_default(),
+                    checked: String::new(),
+                })
+            })();
+            let fee = match parsed {
+                Ok(f) => f,
+                Err(e) => return usage(&e),
+            };
+            gr::set_fee(&path, &fee, day).map_err(fail)?;
+            println!("fee saved for {store}");
+        }
+        "fees" => {
+            let f = gr::fees(&path).map_err(fail)?;
+            if f.is_empty() {
+                println!("no fee rules yet. Read a store's checkout page, then: bin/cashcast grocery fee STORE --delivery N");
+            }
+            for x in &f {
+                println!("{}", gr::render_fee(x));
+            }
+        }
+        "order" => {
+            let total = match num("--total", &g.total) {
+                Ok(Some(t)) if t > 0.0 => t,
+                Ok(_) => return usage("usage: bin/cashcast grocery order STORE --total N [--note TEXT]"),
+                Err(e) => return usage(&e),
+            };
+            let Some(store) = name else {
+                return usage("usage: bin/cashcast grocery order STORE --total N [--note TEXT]");
+            };
+            gr::record_order(
+                &path,
+                &gr::Order {
+                    day: day.to_string(),
+                    store: store.to_string(),
+                    total,
+                    note: g.note.clone().unwrap_or_default(),
+                },
+            )
+            .map_err(fail)?;
+            event("order", 1);
+            println!("order saved: {day} {store} {total:.2}. See: bin/cashcast grocery orders");
+        }
+        "orders" => {
+            let all = gr::orders(&path).map_err(fail)?;
+            let mut out = Vec::new();
+            if all.is_empty() {
+                out.push("no grocery orders yet. After checkout: bin/cashcast grocery order STORE --total N".to_string());
+            } else {
+                out.push("## Grocery spend by month".to_string());
+                for m in gr::months(&all) {
+                    out.push(format!("- {}: {:.2} in {} order(s)", m.month, m.total, m.orders));
+                }
+                out.push(String::new());
+                out.push("## Orders".to_string());
+                for o in all.iter().take(20) {
+                    let note = if o.note.is_empty() { String::new() } else { format!(" ({})", o.note) };
+                    out.push(format!("- {} {} {:.2}{note}", o.day, o.store, o.total));
+                }
+            }
+            let mut text = out.join("\n");
+            text.push('\n');
+            // Amounts the owner paid: owner-only, like `charges`.
+            super::gate::emit(user, &text, "agent:strategy", "grocery", day)?;
+        }
+        "prefs" => {
+            println!("organic_premium: {}", prefs.organic_premium);
+            println!("fresh_days: {}", prefs.fresh_days);
+            for l in &prefs.lines {
+                println!("{l}");
+            }
+            if prefs.lines.is_empty() {
+                println!("(add rules, quantities and memberships under [groceries] in {})", paths::rel(&user.profile()));
+            }
+        }
+        "import" => {
+            let Some(from) = g.from.as_deref() else {
+                return usage("grocery import needs --from OLD.sqlite, for example sidequest's private/groceries/groceries.sqlite");
+            };
+            let from = match from.strip_prefix("~/") {
+                Some(rest) => std::path::PathBuf::from(std::env::var("HOME").unwrap_or_default()).join(rest),
+                None => std::path::PathBuf::from(from),
+            };
+            let (p, f) = gr::import(&path, &from).map_err(fail)?;
+            event("import", p);
+            println!("imported {p} prices and {f} fee rules -> {} (the old file is unchanged)", paths::rel(&path));
+        }
+        _ => {
+            let k = gr::known(&path).map_err(fail)?;
+            if k.is_empty() {
+                println!("no grocery prices yet. Ask Claude \"order groceries\" (skills/grocery-cart), or: bin/cashcast grocery import --from OLD.sqlite");
+            }
+            for x in &k {
+                println!("{:<30} {} store(s), checked {}", x.item, x.stores, x.checked);
+            }
+        }
+    }
+    Ok(0)
 }

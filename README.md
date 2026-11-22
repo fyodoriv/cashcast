@@ -45,6 +45,8 @@ Docs map: [docs/README.md](docs/README.md). Contributing: [CONTRIBUTING.md](CONT
 - Decide where new money goes: FHSA, RRSP, TFSA or non-registered.
 - Get honest investment moves you can argue with: gain ranges with sources, risk and cost, "do nothing" ranked beside them, and your own overrides respected.
 - Do a 5-minute monthly review and get dated tasks in Apple Reminders.
+- Get groceries from the cheapest full basket: Claude reads 5+ stores in your Chrome, totals each with its fees and promos, and fills the carts; you check out. Ask "order groceries".
+- Buy anything else well: 3-5 checked options on one page, with the card that pays the most cash back. Ask "find the best X".
 
 ## Features
 
@@ -65,6 +67,8 @@ From your exports, cashcast works out:
 - **Spending checkup:** is last month more than usual, do you spend more than you earn, and how much interest and fees you paid, with APR in plain words (`bin/cashcast spending`).
 - **Review:** a 5-minute monthly review, with dated tasks in your own Apple
   Reminders list.
+- **Groceries:** a local price database of every store price Claude reads (best pack per 100 g/ml, organic within your premium, a substitute), each store's total with delivery, service fees and promos (full baskets first), and your grocery spend per month from the orders you log (`bin/cashcast grocery`, skill `grocery-cart`).
+- **Purchases:** 3-5 real options from shops that deliver to you, one options page, and the card to pay with (skill `purchase`).
 
 **The web app** is the main view. **Home** shows your net total first (its trend, its parts and the best next
 step inside your boundaries), then the four numbers that matter,
@@ -73,7 +77,7 @@ comes in, what goes out, what you can invest and what to do, with a "what if"
 control for spending changes and one-off costs; the chart redraws as you
 change it. The other views are Net total (every option, refused ones with the reason), Forecast, Monthly review, Where to pay, Credit,
 Cash & investing, Tax, Payments, Budget, Alternatives, Documents (your notes,
-for example moved from Notion), Bank sync (collect fresh exports, see every bank and card row MoneyWiz lacks, then send them with one confirmed click; you record only cash), Categories (each MoneyWiz category beside its cashcast match; pick changes, preview, apply with a backup, undo), Holdings, Services, Knowledge, Privacy and Actions (every command, with a form; hard-to-undo ones ask to confirm). Each person in the household picks themselves in the
+for example moved from Notion), Bank sync (collect fresh exports, see every bank and card row MoneyWiz lacks, then send them with one confirmed click; you record only cash), Groceries (compare stores for the items you type, spend per month, store fees, your grocery rules), Categories (each MoneyWiz category beside its cashcast match; pick changes, preview, apply with a backup, undo), Holdings, Services, Knowledge, Privacy and Actions (every command, with a form; hard-to-undo ones ask to confirm). Each person in the household picks themselves in the
 sidebar. On a phone, the main views sit in a bottom tab bar and the rest under
 More. Design notes and sources: [`docs/design.md`](docs/design.md).
 
@@ -195,6 +199,7 @@ Full detail: [docs/privacy.md](docs/privacy.md).
 | `bin/cashcast optimize [--input FILE]` | Where new money goes to reach your own target weights, per account (TFSA, RRSP, FHSA, non-registered); buys only unless you allow sales ([how](docs/optimize.md)) |
 | `bin/cashcast cards now [--balance CARD=AMOUNT ...]` | Which card to use right now for each kind of spending, from your imported card rows: the cap used since each card's reset (`cap_reset = "MM-DD"` on the card), the cap left and its reset date, the rent charges counted against `rent_max`, and the credit left. A cap shared with rent is saved for the rent charges still left when rent loses more without it ("cap saved for rent") (balances from `--balance` or ones recorded under the card's id). Names pending product changes and stale rows. When a card's own rent rate starts on a date (`rent_rate_from` in the catalog; Scotia Momentum: 1% on rent from Oct 22, 2026), rent posted before it still counts toward the cap of its `codes_as` category. Needs `agent:strategy` for agents |
 | `bin/cashcast spending` | Spending checkup: categories above 125% of their usual month, income vs spending over 12 months, interest and fees paid, and APR explained. Points to `charges` for single surprise charges. Needs `agent:strategy` for agents |
+| `bin/cashcast grocery [items \| show ITEM \| best ITEM \| stale \| compare \| save \| fee STORE \| fees \| order STORE \| orders \| prefs \| import]` | Grocery prices in a local database (`data/groceries.sqlite`, mode 600): `save --file rows.json` stores the prices Claude reads on store pages; `best ITEM` names the best pack per store by price per 100 g/ml (organic wins within `organic_premium`, default 0.75) and a substitute; `stale --items a,b` lists items with no price in `fresh_days` (default 3); `compare --items a,b` totals each store (items − promo + delivery + service; free delivery and a promo count only for a full basket), full baskets first; `fee STORE --delivery N [--free-over N] [--service N] [--pct-off N --max-off N --min-order N]` saves a store's fee rule; `order STORE --total N` logs a checkout and `orders` shows spend per month (needs `agent:strategy` for agents); `prefs` prints `[groceries]` from `profile.toml`; `import --from OLD.sqlite` copies an older database (sidequest's) and leaves it unchanged |
 | `bin/cashcast charges [find WORD]` | Charges you may not expect, on every account in the inbox: duplicate subscriptions (one merchant billing from two series, for example two Claude plans on two cards, under any billing name in `knowledge/data/merchants.toml`), recurring charges that started in the last 60 days, price rises over 10 % on a steady price, and charges after a pause. A copy of one charge in two files (a bank export and MoneyWiz) is not a duplicate. `charges find anthropic` lists every charge series of that merchant per account: cadence, usual amount, count, first and last date, active or stopped. Names merchants and amounts: needs `agent:strategy` for agents |
 | `bin/cashcast transfers --balance ID=AMOUNT ...` | From the balances an agent read on your bank sites, the e-Transfers that bring each bank to its keep amount plus a small safety margin (`[transfers] buffer`, default 5 %, at most 20 %) plus its card paydown: at most the daily limit per sending account (`[transfers] daily_limit`, default $3,000), in amounts quick to type like 999 or 1555. You send each one ([skill](skills/bank-balances/SKILL.md)) |
 | `bin/cashcast connectors list` / `show SERVICE` | The 18 services: exports, API, actions |

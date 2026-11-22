@@ -1475,3 +1475,40 @@ ul.tasks li,
   color: var(--muted);
   font-size: var(--text-sm);
 }
+/* Groceries: the items form and the tap-to-add item buttons. */
+.grocery-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-sm) 0;
+}
+.grocery-form label {
+  flex: 1 0 100%;
+}
+.grocery-form input {
+  flex: 1 1 16ch;
+  min-height: 44px;
+  padding: 0 var(--space-sm);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+.grocery-chip {
+  transition: background-color 0.15s, border-color 0.15s, transform 0.15s;
+}
+.grocery-chip:hover {
+  border-color: var(--accent);
+}
+.groceries details {
+  margin: var(--space-sm) 0;
+}
+.groceries summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+}

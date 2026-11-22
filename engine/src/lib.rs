@@ -17,6 +17,7 @@ pub mod digest;
 pub mod docs;
 pub mod export;
 pub mod forecast;
+pub mod groceries;
 pub mod inbox;
 pub mod inspect;
 pub mod invest_plan;
