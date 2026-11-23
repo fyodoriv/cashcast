@@ -85,7 +85,14 @@ The collector prints which keys it added, never a value.
 - The magic letters (`<<<`) carry check digits: "fails its check digits" means a letter is
   misread; zoom in and read it again.
 - A folder with every scratch file: `collect-all <dir>` (file names say the kind).
-- Run `pr-card` before `nomads`: time before PR needs the PR date.
+- Run `pr-card` before `nomads`: time before PR needs the PR date. `police` also waits for
+  it: it prints "needs sign_date and trips first" until the PR card set the sign day.
+- nomads.com: click "Expand all N trips" first. Page text and script results are cut near
+  1,000 characters, so build the CSV in the page from the table cells' text and read it in
+  slices of about 20 rows. Read cell text only: a result that holds link attributes is blocked.
+- Lease mail often has no unit number or postal code. Collect what a message confirms and put
+  the missing parts in the owner's batch. Open only the kinds of mail the owner agreed to
+  (never delivery receipts for an address without a yes).
 - Derived on each collect: the sign day (first day with 1,095 days), the city, the contact
   address, other names (a passport in another name), the tax years you had to file,
   and `police_certificates: []` when none is needed.
