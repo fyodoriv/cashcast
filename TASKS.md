@@ -34,6 +34,29 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Gray & Reuter 1993, *Transaction Processing*, ch. 10 (idempotent resend after
     an unacknowledged write)
 
+- [ ] Rent paid ahead counts in the month it is due
+  - **ID**: forecast-rent-due-month
+  - **Tags**: forecast, judges
+  - **Details**: Judge panel, 2026-11-22 (household-finance and backtest judges, independently,
+    both rank 1): the Rent line misses by about half (WAPE 50.3 %) with a mean miss near zero,
+    which is timing, not amount. Rent paid through a card service lands around the 24th of the
+    month before it is due, so a month where the payment way changed, or the last imported
+    month, shows two rents or none, and net cash flow misses twice. Change: `[rent]
+    paid_ahead_from_day = N` in `cashcast.toml` makes a rent-category row dated on day N or
+    later count in the next month (`summarize.rs`). Unset keeps today's behavior.
+  - **Hypothesis**: net cash flow WAPE drops from 69.2 % to about 62 % (judges predicted 61 %
+    and 62 %), because rent misses stop doubling into net cash flow.
+  - **Measurement**: `bin/cashcast backtest`, line "Net cash flow" WAPE (method in use), with
+    `paid_ahead_from_day = 20`, against the same history; plus the Rent line WAPE.
+  - **Success**: net cash flow WAPE 63.4 % or lower (3 points under the best existing method,
+    66.4 %), and Rent WAPE under 25 %.
+  - **Pivot**: net cash flow WAPE above 66 % means rent timing is not the cause: drop the change
+    and try the next judge proposal (salary half-year at each origin, then seasonal lumpy
+    categories).
+  - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 3rd ed.,
+    §3.1 (calendar adjustments: align data to the period it belongs to before forecasting).
+  - **Files**: `engine/src/config.rs`, `engine/src/summarize.rs`, `engine/tests/`
+
 - [ ] The forecast's spending and opening cash match the owner's real accounts
   - **ID**: forecast-spending-double-count
   - **Tags**: forecast, bug, moneywiz
@@ -63,7 +86,7 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     75.5 %. Two blends were tried and dropped (pre-registered pivot: none beat 66.4 % by 3
     points): half average + half last 3 months 69.0 %, half average + half same month 66.4 %.
     So the spending method is not the lever. The largest misses by calendar month are in
-    extra income (Mar -5,093, Sep -5,571, Oct +6,620): RSU and ESPP money counts only when it
+    extra income (March, September and October, each a month's salary or more): RSU and ESPP money counts only when it
     moves from the stock plan account to cash, and that month varies. Next: model stock-plan
     income at the month it reaches cash (or keep it out of net cash flow until it does).
     Owner, 2026-11-22: from now on every new vest moves to cash as soon as it lands, so the
