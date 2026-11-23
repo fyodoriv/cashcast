@@ -1,0 +1,19 @@
+# Dependabot opens a pull request when a dependency has a fix (SECURITY.md,
+# "Repository settings"). Each PR runs the full gate like any other.
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /engine
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

@@ -18,6 +18,22 @@ build() {
   cargo build --release --quiet --manifest-path "$ROOT/engine/Cargo.toml"
 }
 
+web_build() {
+  # Build the web app when it is missing or its sources changed (a `git pull`
+  # brought new views or packages). When the build fails, the old one stays.
+  local web="$ROOT/web" dist="$ROOT/web/dist/index.html"
+  [ -f "$web/package.json" ] && command -v pnpm >/dev/null || return 0
+  if [ -f "$dist" ] && [ -z "$(find "$web/src" "$web/index.html" "$web/package.json" "$web/pnpm-lock.yaml" "$web/vite.config.ts" -newer "$dist" -print -quit 2>/dev/null)" ]; then
+    return 0
+  fi
+  echo "… Building the web app: it is missing or its sources changed." >&2
+  if (cd "$web" && pnpm install --frozen-lockfile --silent && pnpm -s build) >/dev/null 2>&1; then
+    touch "$dist" 2>/dev/null || true
+  else
+    echo "✗ The web app did not build; using the previous one. Run: cd web && pnpm install && pnpm build" >&2
+  fi
+}
+
 doctor() {
   if command -v cargo >/dev/null; then
     echo "✓ Rust: $(cargo --version)"
@@ -102,6 +118,7 @@ case "${1:-help}" in
         echo "✗ The engine did not build; using the previous one. Run: bin/cashcast doctor" >&2
       fi
     fi
+    case "${1:-}" in "" | web | start) web_build ;; esac
     CASHCAST_ROOT="$ROOT" exec "$ENGINE" cli "$@"
     ;;
 esac
