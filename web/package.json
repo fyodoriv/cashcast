@@ -17,7 +17,7 @@
     "recharts": "2.13.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.6.8",
     "@testing-library/react": "16.0.1",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
