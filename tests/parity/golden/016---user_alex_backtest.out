@@ -25,6 +25,14 @@ Net cash flow WAPE by method (set `forecast.method` to the lowest):
 - same month last year: 186.0%
 - flat baseline: n/a
 
+Net cash flow WAPE if one line were exact (lowest = where accuracy is lost):
+- Net salary: 42.9%
+- Spending excl. rent: 125.5%
+- category Housing: 136.9%
+- category Food: 158.4%
+- category Bills: 167.0%
+- Extra income: 168.4%
+
 Biggest category misses (mean per month):
 - Housing: 713 abs, -713 bias
 - Food: 226 abs, -226 bias

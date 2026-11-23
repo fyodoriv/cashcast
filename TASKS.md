@@ -138,6 +138,18 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     Lowry 1972), scored in `backtest` as a separate line first. Success: net cash flow WAPE
     35.0 % or lower. Pivot: above 45 %, drop it; then 65 % monthly accuracy is out of reach
     from history alone, and the next step is trips planned ahead.
+  - **Result 2-3** (2026-11-22): both dropped by their pivots. Last-6-months median 51.5 %
+    (month end 84.9 %). Moving each forecast by its own past mean miss made every method worse
+    (trailing-12 average 56.1 %, same month last year 64.9 %). Best from history alone: same
+    month last year, 41.8 % (58.2 % accurate), but its month end misses by 74.0 % (58.3 % now),
+    so the owner's method stays. Kept: the "if one line were exact" backtest line.
+  - **Approach 4, pre-registered 2026-11-22**: trips the owner has booked go into
+    `cashcast.toml` as planned spending (month, amount, category), like `[extra_income]`.
+    History cannot show it, so it is measured forward: "Last saved forecast vs actual" in
+    `bin/cashcast backtest` over the next 3 months. Success: Travel's mean absolute miss in
+    those months at most half of the backtest's and net cash flow WAPE
+    35.0 % or lower. Pivot: Travel miss above 75 % of the backtest's: booked trips are not what
+    drives the Travel line; drop it.
 
 - [ ] The owner answers the open invest-plan questions, and the judge loop reaches 10 of 10
   - **ID**: invest-owner-answers

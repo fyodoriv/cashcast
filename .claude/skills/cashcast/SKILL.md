@@ -163,6 +163,9 @@ consent grant and the money moves stay with the owner.
    and ask the owner to export a fresh MoneyWiz net-worth CSV. When "Net cash
    flow WAPE by method" lists a lower method than "(now)", ask the owner whether
    to set `[forecast] method` to it (a settings change: explain both methods).
+   Compare the month-end line too: a method that lowers the monthly miss but
+   raises the month-end miss is not better; say so instead of switching. To
+   explain a large miss, name the top line in "if one line were exact".
 4c. Card lesson: `bin/cashcast cards missed` (this week) and `cards missed
    --since <30 days ago>`. Totals per card and category only.
 4d. Verdict: can this weekly replace typing into MoneyWiz, except cash? Yes
