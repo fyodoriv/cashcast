@@ -42,7 +42,9 @@ they move on. Every rule comes from an official page: `engine/src/paperwork/fact
      `bin/cashcast citizenship questions`, ask the owner for them, write them to a
      scratch YAML file under `$TMPDIR` made mode 600 (`umask 077` first), and run
      `bin/cashcast citizenship put <file>`. `put` seals the answers and removes the
-     scratch file, also on an error. It refuses a `.sqv` file or any file in the citizenship
+     scratch file, also on an error. A section merges key by key (a file with only
+     `[taxes]` `cra_consent` keeps the SIN and the years); a list is replaced whole,
+     so write every row of a list. It refuses a `.sqv` file or any file in the citizenship
      folder. `collect`, `restore` and `proof` also seal an old plain draft first. Then run the judge again. Never ask
      them one at a time.
    - FAIL lines: explain each in plain words with its fix. A presence FAIL names the earliest
@@ -75,7 +77,7 @@ The collector prints which keys it added, never a value.
 | Passport photo (data page), one file each | the "Date of issue" line and the 2 lines of `<` letters | `passport` |
 | Driver's licence or health card photo | only the kind of card (no number) | `id` |
 | Language test result or diploma | the file's text | `language` |
-| nomads.com travel history | in the owner's Chrome, the trips list (get_page_text) or the profile JSON; if `collect` adds no trips, write it yourself as CSV `start,end,city,country` | `nomads` |
+| nomads.com travel history | in the owner's Chrome, the trips list (get_page_text) or the profile JSON, or the site's CSV export ("Arrival date", "Departure date", "City", "Country"); `collect` refuses a file with no readable stay and keeps the saved trips, so then write it yourself as CSV `start,end,city,country` | `nomads` |
 | LinkedIn | the owner's data export (Positions.csv, Education.csv, Email Addresses.csv, PhoneNumbers.csv; the owner downloads it), or the Experience page written in the Positions.csv columns | `linkedin` |
 | Addresses | the owner's mail in Chrome (search lease, tenancy, utility, moving) and CRA My Account; write CSV `from,to,address,city,country,postal_code`, `to` = present for now | `leases` |
 | Separation status | the separation agreement, divorce or marriage certificate | `marital` |

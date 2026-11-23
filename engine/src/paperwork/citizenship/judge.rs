@@ -29,6 +29,8 @@ use serde_json::Value;
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 
+/// How `collect nomads` starts its refusal of a file with no readable stay.
+const NO_STAYS: &str = "collect nomads: no stay could be read";
 pub const KINDS: &[&str] = &[
     "pr-card", "passport", "id", "marital", "language", "leases", "linkedin", "nomads", "cra",
 ];
@@ -282,7 +284,17 @@ pub fn run(args: &[String], user_dir: &Path, today: NaiveDate) -> Result<(String
                 let mut next = before.clone();
                 let mut src = before.get("_sources").and_then(Value::as_object).cloned().unwrap_or_default();
                 for k in &keys {
-                    next.insert(k.clone(), part[k].clone());
+                    // A section (a table) merges key by key, so a file with one key of
+                    // `[taxes]` keeps the others. Lists and plain values are replaced whole.
+                    let v = match (before.get(k), &part[k]) {
+                        (Some(Value::Object(old)), Value::Object(new)) => {
+                            let mut m = old.clone();
+                            m.extend(new.clone());
+                            Value::Object(m)
+                        }
+                        (_, new) => new.clone(),
+                    };
+                    next.insert(k.clone(), v);
                     src.insert(k.clone(), Value::String("owner".into()));
                 }
                 next.insert("_sources".into(), Value::Object(src));
@@ -344,7 +356,14 @@ pub fn run(args: &[String], user_dir: &Path, today: NaiveDate) -> Result<(String
                 let files: Vec<String> = all.iter().filter(|f| matches_kind(kind, f)).cloned().collect();
                 if !files.is_empty() {
                     let cur = read_answers(&file)?;
-                    let (part, valid) = collect_part(kind, &files, &cur, today, &mut out)?;
+                    let (part, valid) = match collect_part(kind, &files, &cur, today, &mut out) {
+                        // An unreadable trips file must not stop the kinds after it.
+                        Err(e) if e.starts_with(NO_STAYS) => {
+                            writeln!(out, "note: {e}").unwrap();
+                            continue;
+                        }
+                        r => r?,
+                    };
                     apply(&file, kind, &part, valid, today, &mut out)?;
                 }
             }
@@ -607,6 +626,12 @@ fn collect_part(
             let mut stays = vec![];
             for t in &texts {
                 stays.extend(c::parse_nomads(t)?);
+            }
+            // No readable stay is a file this reader does not know, never "no trips".
+            if stays.is_empty() {
+                return Err(format!(
+                    "{NO_STAYS}, so the saved trips were kept; the file needs start, end and country columns (to say you took no trips, `put` a file with `trips = []`)"
+                ));
             }
             stays.sort_by(|x, y| x.from.cmp(&y.from));
             let mut p = Partial::new();

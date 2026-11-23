@@ -649,3 +649,75 @@ fn template_never_writes_over_a_file() {
     assert!(run(&u, &["template", "--out", f.to_str().unwrap()]).is_err());
     std::fs::remove_file(&f).unwrap();
 }
+
+// ---- found in a first real run (2026-11-22) ----
+
+#[test]
+fn put_of_part_of_a_section_keeps_the_rest_of_it() {
+    let u = with_draft("put-part");
+    let before = D::read_answers(&D::answers_file(&u)).unwrap();
+    let years = before["taxes"]["years"].clone();
+    assert!(years.as_array().is_some_and(|y| !y.is_empty()));
+    let scratch = env().join("put-part-scratch.toml");
+    std::fs::write(&scratch, "[taxes]\ncra_consent = false\n").unwrap();
+    run(&u, &["put", scratch.to_str().unwrap()]).unwrap();
+    let a = D::read_answers(&D::answers_file(&u)).unwrap();
+    assert_eq!(a["taxes"]["cra_consent"], json!(false));
+    assert_eq!(
+        a["taxes"]["years"], years,
+        "a partial save erased the tax years"
+    );
+    assert_eq!(a["taxes"]["sin"], before["taxes"]["sin"]);
+    // A list is still replaced whole.
+    std::fs::write(&scratch, "ids = [\"pr-card\"]\n").unwrap();
+    run(&u, &["put", scratch.to_str().unwrap()]).unwrap();
+    let a = D::read_answers(&D::answers_file(&u)).unwrap();
+    assert_eq!(a["ids"], json!(["pr-card"]));
+}
+
+#[test]
+fn pr_card_reads_a_two_digit_year_with_a_two_language_month() {
+    for (line, want) in [
+        ("PR since / RP depuis 01 JUN / JUIN 21", "2021-06-01"),
+        ("PR since / RP depuis 30 SEPT/SEPT 23", "2023-09-30"),
+        ("PR since / RP depuis 01 AUG / AOÛT 21", "2021-08-01"),
+        ("PR since / RP depuis 5 Feb 2019", "2019-02-05"),
+    ] {
+        let card = PR_CARD.replace("PR since / RP depuis 2021 06 01", line);
+        let (p, _) = C::parse_pr_card(&card, TODAY);
+        assert_eq!(p.get("pr_date"), Some(&json!(want)), "{line}");
+    }
+}
+
+#[test]
+fn passport_reads_an_issue_date_written_with_dots() {
+    let text = PASSPORT.replace("Date of issue 2018-04-16", "Date of issue 16.04.2018");
+    let (p, v) = C::parse_passport(&text, TODAY);
+    assert_eq!(v, Some(true));
+    assert_eq!(p["passports"][0]["issued"], json!("2018-04-16"));
+}
+
+#[test]
+fn nomads_reads_the_site_export_headers_and_refuses_an_empty_result() {
+    let export = "\"Arrival date\",\"Departure date\",\"Duration in nights\",\"City\",\"Country\"\n\"2024-02-10\",\"2024-02-20\",\"10\",\"Cancun\",\"Mexico\"\n";
+    let stays = C::parse_nomads(export).unwrap();
+    assert_eq!(stays.len(), 1);
+    assert_eq!(
+        (stays[0].from.as_str(), stays[0].country.as_str()),
+        ("2024-02-10", "Mexico")
+    );
+    // A file with no readable stay must not replace the saved trips with nothing.
+    let u = user("nomads-empty");
+    let f = env().join("nomads-empty.csv");
+    std::fs::write(&f, export).unwrap();
+    run(&u, &["collect", "nomads", f.to_str().unwrap()]).unwrap();
+    let trips = D::read_answers(&D::answers_file(&u)).unwrap()["trips"].clone();
+    assert_eq!(trips.as_array().map(Vec::len), Some(1));
+    std::fs::write(&f, "\"When\",\"Where\"\n\"2024-02-10\",\"Cancun\"\n").unwrap();
+    let r = run(&u, &["collect", "nomads", f.to_str().unwrap()]);
+    assert!(r.is_err(), "an empty result was saved: {r:?}");
+    assert_eq!(
+        D::read_answers(&D::answers_file(&u)).unwrap()["trips"],
+        trips
+    );
+}
