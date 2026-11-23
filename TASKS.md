@@ -99,6 +99,33 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 5.8
     (scale-free accuracy measures such as WAPE/MAPE)
 
+- [ ] The forecast follows a spending level that moved, so the monthly cash flow is 65 % accurate
+  - **ID**: forecast-level-shift
+  - **Tags**: forecast, accuracy
+  - **Details**: Owner goal 2026-11-22: "at least reach 65% accuracy" (the Forecast view's
+    monthly cash flow accuracy, 100 % minus the backtest WAPE; now 51.7 %). A new backtest
+    line, "Net cash flow WAPE if one line were exact", shows where the miss comes from: an exact
+    Travel forecast alone would give 29.8 % (an exact extra income line is not in the top 6).
+    Travel was near zero each month until late 2025 and has been large most months since, so
+    the trailing-12 average lags the new level for a year. Try methods that follow a moved
+    level: the average of the last 6 months, and simple exponential smoothing.
+  - **Files**: `engine/src/forecast/model.rs` (`METHODS`, `run`), `engine/src/forecast/backtest.rs`
+    (`if_exact`), `engine/src/forecast/mod.rs`, `engine/tests/forecast_model.rs`
+  - **Acceptance**: a failing synthetic test first (a category that jumps to a new level is
+    forecast near the new level); `backtest` scores the new methods beside the old ones; the
+    owner's `[forecast] method` is set to the lowest one (owner said yes, 2026-11-22).
+  - **Hypothesis**: a level-following method lowers net cash flow WAPE from 48.3 % to 35 % or
+    less, because Travel moved to a higher level a year ago and the 12-month average still
+    mixes in the old one.
+  - **Measurement**: `bin/cashcast backtest` ("Net cash flow WAPE by method" lines; guard:
+    "Month end (cumulative net)" WAPE for the chosen method)
+  - **Success**: net cash flow WAPE 35.0 % or lower for the best new method, with month-end
+    WAPE not above 58.3 %
+  - **Pivot**: above 45 %: a moved level is not the cause; look at Travel planned ahead
+    (known trips) instead of history
+  - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 8.1
+    (simple exponential smoothing for a level that moves)
+
 - [ ] The owner answers the open invest-plan questions, and the judge loop reaches 10 of 10
   - **ID**: invest-owner-answers
   - **Tags**: invest-plan, owner
