@@ -34,6 +34,47 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Gray & Reuter 1993, *Transaction Processing*, ch. 10 (idempotent resend after
     an unacknowledged write)
 
+- [ ] The salary forecast in the backtest uses only pay known at each start month
+  - **ID**: forecast-salary-point-in-time
+  - **Tags**: forecast, judges, backtest
+  - **Details**: Judge panel, 2026-11-22 (backtest judge rank 3, household-finance judge rank
+    2). `inputs_from` (`engine/src/forecast/model.rs`, the `half_years` "latest" pick) gives
+    every backtest start month the newest half-year net pay, so a raise leaks into forecasts
+    made before it. Net salary misses 24.3 % with the forecast too high on average, and after
+    the rent fix the forecast leans optimistic in every cumulative line (month end 69.7 %).
+    Change: carry `half_years` in `Inputs` and, at each origin, use the newest half-year that
+    ended before it; config values still win.
+  - **Hypothesis**: net salary WAPE drops from 24.3 % to about 12 %, and net cash flow WAPE
+    from 58.2 % to about 55 %, because past forecasts stop using future pay.
+  - **Measurement**: `bin/cashcast backtest` lines "Net salary" and "Net cash flow" WAPE, and
+    "Month end (cumulative net)", same history, before and after.
+  - **Success**: net cash flow WAPE 56 % or lower and month end WAPE lower than before.
+  - **Pivot**: net salary bias keeps more than half its size: the cause is the cheque count
+    per month, not the pay rate; check `cheques_in` against deposits instead.
+  - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 3rd ed.,
+    §5.10 (time series cross-validation: each forecast uses only data before its origin).
+  - **Files**: `engine/src/forecast/model.rs`, `engine/src/forecast/backtest.rs`,
+    `engine/tests/forecast_model.rs`
+
+- [ ] Spending forecast stops running low on Travel and Uncategorized
+  - **ID**: forecast-spending-low-bias
+  - **Tags**: forecast, judges
+  - **Details**: Judge panel, 2026-11-22 (statistician rank 1 and 2). Spending excl. rent is
+    forecast too low on average (WAPE 23.2 %), mostly in Travel and Uncategorized; trimming
+    spikes would make it worse, and a spending method per category already failed (README
+    "Learning rule"). Proposal: a damped trend on each category base (growth of the last 6
+    months over the 6 before, clamped to 0.8-1.25, half applied). Also check whether
+    Uncategorized holds stock-plan cash or transfers (`bin/cashcast columns`, no raw rows).
+  - **Hypothesis**: net cash flow WAPE drops from 58.2 % to about 55 %, and the spending bias
+    halves, because spending has been rising.
+  - **Measurement**: `bin/cashcast backtest` lines "Spending excl. rent" (mean miss and WAPE)
+    and "Net cash flow" WAPE, before and after.
+  - **Success**: net cash flow WAPE 56 % or lower, spending WAPE not above 23.2 %.
+  - **Pivot**: net cash flow WAPE above 58 %: rising spending is not the cause; drop it.
+  - **Anchor**: Hyndman & Athanasopoulos 2021, §8.2 (damped trend methods); Gardner &
+    McKenzie 1985, *Management Science* 31(10) (damped trend).
+  - **Files**: `engine/src/forecast/model.rs`, `engine/tests/forecast_model.rs`
+
 - [ ] The forecast's spending and opening cash match the owner's real accounts
   - **ID**: forecast-spending-double-count
   - **Tags**: forecast, bug, moneywiz
@@ -58,6 +99,23 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     some months only. The salary floor (`[pay] min_salary`) moves rows between salary and
     other income, so it does not change net cash flow. Next lever: forecast lumpy categories
     and stock-plan income by month of year, not as a flat average.
+    2026-11-22 evening: `backtest` now scores every method ("Net cash flow WAPE by method"):
+    same month last year 66.4 %, trailing-12 average 69.2 %, median 74.4 %, flat baseline
+    75.5 %. Two blends were tried and dropped (pre-registered pivot: none beat 66.4 % by 3
+    points): half average + half last 3 months 69.0 %, half average + half same month 66.4 %.
+    So the spending method is not the lever. The largest misses by calendar month are in
+    extra income (March, September and October, each a month's salary or more): RSU and ESPP money counts only when it
+    moves from the stock plan account to cash, and that month varies. Next: model stock-plan
+    income at the month it reaches cash (or keep it out of net cash flow until it does).
+    Owner, 2026-11-22: from now on every new vest moves to cash as soon as it lands, so the
+    vest months in `[extra_income]` are the cash months going forward. Past misses stay in the
+    backtest; recheck the WAPE after the next vests (Dec 2026, Jan 2027).
+    Judge panel, 2026-11-22 night: rent paid ahead by a card service now counts in the month it
+    is due (`[rent] paid_ahead_from_day`). Same history, fresh import: net cash flow WAPE 69.2 %
+    to 58.2 % (best method 66.4 % to 57.5 %), Rent 50.3 % to 16.1 %, spending unchanged at
+    23.2 %. Mean absolute monthly miss fell 9.5 %. Month end (cumulative) rose 61.3 % to 69.7 %:
+    the double and empty rent months had cancelled out, and the forecast's optimistic lean now
+    shows (tasks `forecast-salary-point-in-time`, `forecast-spending-low-bias`).
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows

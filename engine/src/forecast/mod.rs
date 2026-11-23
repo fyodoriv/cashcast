@@ -661,6 +661,11 @@ fn cmd_backtest(home: &Path, today: NaiveDate, o: &mut Out) -> Result<(), Failur
         fmt(qs.bias, 0, true),
         pct(qs.wape)
     );
+    say!(o, "\nNet cash flow WAPE by method (set `forecast.method` to the lowest):");
+    for (m, wape) in backtest::by_method(&inputs, &hist) {
+        let mark = if m == inputs.method { " (now)" } else { "" };
+        say!(o, "- {m}: {}{mark}", pct(wape));
+    }
     let mut cat_scores: Vec<(String, backtest::Score)> = lines
         .iter()
         .filter_map(|(k, v)| {

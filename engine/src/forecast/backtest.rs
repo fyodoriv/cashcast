@@ -292,6 +292,21 @@ pub fn score(misses: &[&Miss]) -> Score {
     }
 }
 
+/// Net cash flow WAPE for each forecast method on the same history, so the
+/// owner can pick the method that misses least (`forecast.method`).
+pub fn by_method(inputs: &Inputs, hist: &History) -> Vec<(&'static str, Option<Decimal>)> {
+    crate::forecast::model::METHODS
+        .iter()
+        .map(|&m| {
+            let mut i = inputs.clone();
+            i.method = m.to_string();
+            let misses = backtest(&i, hist).unwrap_or_default();
+            let net: Vec<&Miss> = misses.iter().filter(|x| x.line == "net_cash_flow").collect();
+            (m, score(&net).wape)
+        })
+        .collect()
+}
+
 pub fn by_line(misses: &[Miss]) -> Vec<(String, Vec<&Miss>)> {
     let mut out: Vec<(String, Vec<&Miss>)> = Vec::new();
     for m in misses {

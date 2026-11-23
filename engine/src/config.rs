@@ -32,6 +32,53 @@ pub struct Config {
     pub ledger: Ledger,
     /// The MoneyWiz connection (`moneywiz` commands and the import).
     pub moneywiz: Option<MoneyWiz>,
+    #[serde(default)]
+    pub rent: Rent,
+}
+
+/// `[rent]`: the forecast also keeps `charged` here, so unknown keys are allowed.
+#[derive(Deserialize, Default)]
+pub struct Rent {
+    /// The spending series that holds rent, for example "Housing > Rent".
+    pub category: Option<String>,
+    /// A rent row dated on this day of the month or later pays next month's rent
+    /// (a card service charges about a week early), so it counts in the next month.
+    /// Default: rent counts in the month it was paid.
+    pub paid_ahead_from_day: Option<u32>,
+}
+
+impl Rent {
+    /// `paid_ahead_from_day` must be a day every month has, and not the 1st.
+    pub fn check(&self) -> Result<(), String> {
+        match self.paid_ahead_from_day {
+            Some(d) if !(2..=28).contains(&d) => Err(format!(
+                "cashcast.toml: [rent] paid_ahead_from_day = {d}: use a day from 2 to 28"
+            )),
+            _ => Ok(()),
+        }
+    }
+
+    /// The date a row counts on: the first of next month for rent paid ahead, else `date`.
+    /// `category` is the row's full category path; a sub-category of the rent path matches.
+    pub fn due_date(&self, category: Option<&str>, date: chrono::NaiveDate) -> chrono::NaiveDate {
+        use chrono::Datelike;
+        let ahead = match (self.paid_ahead_from_day, category, self.category.as_deref()) {
+            (Some(day), Some(c), Some(rent)) => {
+                let under = c.strip_prefix(rent).is_some_and(|r| r.is_empty() || r.starts_with(" > "));
+                under && date.day() >= day
+            }
+            _ => false,
+        };
+        if !ahead {
+            return date;
+        }
+        let (y, m) = if date.month() == 12 {
+            (date.year() + 1, 1)
+        } else {
+            (date.year(), date.month() + 1)
+        };
+        chrono::NaiveDate::from_ymd_opt(y, m, 1).unwrap_or(date)
+    }
 }
 
 /// `[moneywiz]`: where the MoneyWiz database is and how its accounts match
