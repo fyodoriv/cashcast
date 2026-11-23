@@ -125,6 +125,19 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     (known trips) instead of history
   - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 8.1
     (simple exponential smoothing for a level that moves)
+  - **Result 1** (2026-11-22): dropped by its pivot. Net cash flow WAPE 50.1 % (last 6 months)
+    and 50.8 % (smoothing, 0.3), above 45 %. Spending excl. rent 23.7 % to 19.3-20.2 %, month
+    end 58.3 % to 50.9-53.3 %, but an exact Travel line still gives about 32 %: what is left
+    is when trips happen, not their level.
+  - **Approach 2, pre-registered 2026-11-22**: a "trailing-6 median" method (the median is the
+    point forecast that minimizes absolute error, so it fits WAPE; Hyndman & Athanasopoulos
+    5.4). Success: net cash flow WAPE 35.0 % or lower, month end not above 58.3 %. Pivot:
+    above 45 %, drop it.
+  - **Approach 3, pre-registered 2026-11-22**: correct each line by its mean miss over the
+    backtest months that ended before the forecast date (model output statistics, Glahn and
+    Lowry 1972), scored in `backtest` as a separate line first. Success: net cash flow WAPE
+    35.0 % or lower. Pivot: above 45 %, drop it; then 65 % monthly accuracy is out of reach
+    from history alone, and the next step is trips planned ahead.
 
 - [ ] The owner answers the open invest-plan questions, and the judge loop reaches 10 of 10
   - **ID**: invest-owner-answers
