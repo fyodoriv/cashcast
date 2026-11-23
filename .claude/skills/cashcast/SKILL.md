@@ -351,7 +351,9 @@ answer, edit the user's `cashcast.toml` (keep it valid TOML), then re-run
 - **floor:** cash to keep untouched. The default is 3 months of spending.
   Write `[forecast]` `floor`.
 - **rent (optional):** a fixed rent or mortgage, if it will differ from
-  history. Write `[rent]` `category` and `charged`.
+  history. Write `[rent]` `category` and `charged`. When rent is paid by a card
+  service a week early (Chexy and similar), also write `paid_ahead_from_day = 20`
+  so each rent counts in the month it pays for.
 - **spending (optional):** the user's own monthly estimate and the method.
   Write `[forecast]` `baseline` and `method`.
 

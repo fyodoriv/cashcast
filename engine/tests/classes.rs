@@ -189,3 +189,67 @@ fn only_whole_transfer_or_tax_category_names_leave_spending() {
     );
     assert_eq!(s.category_roles.len(), 2, "{:?}", s.category_roles);
 }
+
+/// Rent paid by a card service a week early (`[rent] paid_ahead_from_day`) counts in the
+/// month it is due, so a month never shows two rents or none.
+#[test]
+fn rent_paid_ahead_counts_in_the_month_it_is_due() {
+    let csv = r#""Account","Transfers","Category","Date","Amount","Currency"
+"Bank A","","Employer ► Salary","2026-05-08","1,000.00","CAD"
+"Card A","","Housing ► Rent","2026-05-01","-2,000.00","CAD"
+"Card A","","Housing ► Rent","2026-05-25","-2,000.00","CAD"
+"Card A","","Housing ► Furniture","2026-05-26","-300.00","CAD"
+"#;
+    let path = std::env::temp_dir().join(format!(
+        "cashcast-classes-{}-rent-ahead.csv",
+        std::process::id()
+    ));
+    std::fs::write(&path, csv).unwrap();
+    let base = CONFIG.replace(r#"last_month = "2026-05""#, r#"last_month = "2026-06""#);
+    let summarize_with = |text: &str| {
+        let e = export::load(&path, &export::LoadOptions::default()).unwrap();
+        let cfg = config::parse(text).unwrap();
+        summarize::summarize(
+            &Inbox::single(e),
+            &cfg,
+            NaiveDate::from_ymd_opt(2026, 7, 1).unwrap(),
+        )
+        .unwrap()
+    };
+    let rent = |s: &summarize::Summary| s.spending_cents["Housing > Rent"].clone();
+
+    let plain = summarize_with(&base);
+    assert_eq!(rent(&plain), vec![400_000, 0], "unset: calendar month");
+
+    let ahead = summarize_with(&format!(
+        "{base}\n[rent]\ncategory = \"Housing > Rent\"\npaid_ahead_from_day = 20\n"
+    ));
+    assert_eq!(rent(&ahead), vec![200_000, 200_000], "the 25th pays next month");
+    assert_eq!(
+        ahead.spending_cents["Housing"],
+        vec![30_000, 0],
+        "only the rent category moves"
+    );
+
+    // Without `separate`, rent sits in "Housing"; the rent path still decides what moves.
+    let joined = summarize_with(&format!(
+        "{}\n[rent]\ncategory = \"Housing > Rent\"\npaid_ahead_from_day = 20\n",
+        base.replace(r#"separate = ["Housing > Rent"]"#, "")
+    ));
+    assert_eq!(
+        joined.spending_cents["Housing"],
+        vec![230_000, 200_000],
+        "rent moves, furniture stays"
+    );
+
+    let e = export::load(&path, &export::LoadOptions::default()).unwrap();
+    let bad = config::parse(&format!("{base}\n[rent]\npaid_ahead_from_day = 31\n")).unwrap();
+    let err = summarize::summarize(
+        &Inbox::single(e),
+        &bad,
+        NaiveDate::from_ymd_opt(2026, 7, 1).unwrap(),
+    )
+    .err()
+    .expect("day 31 is refused");
+    assert!(err.contains("from 2 to 28"), "{err}");
+}

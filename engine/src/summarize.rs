@@ -338,6 +338,7 @@ pub fn summarize(inbox: &Inbox, cfg: &Config, today: NaiveDate) -> Result<Summar
         .iter()
         .map(|p| split_rule_path(p, separator))
         .collect();
+    cfg.rent.check()?;
     let (first, last) = window(cfg, today)?;
     let months = month_list(first, last);
     let n = months.len();
@@ -535,7 +536,8 @@ pub fn summarize(inbox: &Inbox, cfg: &Config, today: NaiveDate) -> Result<Summar
                 foreign: !t.currency.is_empty() && t.currency != base,
             });
         }
-        let Some(i) = month_index(t.date) else {
+        let path = kind_category(kind).map(|_| t.category.join(" > "));
+        let Some(i) = month_index(cfg.rent.due_date(path.as_deref(), t.date)) else {
             if t.date < first {
                 before += 1;
             }
@@ -1446,6 +1448,14 @@ fn window(cfg: &Config, today: NaiveDate) -> Result<(NaiveDate, NaiveDate), Stri
         return Err("window.first_month is after window.last_month".into());
     }
     Ok((first, last))
+}
+
+/// The spending series a row adds to, if it is spending.
+fn kind_category(kind: &Kind) -> Option<&str> {
+    match kind {
+        Kind::Spend(c) => Some(c),
+        _ => None,
+    }
 }
 
 fn month_list(first: NaiveDate, last: NaiveDate) -> Vec<String> {

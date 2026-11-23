@@ -319,6 +319,14 @@ licensed financial advice.
   the square root of the distance. The view also shows accuracy as 100 %
   minus the backtest miss, for 3-month cash flow, month-end cash and
   single-month cash flow.
+- **Rent paid ahead:** a card service such as Chexy charges rent about a week
+  before it is due. Set `[rent] paid_ahead_from_day = 20` (a day from 2 to 28)
+  next to `category` (for example `"Housing > Rent"`) in `cashcast.toml`: a row
+  in that category, or under it, dated on the 20th or later then counts in the
+  next month, the month it pays for. The forecast's own rent line also needs
+  `charged`, and `category` listed in `[categories] separate`. Without it, a month where the payment way changed shows
+  two rents or none, and the backtest counts that twice in net cash flow.
+  Re-run `bin/cashcast import` after you set it.
 - **Dated extra income:** an `[extra_income]` line can take `from`, `until`
   and `known` (each `"YYYY-MM"`). It pays only between `from` and `until`,
   and only in forecasts that start on or after `known` (a grant or lease

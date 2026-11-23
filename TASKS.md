@@ -34,28 +34,46 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Gray & Reuter 1993, *Transaction Processing*, ch. 10 (idempotent resend after
     an unacknowledged write)
 
-- [ ] Rent paid ahead counts in the month it is due
-  - **ID**: forecast-rent-due-month
-  - **Tags**: forecast, judges
-  - **Details**: Judge panel, 2026-11-22 (household-finance and backtest judges, independently,
-    both rank 1): the Rent line misses by about half (WAPE 50.3 %) with a mean miss near zero,
-    which is timing, not amount. Rent paid through a card service lands around the 24th of the
-    month before it is due, so a month where the payment way changed, or the last imported
-    month, shows two rents or none, and net cash flow misses twice. Change: `[rent]
-    paid_ahead_from_day = N` in `cashcast.toml` makes a rent-category row dated on day N or
-    later count in the next month (`summarize.rs`). Unset keeps today's behavior.
-  - **Hypothesis**: net cash flow WAPE drops from 69.2 % to about 62 % (judges predicted 61 %
-    and 62 %), because rent misses stop doubling into net cash flow.
-  - **Measurement**: `bin/cashcast backtest`, line "Net cash flow" WAPE (method in use), with
-    `paid_ahead_from_day = 20`, against the same history; plus the Rent line WAPE.
-  - **Success**: net cash flow WAPE 63.4 % or lower (3 points under the best existing method,
-    66.4 %), and Rent WAPE under 25 %.
-  - **Pivot**: net cash flow WAPE above 66 % means rent timing is not the cause: drop the change
-    and try the next judge proposal (salary half-year at each origin, then seasonal lumpy
-    categories).
+- [ ] The salary forecast in the backtest uses only pay known at each start month
+  - **ID**: forecast-salary-point-in-time
+  - **Tags**: forecast, judges, backtest
+  - **Details**: Judge panel, 2026-11-22 (backtest judge rank 3, household-finance judge rank
+    2). `inputs_from` (`engine/src/forecast/model.rs`, the `half_years` "latest" pick) gives
+    every backtest start month the newest half-year net pay, so a raise leaks into forecasts
+    made before it. Net salary misses 24.3 % with the forecast too high on average, and after
+    the rent fix the forecast leans optimistic in every cumulative line (month end 69.7 %).
+    Change: carry `half_years` in `Inputs` and, at each origin, use the newest half-year that
+    ended before it; config values still win.
+  - **Hypothesis**: net salary WAPE drops from 24.3 % to about 12 %, and net cash flow WAPE
+    from 58.2 % to about 55 %, because past forecasts stop using future pay.
+  - **Measurement**: `bin/cashcast backtest` lines "Net salary" and "Net cash flow" WAPE, and
+    "Month end (cumulative net)", same history, before and after.
+  - **Success**: net cash flow WAPE 56 % or lower and month end WAPE lower than before.
+  - **Pivot**: net salary bias keeps more than half its size: the cause is the cheque count
+    per month, not the pay rate; check `cheques_in` against deposits instead.
   - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 3rd ed.,
-    §3.1 (calendar adjustments: align data to the period it belongs to before forecasting).
-  - **Files**: `engine/src/config.rs`, `engine/src/summarize.rs`, `engine/tests/`
+    §5.10 (time series cross-validation: each forecast uses only data before its origin).
+  - **Files**: `engine/src/forecast/model.rs`, `engine/src/forecast/backtest.rs`,
+    `engine/tests/forecast_model.rs`
+
+- [ ] Spending forecast stops running low on Travel and Uncategorized
+  - **ID**: forecast-spending-low-bias
+  - **Tags**: forecast, judges
+  - **Details**: Judge panel, 2026-11-22 (statistician rank 1 and 2). Spending excl. rent is
+    forecast too low on average (WAPE 23.2 %), mostly in Travel and Uncategorized; trimming
+    spikes would make it worse, and a spending method per category already failed (README
+    "Learning rule"). Proposal: a damped trend on each category base (growth of the last 6
+    months over the 6 before, clamped to 0.8-1.25, half applied). Also check whether
+    Uncategorized holds stock-plan cash or transfers (`bin/cashcast columns`, no raw rows).
+  - **Hypothesis**: net cash flow WAPE drops from 58.2 % to about 55 %, and the spending bias
+    halves, because spending has been rising.
+  - **Measurement**: `bin/cashcast backtest` lines "Spending excl. rent" (mean miss and WAPE)
+    and "Net cash flow" WAPE, before and after.
+  - **Success**: net cash flow WAPE 56 % or lower, spending WAPE not above 23.2 %.
+  - **Pivot**: net cash flow WAPE above 58 %: rising spending is not the cause; drop it.
+  - **Anchor**: Hyndman & Athanasopoulos 2021, §8.2 (damped trend methods); Gardner &
+    McKenzie 1985, *Management Science* 31(10) (damped trend).
+  - **Files**: `engine/src/forecast/model.rs`, `engine/tests/forecast_model.rs`
 
 - [ ] The forecast's spending and opening cash match the owner's real accounts
   - **ID**: forecast-spending-double-count
@@ -92,6 +110,12 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     Owner, 2026-11-22: from now on every new vest moves to cash as soon as it lands, so the
     vest months in `[extra_income]` are the cash months going forward. Past misses stay in the
     backtest; recheck the WAPE after the next vests (Dec 2026, Jan 2027).
+    Judge panel, 2026-11-22 night: rent paid ahead by a card service now counts in the month it
+    is due (`[rent] paid_ahead_from_day`). Same history, fresh import: net cash flow WAPE 69.2 %
+    to 58.2 % (best method 66.4 % to 57.5 %), Rent 50.3 % to 16.1 %, spending unchanged at
+    23.2 %. Mean absolute monthly miss fell 9.5 %. Month end (cumulative) rose 61.3 % to 69.7 %:
+    the double and empty rent months had cancelled out, and the forecast's optimistic lean now
+    shows (tasks `forecast-salary-point-in-time`, `forecast-spending-low-bias`).
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows
