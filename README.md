@@ -322,6 +322,14 @@ licensed financial advice.
   the square root of the distance. The view also shows accuracy as 100 %
   minus the backtest miss, for 3-month cash flow, month-end cash and
   single-month cash flow.
+- **History window:** `import` reads up to 36 months, ending last month. A month
+  counts only when most busy accounts (3 or more rows in the last two months) have
+  rows to within 7 days of its end, so an export that stops on the 1st leaves that
+  month out instead of scoring it as empty (the import report's first line shows
+  the months). The forecast still starts this month; its 12-month lookback ends at
+  the last imported month. `[window] first_month` and `last_month` pin the window.
+  The backtest's "Mean miss by calendar month"
+  also shows Net salary, so a missing payday stands out.
 - **Rent paid ahead:** a card service such as Chexy charges rent about a week
   before it is due. Set `[rent] paid_ahead_from_day = 20` (a day from 2 to 28)
   next to `category` (for example `"Housing > Rent"`) in `cashcast.toml`: a row

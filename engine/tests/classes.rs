@@ -253,3 +253,68 @@ fn rent_paid_ahead_counts_in_the_month_it_is_due() {
     .expect("day 31 is refused");
     assert!(err.contains("from 2 to 28"), "{err}");
 }
+
+/// With no `[window] last_month`, the window ends at the last month the data covers:
+/// an export that stops on the 1st leaves that month out instead of scoring it empty.
+#[test]
+fn the_default_window_ends_at_the_last_month_the_data_covers() {
+    let row = |acct: &str, date: &str| {
+        format!("\"{acct}\",\"\",\"Food ► Groceries\",\"{date}\",\"-10.00\",\"CAD\"\n")
+    };
+    let months_for = |rows: &[(&str, &str)], first: &str, case: &str| {
+        let mut csv =
+            String::from("\"Account\",\"Transfers\",\"Category\",\"Date\",\"Amount\",\"Currency\"\n");
+        for (acct, date) in rows {
+            csv.push_str(&row(acct, date));
+        }
+        let path = std::env::temp_dir().join(format!(
+            "cashcast-classes-{}-window-{case}.csv",
+            std::process::id()
+        ));
+        std::fs::write(&path, csv).unwrap();
+        let e = export::load(&path, &export::LoadOptions::default()).unwrap();
+        let text = CONFIG
+            .replace("last_month = \"2026-05\"\n", "")
+            .replace("first_month = \"2026-05\"", &format!("first_month = \"{first}\""));
+        let cfg = config::parse(&text).unwrap();
+        summarize::summarize(
+            &Inbox::single(e),
+            &cfg,
+            NaiveDate::from_ymd_opt(2026, 6, 15).unwrap(),
+        )
+        .unwrap()
+        .months
+    };
+    let busy = |acct: &'static str, last: &'static str| {
+        vec![(acct, "2026-03-10"), (acct, "2026-04-10"), (acct, "2026-04-20"), (acct, last)]
+    };
+    let two = |last: &'static str| [busy("Bank A", last), busy("Card A", last)].concat();
+    assert_eq!(
+        months_for(&two("2026-05-01"), "2026-03", "partial"),
+        vec!["2026-03", "2026-04"],
+        "May holds one day: leave it out"
+    );
+    assert_eq!(
+        months_for(&two("2026-05-25"), "2026-03", "holiday"),
+        vec!["2026-03", "2026-04", "2026-05"],
+        "a quiet last week still counts as a full month"
+    );
+    let mut fresh = two("2026-05-01");
+    fresh.push(("Wallet USD", "2026-05-30"));
+    assert_eq!(
+        months_for(&fresh, "2026-03", "one-fresh"),
+        vec!["2026-03", "2026-04"],
+        "one fresh download beside a stale export does not stretch the window"
+    );
+    let quiet = [busy("Bank A", "2026-05-30"), busy("Savings", "2026-05-01")].concat();
+    assert_eq!(
+        months_for(&quiet, "2026-03", "quiet"),
+        vec!["2026-03", "2026-04", "2026-05"],
+        "a quiet savings account beside a full chequing one keeps May"
+    );
+    assert_eq!(
+        months_for(&two("2026-05-01"), "2026-05", "pinned"),
+        vec!["2026-05"],
+        "a pinned first month after the covered end keeps the calendar end"
+    );
+}

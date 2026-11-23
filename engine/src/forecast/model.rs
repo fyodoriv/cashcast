@@ -114,8 +114,15 @@ pub struct History {
 }
 
 impl History {
+    /// The 12 months before `start`, or before the month after the history ends when the
+    /// history stops earlier (the import leaves out months the data does not cover), so
+    /// every calendar month appears once.
     pub fn last12(&self, start: NaiveDate) -> Vec<usize> {
-        let window: Vec<NaiveDate> = (0..12).map(|i| add_months(start, -12 + i)).collect();
+        let end = self
+            .months
+            .last()
+            .map_or(start, |m| add_months(*m, 1).min(start));
+        let window: Vec<NaiveDate> = (0..12).map(|i| add_months(end, -12 + i)).collect();
         (0..self.months.len())
             .filter(|i| window.contains(&self.months[*i]))
             .collect()

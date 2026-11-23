@@ -3340,9 +3340,6 @@ Next review: **Mon, Nov 2**.
 7. Cash back: redeem balances of $25+ as a statement credit.
 8. Budget: look at the categories over budget; adjust the budget or the habit.
 
-**Signals this month:**
-- Spending 2026-10: predicted $2,450.00, actual $0.00 (-100%).
-
 ## Dated checklist
 
 - [ ] 2026-10-16: Pay Test Costly down to $50.00 — you do this (moves money)
@@ -4141,7 +4138,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "start-net-total", "event": "report_shown", "scope": "agent:strategy"}
@@ -4163,7 +4159,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "start-net-total", "event": "report_shown", "scope": "agent:strategy"}
@@ -4201,7 +4196,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "strategy", "event": "report_shown", "scope": "agent:strategy"}
@@ -4222,7 +4216,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "tasks", "event": "report_shown", "scope": "agent:strategy"}
@@ -4243,7 +4236,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "changes", "event": "report_shown", "scope": "agent:strategy"}
@@ -4269,7 +4261,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "tax", "event": "report_shown", "scope": "agent:strategy"}
@@ -4290,7 +4281,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "budget", "event": "report_shown", "scope": "agent:strategy"}

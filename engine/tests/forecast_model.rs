@@ -594,3 +594,17 @@ fn by_method_scores_every_method_on_the_same_history() {
     assert_eq!(row.1, backtest::score(&net).wape);
     assert!(all.iter().all(|(_, w)| w.is_some()));
 }
+
+#[test]
+fn history_that_ends_before_last_month_still_gives_twelve_months() {
+    // The import left out September (the data did not cover it): the history ends in August.
+    let mut h = history(&[120; 12]);
+    h.months = (0..12).map(|i| add_months(d(2025, 9, 1), i)).collect();
+    let mut i = inputs();
+    let rows = run(&i, &h).unwrap();
+    assert_eq!(spend(&rows[0], "Food"), n(120), "average over 12 months, not 11");
+    i.method = "same month last year".into();
+    let rows = run(&i, &h).unwrap();
+    let sept = rows.iter().find(|r| r.month == d(2027, 9, 1)).unwrap();
+    assert_eq!(spend(sept, "Food"), n(120), "September 2025 is in the lookup");
+}
