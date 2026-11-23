@@ -557,6 +557,25 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     only the main checkout path and stop
   - **Anchor**: Nielsen 1994, *Usability Engineering* (error messages that help recover)
 
+- [ ] Land or close the first 10 Dependabot pull requests
+  - **ID**: dependabot-first-batch
+  - **Tags**: deps, security, ci
+  - **Details**: Found 2026-11-22. `.github/dependabot.yml` (added in #5) opened 10 PRs at once: #9-#13
+    bump engine crates (serde_json, aes-gcm, getrandom, calamine, rusqlite) and #14-#18 bump web dev
+    tools (vitest, vite, typescript, biome, plugin-react). Several are major versions (vitest 2 to 4,
+    vite 5 to 6, typescript 5 to 7, biome 1 to 2, rusqlite 0.40 to 0.43), so they may need code
+    changes, and each runs both `gate` and `fresh-mac`. Merge the patch and minor ones whose CI is
+    green; for each major one, either fix what breaks in the same PR or close it with the reason and
+    an `ignore` rule for that major version. Keep the `limit 5` per ecosystem.
+  - **Hypothesis**: open Dependabot PRs drop from 10 to 0 within one session, and later weekly
+    batches stay at 3 or fewer open, because each one is merged or closed with a reason.
+  - **Measurement**: `gh pr list --repo fyodoriv/cashcast --author app/dependabot --state open --json number --jq length`.
+  - **Success**: 0 open from this batch, every merged one with green `gate` and `fresh-mac`.
+  - **Pivot**: if more than 3 major bumps each need over an hour of fixes, group the web dev tools
+    into one Dependabot group and do them as one planned upgrade task instead.
+  - **Anchor**: GitHub Dependabot version updates docs (https://docs.github.com/en/code-security/dependabot);
+    Forsgren, Humble, Kim 2018 (deployment frequency).
+
 - [ ] Find the flat cash gap in two MoneyWiz investment accounts
   - **ID**: moneywiz-invest-cash-gap
   - **Tags**: moneywiz, investments
