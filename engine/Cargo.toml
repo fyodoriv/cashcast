@@ -14,7 +14,7 @@ getrandom = "0.2"
 plist = { version = "1", default-features = false }
 quick-xml = "0.42"
 regex = { version = "1.13", default-features = false, features = ["std", "unicode", "perf"] }
-rusqlite = { version = "0.40.2", features = ["bundled"] }
+rusqlite = { version = "0.43.0", features = ["bundled"] }
 rust_decimal = "1.43.0"
 rust_xlsxwriter = { version = "0.102.0", default-features = false }
 serde = { version = "1.0.229", features = ["derive"] }
