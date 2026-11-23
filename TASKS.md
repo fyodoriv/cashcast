@@ -727,6 +727,49 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Pivot**: if a commission makes the pair ambiguous, keep the hold and name the trade in the report
   - **Anchor**: Fellegi & Sunter 1969, *JASA* 64(328) (record linkage with match weights)
 
+- [ ] Review nits from the 2026-11-22 citizenship reader fixes
+  - **ID**: citizenship-reader-review-nits
+  - **Tags**: paperwork, citizenship, quality
+  - **Details**: Found 2026-11-22 in the fresh-context review of PR 22. (1) the PR card reader
+    misses a French-only month ("01 JUIN 21"): `card_day` reads the first three letters;
+    (2) `collect nomads` with one unreadable file next to a good one skips the bad file with
+    no note; (3) a partial `put` marks the whole section as the owner's, so a collector can no
+    longer refresh the other keys of that section, and `put` cannot remove one key of a section.
+  - **Files**: `engine/src/paperwork/citizenship/collect.rs`, `engine/src/paperwork/citizenship/judge.rs`,
+    `engine/tests/citizenship.rs`, `skills/citizenship-application/SKILL.md`
+  - **Acceptance**: one failing synthetic test per nit first, then the fix; for (3) sources are
+    kept per key, or the skill says how to hand a key back to the collectors.
+  - **Hypothesis**: the three inputs stop losing data silently: 3 new tests go from fail to pass.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test citizenship`
+  - **Success**: three new tests pass and parity shows 0 mismatches
+  - **Pivot**: if per-key sources need a change to the sealed draft format, keep the section
+    rule and only document it in the skill
+  - **Anchor**: Beizer 1990, *Software Testing Techniques* (a regression test per defect)
+
+- [ ] The citizenship judge knows the official document checklist and its version
+  - **ID**: citizenship-checklist-fact
+  - **Tags**: paperwork, citizenship, knowledge
+  - **Details**: On 2026-11-22 the upload list was checked by hand against IRCC form CIT 0007
+    (version 10-2026). Three rules were not in the skill's upload step: the identity page of
+    every passport that covers the 5-year period (and any extension stamp page); two IDs with
+    both sides when both hold information, where a passport page can be one of them; the same
+    application date in the presence calculation and on the form. A new form version would go
+    unnoticed. Store the checklist as a sourced fact with `as_of` and `review_by`, list its
+    items in the skill's upload step, and let `citizenship answers` warn when the fact is past
+    its review date.
+  - **Files**: `engine/src/paperwork/facts.rs`, `engine/src/paperwork/citizenship/answers.rs`,
+    `engine/tests/citizenship.rs`, `skills/citizenship-application/SKILL.md`
+  - **Acceptance**: a synthetic test where the fact is past `review_by` makes the judge print a
+    warning line; the skill's upload step lists the three rules with the source link.
+  - **Hypothesis**: upload items found only by a hand check fall from 3 to 0 in the next
+    application run, because the skill lists the checklist items.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test citizenship`, and a
+    count of upload items a session has to add by hand in the next guided run
+  - **Success**: the new test passes and the next run adds 0 items by hand
+  - **Pivot**: if IRCC's online upload list differs from CIT 0007 in 2 or more items, source the
+    fact from the online application's own list instead
+  - **Anchor**: Gawande 2009, *The Checklist Manifesto*; IRCC form CIT 0007 (10-2026)
+
 ## P3
 
 - [ ] Grocery browser steps wait for product cards, not a fixed sleep
