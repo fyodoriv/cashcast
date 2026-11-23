@@ -27,11 +27,27 @@ web_build() {
     return 0
   fi
   echo "… Building the web app: it is missing or its sources changed." >&2
-  if (cd "$web" && pnpm install --frozen-lockfile --silent && pnpm -s build) >/dev/null 2>&1; then
+  # Build into dist.next and swap it in, so a build that fails halfway (vite
+  # empties its output folder first) never breaks the app that is running.
+  rm -rf "$web/dist.next"
+  if (cd "$web" && pnpm install --frozen-lockfile --silent && pnpm -s build --outDir dist.next) >/dev/null 2>&1 \
+    && [ -f "$web/dist.next/index.html" ]; then
+    rm -rf "$web/dist.old"
+    [ -d "$web/dist" ] && mv "$web/dist" "$web/dist.old"
+    mv "$web/dist.next" "$web/dist" && rm -rf "$web/dist.old"
     touch "$dist" 2>/dev/null || true
   else
+    rm -rf "$web/dist.next"
     echo "✗ The web app did not build; using the previous one. Run: cd web && pnpm install && pnpm build" >&2
   fi
+}
+
+# The command word after the front options (--user NAME, --today DAY).
+command_word() {
+  while [ $# -gt 0 ]; do
+    # A value-less last option: `shift 2` would fail and loop forever.
+    case "$1" in --user | --today) [ $# -ge 2 ] || return 0; shift 2 ;; --user=* | --today=*) shift ;; *) echo "$1"; return ;; esac
+  done
 }
 
 doctor() {
@@ -118,7 +134,7 @@ case "${1:-help}" in
         echo "✗ The engine did not build; using the previous one. Run: bin/cashcast doctor" >&2
       fi
     fi
-    case "${1:-}" in "" | web | start) web_build ;; esac
+    case "$(command_word "$@")" in "" | web | start) web_build ;; esac
     CASHCAST_ROOT="$ROOT" exec "$ENGINE" cli "$@"
     ;;
 esac

@@ -11,7 +11,12 @@ if [ "${SETUP_SKIP_TOOLS:-0}" = 1 ]; then
   echo "skipped (SETUP_SKIP_TOOLS=1)"
 else
   scripts/install-tools.sh
-  # Tools it just installed (Rust under ~/.cargo/bin) for the steps below.
+  # Tools it just installed, for the steps below: Homebrew's folder (not on
+  # PATH right after Homebrew's own install) and Rust under ~/.cargo/bin.
+  command -v brew >/dev/null 2>&1 || for d in ${CASHCAST_BREW_DIRS:-/opt/homebrew/bin /usr/local/bin}; do
+    b="$d/brew"
+    [ -x "$b" ] && eval "$("$b" shellenv)" && break
+  done
   [ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH" && export PATH
 fi
 

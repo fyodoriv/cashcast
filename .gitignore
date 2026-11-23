@@ -47,6 +47,8 @@ engine/moneywiz-writer/build/
 .metrics/
 web/node_modules/
 web/dist/
+web/dist.next/
+web/dist.old/
 web/*.tsbuildinfo
 
 # Data files are private unless listed: synthetic fixtures and shared specs only.

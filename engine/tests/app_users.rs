@@ -71,6 +71,10 @@ fn an_unknown_person_fails_and_creates_no_folder() {
     assert!(e.message.contains("users add alx"), "{}", e.message);
     assert!(!paths::users_dir().join("alx").exists());
     assert_eq!(paths::list_users(), vec!["alex"]);
+    // A folder left over without a profile (an old typo) is not a person.
+    std::fs::create_dir_all(paths::users_dir().join("alx").join("out")).unwrap();
+    assert_eq!(paths::list_users(), vec!["alex"]);
+    assert_eq!(paths::resolve(None).unwrap().name, "alex");
 }
 
 #[test]

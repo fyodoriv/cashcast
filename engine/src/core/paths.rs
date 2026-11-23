@@ -296,7 +296,8 @@ pub fn list_users() -> Vec<String> {
     let mut names: Vec<String> = std::fs::read_dir(users_dir())
         .map(|rd| {
             rd.flatten()
-                .filter(|e| e.path().is_dir())
+                // A person has a profile; a leftover folder is not one.
+                .filter(|e| e.path().join("profile.toml").is_file())
                 .filter_map(|e| e.file_name().into_string().ok())
                 .filter(|n| valid_name(n))
                 .collect()
@@ -306,6 +307,21 @@ pub fn list_users() -> Vec<String> {
     if private_root().join("cashcast.toml").exists() {
         names.insert(0, LEGACY.to_string());
     }
+    names
+}
+
+/// Person-named folders under `users/` that have no profile, sorted.
+fn profileless_folders() -> Vec<String> {
+    let mut names: Vec<String> = std::fs::read_dir(users_dir())
+        .map(|rd| {
+            rd.flatten()
+                .filter(|e| e.path().is_dir() && !e.path().join("profile.toml").exists())
+                .filter_map(|e| e.file_name().into_string().ok())
+                .filter(|n| valid_name(n))
+                .collect()
+        })
+        .unwrap_or_default();
+    names.sort();
     names
 }
 
@@ -347,7 +363,11 @@ pub fn resolve(user: Option<&str>) -> Result<UserHome, AppError> {
     let names = list_users();
     match names.len() {
         1 => resolve(Some(&names[0])),
-        0 => Ok(UserHome::new(LEGACY, private_root())),
+        0 => match profileless_folders().first() {
+            // A person folder whose profile is gone: say how to add it back.
+            Some(u) => resolve(Some(u)),
+            None => Ok(UserHome::new(LEGACY, private_root())),
+        },
         _ => Err(AppError::new(
             "usererror",
             format!(
