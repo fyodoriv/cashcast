@@ -58,6 +58,32 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     some months only. The salary floor (`[pay] min_salary`) moves rows between salary and
     other income, so it does not change net cash flow. Next lever: forecast lumpy categories
     and stock-plan income by month of year, not as a flat average.
+    2026-11-22 evening: `backtest` now scores every method ("Net cash flow WAPE by method"):
+    same month last year 66.4 %, trailing-12 average 69.2 %, median 74.4 %, flat baseline
+    75.5 %. Two blends were tried and dropped (pre-registered pivot: none beat 66.4 % by 3
+    points): half average + half last 3 months 69.0 %, half average + half same month 66.4 %.
+    So the spending method is not the lever. The largest misses by calendar month are in
+    extra income (March, September and October, each a month's salary or more): RSU and ESPP money counts only when it
+    moves from the stock plan account to cash, and that month varies. Next: model stock-plan
+    income at the month it reaches cash (or keep it out of net cash flow until it does).
+    Owner, 2026-11-22: from now on every new vest moves to cash as soon as it lands, so the
+    vest months in `[extra_income]` are the cash months going forward. Past misses stay in the
+    backtest; recheck the WAPE after the next vests (Dec 2026, Jan 2027).
+    Judge panel, 2026-11-22 night: rent paid ahead by a card service now counts in the month it
+    is due (`[rent] paid_ahead_from_day`). Same history, fresh import: net cash flow WAPE 69.2 %
+    to 58.2 % (best method 66.4 % to 57.5 %), Rent 50.3 % to 16.1 %, spending unchanged at
+    23.2 %. Mean absolute monthly miss fell 9.5 %. Month end (cumulative) rose 61.3 % to 69.7 %:
+    the double and empty rent months had cancelled out, and the forecast's optimistic lean now
+    shows (tasks `forecast-salary-point-in-time`, `forecast-spending-low-bias`).
+    Follow-ups, 2026-11-22 late: pay known at each origin was dropped by its pivot (net salary
+    24.3 % to 30.9 %, net cash flow 58.2 % to 62.4 %). The new Net salary row in "Mean miss by
+    calendar month" showed the last month empty: the MoneyWiz CSV the import reads ends on the
+    1st. The default window now ends at the last month most active accounts cover: net cash
+    flow 58.2 % to 48.3 % (best method, same month last year, 57.5 % to 41.8 %), net salary
+    24.3 % to 10.1 %, month end 69.7 % to 58.3 %, mean absolute miss down 24.5 %; spending
+    23.2 % to 23.7 %; 9 origins instead of 10. A "damped trend average" method was dropped by
+    its pivot (49.2 %, above 47.3 %). Next: refresh the MoneyWiz CSV export (or read the live
+    database) so the newest months are in the history.
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows
@@ -72,6 +98,58 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     the cause: try the seasonal method (decision 0012) instead of more de-duplication
   - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 5.8
     (scale-free accuracy measures such as WAPE/MAPE)
+
+- [ ] The forecast follows a spending level that moved, so the monthly cash flow is 65 % accurate
+  - **ID**: forecast-level-shift
+  - **Tags**: forecast, accuracy
+  - **Details**: Owner goal 2026-11-22: "at least reach 65% accuracy" (the Forecast view's
+    monthly cash flow accuracy, 100 % minus the backtest WAPE; now 51.7 %). A new backtest
+    line, "Net cash flow WAPE if one line were exact", shows where the miss comes from: an exact
+    Travel forecast alone would give 29.8 % (an exact extra income line is not in the top 6).
+    Travel was near zero each month until late 2025 and has been large most months since, so
+    the trailing-12 average lags the new level for a year. Try methods that follow a moved
+    level: the average of the last 6 months, and simple exponential smoothing.
+  - **Files**: `engine/src/forecast/model.rs` (`METHODS`, `run`), `engine/src/forecast/backtest.rs`
+    (`if_exact`), `engine/src/forecast/mod.rs`, `engine/tests/forecast_model.rs`
+  - **Acceptance**: a failing synthetic test first (a category that jumps to a new level is
+    forecast near the new level); `backtest` scores the new methods beside the old ones; the
+    owner's `[forecast] method` is set to the lowest one (owner said yes, 2026-11-22).
+  - **Hypothesis**: a level-following method lowers net cash flow WAPE from 48.3 % to 35 % or
+    less, because Travel moved to a higher level a year ago and the 12-month average still
+    mixes in the old one.
+  - **Measurement**: `bin/cashcast backtest` ("Net cash flow WAPE by method" lines; guard:
+    "Month end (cumulative net)" WAPE for the chosen method)
+  - **Success**: net cash flow WAPE 35.0 % or lower for the best new method, with month-end
+    WAPE not above 58.3 %
+  - **Pivot**: above 45 %: a moved level is not the cause; look at Travel planned ahead
+    (known trips) instead of history
+  - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 8.1
+    (simple exponential smoothing for a level that moves)
+  - **Result 1** (2026-11-22): dropped by its pivot. Net cash flow WAPE 50.1 % (last 6 months)
+    and 50.8 % (smoothing, 0.3), above 45 %. Spending excl. rent 23.7 % to 19.3-20.2 %, month
+    end 58.3 % to 50.9-53.3 %, but an exact Travel line still gives about 32 %: what is left
+    is when trips happen, not their level.
+  - **Approach 2, pre-registered 2026-11-22**: a "trailing-6 median" method (the median is the
+    point forecast that minimizes absolute error, so it fits WAPE; Hyndman & Athanasopoulos
+    5.4). Success: net cash flow WAPE 35.0 % or lower, month end not above 58.3 %. Pivot:
+    above 45 %, drop it.
+  - **Approach 3, pre-registered 2026-11-22**: correct each line by its mean miss over the
+    backtest months that ended before the forecast date (model output statistics, Glahn and
+    Lowry 1972), scored in `backtest` as a separate line first. Success: net cash flow WAPE
+    35.0 % or lower. Pivot: above 45 %, drop it; then 65 % monthly accuracy is out of reach
+    from history alone, and the next step is trips planned ahead.
+  - **Result 2-3** (2026-11-22): both dropped by their pivots. Last-6-months median 51.5 %
+    (month end 84.9 %). Moving each forecast by its own past mean miss made every method worse
+    (trailing-12 average 56.1 %, same month last year 64.9 %). Best from history alone: same
+    month last year, 41.8 % (58.2 % accurate), but its month end misses by 74.0 % (58.3 % now),
+    so the owner's method stays. Kept: the "if one line were exact" backtest line.
+  - **Approach 4, pre-registered 2026-11-22**: trips the owner has booked go into
+    `cashcast.toml` as planned spending (month, amount, category), like `[extra_income]`.
+    History cannot show it, so it is measured forward: "Last saved forecast vs actual" in
+    `bin/cashcast backtest` over the next 3 months. Success: Travel's mean absolute miss in
+    those months at most half of the backtest's and net cash flow WAPE
+    35.0 % or lower. Pivot: Travel miss above 75 % of the backtest's: booked trips are not what
+    drives the Travel line; drop it.
 
 - [ ] The owner answers the open invest-plan questions, and the judge loop reaches 10 of 10
   - **ID**: invest-owner-answers

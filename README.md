@@ -31,8 +31,11 @@ bin/cashcast users add alex --province ON         # one folder per person
 bin/cashcast web                                  # open the printed link: your plan, on this computer only
 ```
 
-You need [Rust](https://rustup.rs), jq, yq, sqlite3 and
-Node with pnpm. For a guided first run, start your coding agent here (for
+The setup installs what is missing (Rust, jq, yq, Node, pnpm) with Homebrew;
+if Homebrew itself is missing, it prints the one line to install it. Later
+runs of `cashcast` update a clean checkout and rebuild the engine and the
+web app when they changed. CI proves this on a clean Mac (`scripts/fresh-mac.sh`).
+For a guided first run, start your coding agent here (for
 example `claude`) and type `/cashcast-start`; it asks only what the app cannot find.
 
 Docs map: [docs/README.md](docs/README.md). Contributing: [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -287,7 +290,12 @@ licensed financial advice.
   12-month median, the same month last year, or a flat baseline. Set it in
   `cashcast.toml` as `[forecast] method = "trailing-12 median"`. The median
   ignores one-off spike months; the average spreads them over every month.
-  Compare both with `bin/cashcast backtest` before you switch.
+  Before you switch, read "Net cash flow WAPE by method" in `bin/cashcast backtest`:
+  it scores all four methods on your own history, and the lowest misses least.
+  Also check the month-end line: a method can lower the monthly miss and still
+  drift further off the running balance. "Net cash flow WAPE if one line were
+  exact" shows where accuracy is lost: the line or category whose number falls
+  most is the one to fix.
 - **Baseline:** `[forecast] baseline` is your total monthly spending, rent
   included. Only `method = "flat baseline"` scales the categories to it. With
   any other method it is a floor: when the categories add up to less, the
@@ -318,6 +326,22 @@ licensed financial advice.
   the square root of the distance. The view also shows accuracy as 100 %
   minus the backtest miss, for 3-month cash flow, month-end cash and
   single-month cash flow.
+- **History window:** `import` reads up to 36 months, ending last month. A month
+  counts only when most busy accounts (3 or more rows in the last two months) have
+  rows to within 7 days of its end, so an export that stops on the 1st leaves that
+  month out instead of scoring it as empty (the import report's first line shows
+  the months). The forecast still starts this month; its 12-month lookback ends at
+  the last imported month. `[window] first_month` and `last_month` pin the window.
+  The backtest's "Mean miss by calendar month"
+  also shows Net salary, so a missing payday stands out.
+- **Rent paid ahead:** a card service such as Chexy charges rent about a week
+  before it is due. Set `[rent] paid_ahead_from_day = 20` (a day from 2 to 28)
+  next to `category` (for example `"Housing > Rent"`) in `cashcast.toml`: a row
+  in that category, or under it, dated on the 20th or later then counts in the
+  next month, the month it pays for. The forecast's own rent line also needs
+  `charged`, and `category` listed in `[categories] separate`. Without it, a month where the payment way changed shows
+  two rents or none, and the backtest counts that twice in net cash flow.
+  Re-run `bin/cashcast import` after you set it.
 - **Dated extra income:** an `[extra_income]` line can take `from`, `until`
   and `known` (each `"YYYY-MM"`). It pays only between `from` and `until`,
   and only in forecasts that start on or after `known` (a grant or lease

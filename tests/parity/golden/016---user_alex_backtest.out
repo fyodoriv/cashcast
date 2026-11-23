@@ -19,6 +19,20 @@ Net cash flow                         3,807      +3,807  168.4%
 Month end (cumulative net)           13,817     +13,817  199.5%
 Net cash flow, 3-month sums          11,885     +11,885  180.3%
 
+Net cash flow WAPE by method (set `forecast.method` to the lowest):
+- trailing-12 average: 168.4% (now)
+- trailing-12 median: 170.9%
+- same month last year: 186.0%
+- flat baseline: n/a
+
+Net cash flow WAPE if one line were exact (lowest = where accuracy is lost):
+- Net salary: 42.9%
+- Spending excl. rent: 125.5%
+- category Housing: 136.9%
+- category Food: 158.4%
+- category Bills: 167.0%
+- Extra income: 168.4%
+
 Biggest category misses (mean per month):
 - Housing: 713 abs, -713 bias
 - Food: 226 abs, -226 bias
@@ -26,6 +40,7 @@ Biggest category misses (mean per month):
 
 Mean miss by calendar month of the forecast month (repeated signs are patterns to learn):
 Line                      Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
+Net salary             +3,000 +3,000 +3,000 +3,000 +4,500 +3,000 +3,000 +3,000 +3,000 +3,000 +4,500 +3,000
 Extra income               +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0
 Taxes                      +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0
 Spending excl. rent      -919   -817   -715   -612   -510   -408   -306   -204   -102 -1,225 -1,123 -1,021

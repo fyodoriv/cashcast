@@ -292,6 +292,60 @@ pub fn score(misses: &[&Miss]) -> Score {
     }
 }
 
+/// Net cash flow WAPE for each forecast method on the same history, so the
+/// owner can pick the method that misses least (`forecast.method`).
+pub fn by_method(inputs: &Inputs, hist: &History) -> Vec<(&'static str, Option<Decimal>)> {
+    crate::forecast::model::METHODS
+        .iter()
+        .map(|&m| {
+            let mut i = inputs.clone();
+            i.method = m.to_string();
+            let misses = backtest(&i, hist).unwrap_or_default();
+            let net: Vec<&Miss> = misses.iter().filter(|x| x.line == "net_cash_flow").collect();
+            (m, score(&net).wape)
+        })
+        .collect()
+}
+
+/// Net cash flow WAPE if one line (or one spending category, "cat:<name>")
+/// had been forecast exactly: the line's miss is taken out of each net miss.
+/// The lines whose number falls most are where accuracy is lost.
+pub fn if_exact(misses: &[Miss]) -> Vec<(String, Option<Decimal>)> {
+    let sign = |line: &str| match line {
+        "net_salary" | "extra_income" | "taxes" => Decimal::ONE,
+        _ => -Decimal::ONE,
+    };
+    let net: Vec<&Miss> = misses.iter().filter(|m| m.line == "net_cash_flow").collect();
+    let mut keys: Vec<&str> = Vec::new();
+    for m in misses {
+        let k = m.line.as_str();
+        if k != "net_cash_flow" && k != "month_end" && !keys.contains(&k) {
+            keys.push(k);
+        }
+    }
+    keys.into_iter()
+        .map(|k| {
+            let fixed: Vec<Miss> = net
+                .iter()
+                .map(|n| {
+                    let part = misses
+                        .iter()
+                        .find(|m| m.line == k && m.origin == n.origin && m.ahead == n.ahead)
+                        .map_or(ZERO, |m| m.error());
+                    Miss {
+                        origin: n.origin,
+                        ahead: n.ahead,
+                        line: n.line.clone(),
+                        forecast: n.forecast - sign(k) * part,
+                        actual: n.actual,
+                    }
+                })
+                .collect();
+            (k.to_string(), score(&fixed.iter().collect::<Vec<_>>()).wape)
+        })
+        .collect()
+}
+
 pub fn by_line(misses: &[Miss]) -> Vec<(String, Vec<&Miss>)> {
     let mut out: Vec<(String, Vec<&Miss>)> = Vec::new();
     for m in misses {

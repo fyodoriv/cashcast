@@ -338,7 +338,8 @@ pub fn summarize(inbox: &Inbox, cfg: &Config, today: NaiveDate) -> Result<Summar
         .iter()
         .map(|p| split_rule_path(p, separator))
         .collect();
-    let (first, last) = window(cfg, today)?;
+    cfg.rent.check()?;
+    let (first, last) = window(cfg, today, covered_until(txns, &classes, today))?;
     let months = month_list(first, last);
     let n = months.len();
     let month_index = |d: NaiveDate| {
@@ -535,7 +536,8 @@ pub fn summarize(inbox: &Inbox, cfg: &Config, today: NaiveDate) -> Result<Summar
                 foreign: !t.currency.is_empty() && t.currency != base,
             });
         }
-        let Some(i) = month_index(t.date) else {
+        let path = kind_category(kind).map(|_| t.category.join(" > "));
+        let Some(i) = month_index(cfg.rent.due_date(path.as_deref(), t.date)) else {
             if t.date < first {
                 before += 1;
             }
@@ -1428,7 +1430,47 @@ fn median(sorted: &[i64]) -> i64 {
     }
 }
 
-fn window(cfg: &Config, today: NaiveDate) -> Result<(NaiveDate, NaiveDate), String> {
+/// How far most accounts' data reaches: the upper median newest row among the included
+/// accounts with at least 3 rows in the last 62 days of data. One fresh download beside a
+/// stale export does not stretch it, and a quiet account (one interest row) does not
+/// shorten it.
+fn covered_until(
+    txns: &[Txn],
+    classes: &BTreeMap<String, Class>,
+    today: NaiveDate,
+) -> Option<NaiveDate> {
+    let rows: Vec<&Txn> = txns
+        .iter()
+        .filter(|t| t.date <= today && classes.get(t.account.as_str()) != Some(&Class::Excluded))
+        .collect();
+    let top = rows.iter().map(|t| t.date).max()?;
+    let mut recent: HashMap<&str, (usize, NaiveDate)> = HashMap::new();
+    for t in rows.iter().filter(|t| t.date + chrono::Days::new(62) >= top) {
+        let e = recent.entry(t.account.as_str()).or_insert((0, t.date));
+        e.0 += 1;
+        e.1 = e.1.max(t.date);
+    }
+    let mut active: Vec<NaiveDate> = recent
+        .into_values()
+        .filter(|(n, _)| *n >= 3)
+        .map(|(_, d)| d)
+        .collect();
+    if active.is_empty() {
+        return Some(top);
+    }
+    active.sort_unstable();
+    Some(active[active.len() / 2])
+}
+
+/// Months to import. With no `last_month`, the window ends at last calendar month, or
+/// earlier when the data (`newest`, from `covered_until`) leaves a month mostly empty: a
+/// month counts only when the data reaches within 7 days of its end. A pinned
+/// `first_month` after that month keeps the calendar end.
+fn window(
+    cfg: &Config,
+    today: NaiveDate,
+    newest: Option<NaiveDate>,
+) -> Result<(NaiveDate, NaiveDate), String> {
     let parse = |s: &str| {
         NaiveDate::parse_from_str(&format!("{s}-01"), "%Y-%m-%d")
             .map_err(|_| format!("month {s:?} must be YYYY-MM"))
@@ -1436,7 +1478,26 @@ fn window(cfg: &Config, today: NaiveDate) -> Result<(NaiveDate, NaiveDate), Stri
     let this_month = today.with_day(1).expect("day 1 exists");
     let last = match &cfg.window.last_month {
         Some(m) => parse(m)?,
-        None => this_month - Months::new(1),
+        None => {
+            let calendar = this_month - Months::new(1);
+            let covered = newest.map(|n| {
+                let month = n.with_day(1).expect("day 1 exists");
+                let month_end = month + Months::new(1) - chrono::Days::new(1);
+                if n + chrono::Days::new(7) >= month_end {
+                    month
+                } else {
+                    month - Months::new(1)
+                }
+            });
+            let pinned_first = match &cfg.window.first_month {
+                Some(m) => Some(parse(m)?),
+                None => None,
+            };
+            match covered {
+                Some(c) if pinned_first.is_none_or(|f| f <= c) => c.min(calendar),
+                _ => calendar,
+            }
+        }
     };
     let first = match &cfg.window.first_month {
         Some(m) => parse(m)?,
@@ -1446,6 +1507,14 @@ fn window(cfg: &Config, today: NaiveDate) -> Result<(NaiveDate, NaiveDate), Stri
         return Err("window.first_month is after window.last_month".into());
     }
     Ok((first, last))
+}
+
+/// The spending series a row adds to, if it is spending.
+fn kind_category(kind: &Kind) -> Option<&str> {
+    match kind {
+        Kind::Spend(c) => Some(c),
+        _ => None,
+    }
 }
 
 fn month_list(first: NaiveDate, last: NaiveDate) -> Vec<String> {

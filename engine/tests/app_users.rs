@@ -62,6 +62,18 @@ fn resolve_needs_a_name_when_several_users_exist() {
 }
 
 #[test]
+fn an_unknown_person_fails_and_creates_no_folder() {
+    let env = Env::new();
+    env.user("alex");
+    let e = paths::resolve(Some("alx")).unwrap_err();
+    assert!(e.message.contains("no person named 'alx'"), "{}", e.message);
+    assert!(e.message.contains("alex"), "{}", e.message);
+    assert!(e.message.contains("users add alx"), "{}", e.message);
+    assert!(!paths::users_dir().join("alx").exists());
+    assert_eq!(paths::list_users(), vec!["alex"]);
+}
+
+#[test]
 fn bad_names_and_legacy_folder() {
     let env = Env::new();
     assert!(paths::check_name("../etc").is_err());

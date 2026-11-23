@@ -116,7 +116,17 @@ fn unknown_user_is_a_clean_error() {
     env.person(&[("Chequing", 40000.0)]);
     let r = call("/api/plan?user=nobody");
     assert_eq!(r.0, 400);
-    assert!(json(&r)["error"].as_str().unwrap().contains("profile"));
+    assert!(
+        json(&r)["error"]
+            .as_str()
+            .unwrap()
+            .contains("no person named 'nobody'")
+    );
+    assert!(
+        !cashcast_engine::core::paths::users_dir()
+            .join("nobody")
+            .exists()
+    );
 }
 
 #[test]

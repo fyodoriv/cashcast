@@ -578,3 +578,65 @@ fn month_end_ranges_use_backtest_percentiles_then_widen() {
     );
     assert!(month_end_ranges(&[], 3).is_empty());
 }
+
+#[test]
+fn by_method_scores_every_method_on_the_same_history() {
+    let h = long_history(30);
+    let all = backtest::by_method(&inputs(), &h);
+    assert_eq!(
+        all.iter().map(|(m, _)| *m).collect::<Vec<_>>(),
+        cashcast_engine::forecast::model::METHODS.to_vec()
+    );
+    let now = backtest::backtest(&inputs(), &h).unwrap();
+    let net: Vec<_> = now.iter().filter(|m| m.line == "net_cash_flow").collect();
+    let current = inputs().method;
+    let row = all.iter().find(|(m, _)| *m == current).unwrap();
+    assert_eq!(row.1, backtest::score(&net).wape);
+    assert!(all.iter().all(|(_, w)| w.is_some()));
+}
+
+#[test]
+fn if_exact_shows_which_line_loses_the_most_accuracy() {
+    let m = |month: u32, line: &str, f: i64, a: i64| backtest::Miss {
+        origin: d(2026, month, 1),
+        ahead: 1,
+        line: line.into(),
+        forecast: n(f),
+        actual: n(a),
+    };
+    // March: net misses by +30 (income 10 too low: -10; spending 40 too low: +40).
+    // May: net misses by +20 (taxes forecast 10 too high: +10; rent 10 too low: +10).
+    let misses = vec![
+        m(3, "net_cash_flow", 130, 100),
+        m(3, "extra_income", 90, 100),
+        m(3, "spending_excl_rent", 160, 200),
+        m(3, "cat:Travel", 60, 100),
+        m(3, "month_end", 130, 100),
+        m(5, "net_cash_flow", 120, 100),
+        m(5, "taxes", 10, 0),
+        m(5, "rent", 90, 100),
+    ];
+    let got: Vec<(String, Option<Decimal>)> = backtest::if_exact(&misses);
+    let at = |k: &str| got.iter().find(|(x, _)| x == k).unwrap().1.unwrap();
+    let pct = |p: i64| Decimal::new(p, 2);
+    assert_eq!(at("extra_income"), pct(30), "40 + 20 of 200; May keeps its own miss");
+    assert_eq!(at("spending_excl_rent"), pct(15), "10 + 20 of 200");
+    assert_eq!(at("cat:Travel"), pct(15));
+    assert_eq!(at("taxes"), pct(20), "taxes add to net: 30 + 10 of 200");
+    assert_eq!(at("rent"), pct(20), "rent takes from net: 30 + 10 of 200");
+    assert!(got.iter().all(|(k, _)| k != "net_cash_flow" && k != "month_end"));
+}
+
+#[test]
+fn history_that_ends_before_last_month_still_gives_twelve_months() {
+    // The import left out September (the data did not cover it): the history ends in August.
+    let mut h = history(&[120; 12]);
+    h.months = (0..12).map(|i| add_months(d(2025, 9, 1), i)).collect();
+    let mut i = inputs();
+    let rows = run(&i, &h).unwrap();
+    assert_eq!(spend(&rows[0], "Food"), n(120), "average over 12 months, not 11");
+    i.method = "same month last year".into();
+    let rows = run(&i, &h).unwrap();
+    let sept = rows.iter().find(|r| r.month == d(2027, 9, 1)).unwrap();
+    assert_eq!(spend(sept, "Food"), n(120), "September 2025 is in the lookup");
+}

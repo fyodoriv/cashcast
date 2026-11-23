@@ -325,7 +325,24 @@ pub fn resolve(user: Option<&str>) -> Result<UserHome, AppError> {
             return Ok(UserHome::new(LEGACY, private_root()));
         }
         check_name(&u)?;
-        return Ok(UserHome::new(&u, users_dir().join(&u)));
+        let home = users_dir().join(&u);
+        if !home.join("profile.toml").exists() {
+            // A typo must not become a new, empty person.
+            let known = list_users();
+            let people = if known.is_empty() {
+                "none yet".to_string()
+            } else {
+                known.join(", ")
+            };
+            return Err(AppError::new(
+                "usererror",
+                format!(
+                    "no person named {}; people: {people}. Add one: bin/cashcast users add {u} --province XX",
+                    py_repr(&u)
+                ),
+            ));
+        }
+        return Ok(UserHome::new(&u, home));
     }
     let names = list_users();
     match names.len() {

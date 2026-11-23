@@ -158,7 +158,14 @@ consent grant and the money moves stay with the owner.
 4b. Learn: `bin/cashcast backtest`. While task `forecast-spending-double-count`
    is open in `TASKS.md`, call the forecast unreliable and do not trust its
    "no new money" verdict. When the miss grew since last week, name its cause
-   on the results page and add the `TASKS.md` task in step 6.
+   on the results page and add the `TASKS.md` task in step 6. When the import
+   report's months end before last month, the history export is stale: say so
+   and ask the owner to export a fresh MoneyWiz net-worth CSV. When "Net cash
+   flow WAPE by method" lists a lower method than "(now)", ask the owner whether
+   to set `[forecast] method` to it (a settings change: explain both methods).
+   Compare the month-end line too: a method that lowers the monthly miss but
+   raises the month-end miss is not better; say so instead of switching. To
+   explain a large miss, name the top line in "if one line were exact".
 4c. Card lesson: `bin/cashcast cards missed` (this week) and `cards missed
    --since <30 days ago>`. Totals per card and category only.
 4d. Verdict: can this weekly replace typing into MoneyWiz, except cash? Yes
@@ -351,7 +358,9 @@ answer, edit the user's `cashcast.toml` (keep it valid TOML), then re-run
 - **floor:** cash to keep untouched. The default is 3 months of spending.
   Write `[forecast]` `floor`.
 - **rent (optional):** a fixed rent or mortgage, if it will differ from
-  history. Write `[rent]` `category` and `charged`.
+  history. Write `[rent]` `category` and `charged`. When rent is paid by a card
+  service a week early (Chexy and similar), also write `paid_ahead_from_day = 20`
+  so each rent counts in the month it pays for.
 - **spending (optional):** the user's own monthly estimate and the method.
   Write `[forecast]` `baseline` and `method`.
 
