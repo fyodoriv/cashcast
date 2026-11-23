@@ -22,7 +22,9 @@ fake() { # fake DIR NAME BODY: a tool that logs its arguments, then runs BODY
   chmod +x "$1/bin/$2"
 }
 # env -i: no BASH_ENV or profile can put real tools back on the PATH.
-run() { (cd "$1" && /usr/bin/env -i HOME="$1/home" PATH="$1/bin" "$BASH_BIN" scripts/install-tools.sh) > "$1/out" 2>&1; }
+# CASHCAST_BREW_DIRS points at an empty folder, so the real Homebrew in
+# /opt/homebrew is never found or run (it once reinstalled a real formula).
+run() { (cd "$1" && /usr/bin/env -i HOME="$1/home" PATH="$1/bin" CASHCAST_BREW_DIRS="$1/no-homebrew" "$BASH_BIN" scripts/install-tools.sh) > "$1/out" 2>&1; }
 
 # 1. A new Mac with Homebrew: everything else is missing.
 a="$tmp/a"; root "$a"
@@ -52,3 +54,15 @@ fake "$c" brew
 run "$c" || { echo "FAIL install-tools: failed with every tool present"; cat "$c/out"; exit 1; }
 if grep -q "^brew install" "$c/log" 2>/dev/null; then echo "FAIL install-tools: installed a tool that was present"; exit 1; fi
 echo "ok install-tools installs nothing when every tool is there"
+
+# 4. Homebrew just installed but not on PATH yet (its installer only prints
+# the `brew shellenv` step): found in its standard folder and used.
+d="$tmp/d"; root "$d"
+mkdir -p "$d/homebrew/bin"
+printf '#!/bin/sh\necho "brew $*" >> "%s/log"\n[ "$1" = shellenv ] && echo "export PATH=\\"%s/homebrew/bin:\\$PATH\\""\nexit 0\n' "$d" "$d" > "$d/homebrew/bin/brew"
+chmod +x "$d/homebrew/bin/brew"
+for t in cargo pnpm pdftotext; do fake "$d" "$t"; done
+(cd "$d" && /usr/bin/env -i HOME="$d/home" PATH="$d/bin" CASHCAST_BREW_DIRS="$d/homebrew/bin" "$BASH_BIN" scripts/install-tools.sh) > "$d/out" 2>&1 \
+  || { echo "FAIL install-tools: did not find Homebrew off the PATH"; cat "$d/out"; exit 1; }
+grep -qx "brew install --quiet jq yq sqlite node" "$d/log" || { echo "FAIL install-tools: did not use Homebrew from its folder"; cat "$d/log"; exit 1; }
+echo "ok install-tools finds Homebrew that is not on the PATH yet"

@@ -296,7 +296,8 @@ pub fn list_users() -> Vec<String> {
     let mut names: Vec<String> = std::fs::read_dir(users_dir())
         .map(|rd| {
             rd.flatten()
-                .filter(|e| e.path().is_dir())
+                // A person has a profile; a leftover folder is not one.
+                .filter(|e| e.path().join("profile.toml").is_file())
                 .filter_map(|e| e.file_name().into_string().ok())
                 .filter(|n| valid_name(n))
                 .collect()

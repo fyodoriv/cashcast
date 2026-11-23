@@ -9,6 +9,14 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 has() { command -v "$1" >/dev/null 2>&1; }
+# The Homebrew installer does not add itself to PATH (it prints a
+# `brew shellenv` step), so look in its standard folders too.
+if ! has brew; then
+  for d in ${CASHCAST_BREW_DIRS:-/opt/homebrew/bin /usr/local/bin}; do
+    b="$d/brew"
+    [ -x "$b" ] && eval "$("$b" shellenv)" && break
+  done
+fi
 
 formulas=()
 for pair in jq:jq yq:yq sqlite3:sqlite node:node; do
@@ -46,6 +54,9 @@ fi
 if ! has pnpm; then
   version="$(sed -n 's/.*"packageManager": *"pnpm@\([0-9.]*\)".*/\1/p' web/package.json)"
   echo "Installing pnpm ${version:-latest}"
-  { corepack enable >/dev/null 2>&1 && has pnpm; } || npm install --global --silent "pnpm@${version:-latest}"
+  { corepack enable >/dev/null 2>&1 && has pnpm; } \
+    || npm install --global --silent "pnpm@${version:-latest}" 2>/dev/null \
+    || { has brew && brew install --quiet pnpm; } \
+    || { echo "✗ pnpm did not install. Run: brew install pnpm"; exit 1; }
 fi
 echo "tools: ready"

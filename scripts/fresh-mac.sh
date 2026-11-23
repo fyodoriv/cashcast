@@ -19,12 +19,16 @@ step() { # step NAME COMMAND...: runs it, prints the result line, keeps going
   if "$@"; then echo "step ok      $name"; else echo "step FAILED  $name"; fails=$((fails + 1)); fi
 }
 
-# Keep the machine's Rust toolchain (it lives under the real HOME); every
-# other path starts empty, as on a new Mac.
-export RUSTUP_HOME="${RUSTUP_HOME:-$HOME/.rustup}" CARGO_HOME="${CARGO_HOME:-$HOME/.cargo}"
+# Every path starts empty, as on a new Mac: no Rust toolchain (rustup finds
+# none under the fresh HOME, so setup has to install one), no data.
+# FRESH_MAC_KEEP_RUST=1 keeps your toolchain (a faster run on your own Mac).
+real_home="$HOME"
 HOME="$(mktemp -d "${TMPDIR:-/tmp}/fresh-mac.XXXXXX")"
 export HOME
-unset CASHCAST_HOME CASHCAST_USER CASHCAST_PRIVATE CASHCAST_ROOT
+unset CASHCAST_HOME CASHCAST_USER CASHCAST_PRIVATE CASHCAST_ROOT RUSTUP_HOME CARGO_HOME
+if [ "${FRESH_MAC_KEEP_RUST:-0}" = 1 ]; then
+  export RUSTUP_HOME="$real_home/.rustup" CARGO_HOME="$real_home/.cargo"
+fi
 # An empty telemetry key, so nothing can send.
 printf -v CASHCAST_POSTHOG_KEY '%s' ''
 export CASHCAST_POSTHOG_KEY CASHCAST_LIVE=off
@@ -32,7 +36,11 @@ echo "fresh HOME: $HOME"
 
 for tool in ${FRESH_MAC_REMOVE:-}; do
   brew uninstall --ignore-dependencies --force "$tool" >/dev/null 2>&1 || true
-  command -v "$tool" >/dev/null && echo "note: $tool is still on PATH ($(command -v "$tool"))"
+  if command -v "$tool" >/dev/null; then
+    echo "step FAILED  remove $tool first (still on PATH: $(command -v "$tool")); the install of it would not be tested"
+    exit 1
+  fi
+  echo "removed $tool"
 done
 
 # The README's one-line command, read from the README itself.
@@ -60,7 +68,8 @@ step "first import (no data printed)" import_runs
 step "start the app" env CASHCAST_AGENT=1 "$cli"
 "$cli" stop >/dev/null 2>&1 || true
 step "the doctor passes" "$app/scripts/doctor.sh"
-step "cashcast is on the PATH" test -x "$HOME/.local/bin/cashcast"
+on_path() { [ "$(PATH="$HOME/.local/bin:$PATH" command -v cashcast)" = "$HOME/.local/bin/cashcast" ] && PATH="$HOME/.local/bin:$PATH" cashcast help >/dev/null; }
+step "cashcast runs from the PATH" on_path
 
 [ "$fails" -eq 0 ] && echo "fresh-mac: all steps passed" || echo "fresh-mac: $fails step(s) failed"
 [ "$fails" -eq 0 ]
