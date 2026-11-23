@@ -6,7 +6,7 @@ description = "Cashcast engine: reads bank and app exports locally and prints on
 publish = false
 
 [dependencies]
-aes-gcm = "0.10"
+aes-gcm = "0.11"
 calamine = { version = "0.37.0", default-features = false, features = ["dates"] }
 chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
 csv = "1.4.0"
