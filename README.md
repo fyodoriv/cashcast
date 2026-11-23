@@ -31,8 +31,11 @@ bin/cashcast users add alex --province ON         # one folder per person
 bin/cashcast web                                  # open the printed link: your plan, on this computer only
 ```
 
-You need [Rust](https://rustup.rs), jq, yq, sqlite3 and
-Node with pnpm. For a guided first run, start your coding agent here (for
+The setup installs what is missing (Rust, jq, yq, Node, pnpm) with Homebrew;
+if Homebrew itself is missing, it prints the one line to install it. Later
+runs of `cashcast` update a clean checkout and rebuild the engine and the
+web app when they changed. CI proves this on a clean Mac (`scripts/fresh-mac.sh`).
+For a guided first run, start your coding agent here (for
 example `claude`) and type `/cashcast-start`; it asks only what the app cannot find.
 
 Docs map: [docs/README.md](docs/README.md). Contributing: [CONTRIBUTING.md](CONTRIBUTING.md).

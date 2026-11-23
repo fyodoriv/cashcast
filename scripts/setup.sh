@@ -6,6 +6,15 @@ cd "$(dirname "$0")/.."
 
 step() { printf '\n==> %s\n' "$1"; }
 
+step "Install missing tools"
+if [ "${SETUP_SKIP_TOOLS:-0}" = 1 ]; then
+  echo "skipped (SETUP_SKIP_TOOLS=1)"
+else
+  scripts/install-tools.sh
+  # Tools it just installed (Rust under ~/.cargo/bin) for the steps below.
+  [ -d "$HOME/.cargo/bin" ] && PATH="$HOME/.cargo/bin:$PATH" && export PATH
+fi
+
 step "Install dependencies"
 if [ "${SETUP_SKIP_DEPS:-0}" = 1 ]; then
   echo "skipped (SETUP_SKIP_DEPS=1)"

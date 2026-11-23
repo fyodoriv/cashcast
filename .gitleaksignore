@@ -1,3 +1,5 @@
 # Public example vectors from the Kraken API docs and the classic OAuth 1.0a example (tests/unit/test_api.py), not secrets.
 4af076c0144cdd9b73f7d9d7fccbfcfe7506c97c:tests/unit/test_api.py:generic-api-key:40
 4af076c0144cdd9b73f7d9d7fccbfcfe7506c97c:tests/unit/test_api.py:generic-api-key:60
+# An empty telemetry key in an earlier commit of scripts/fresh-mac.sh (CASHCAST_POSTHOG_KEY=""), not a secret.
+7cd970e347bca0d38d40391041b822f436e6cde5:scripts/fresh-mac.sh:generic-api-key:28

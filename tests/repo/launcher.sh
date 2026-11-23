@@ -50,3 +50,36 @@ touch "$b/engine/src/main.rs"
 out="$(PATH="$b/fakebin:$PATH" CASHCAST_HOME="$tmp/data" "$b/bin/cashcast" status 2>/dev/null)"
 [ "$out" = old-engine ] || { echo "FAIL launcher: rebuilt a linked engine/target ($out)"; exit 1; }
 echo "ok launcher leaves a linked engine/target alone"
+
+# The web app: `cashcast web` (and the bare start) rebuild web/dist when the
+# web sources or lockfile are newer than the build, or it is missing. A
+# failed build keeps the old one. Other commands never build the web app.
+w="$tmp/w"
+fake_root "$w"
+mkdir -p "$w/web/src" "$w/web/dist"
+echo '{}' > "$w/web/package.json"
+echo "// canary" > "$w/web/src/main.tsx"
+echo old-dist > "$w/web/dist/index.html"
+# A fake pnpm: `pnpm -s build` writes a new dist; PNPM_FAIL=1 makes it fail.
+printf '#!/bin/sh\n[ "${PNPM_FAIL:-0}" = 1 ] && exit 1\ncase "$*" in *build*) mkdir -p dist; echo new-dist > dist/index.html ;; esac\n' > "$w/fakebin/pnpm"
+chmod +x "$w/fakebin/pnpm"
+touch -t 202601010000 "$w/web/src/main.tsx" "$w/web/package.json"
+run_w() { PATH="$w/fakebin:$PATH" CASHCAST_HOME="$tmp/data" CASHCAST_AUTO_UPDATE=0 "$w/bin/cashcast" "$@" >/dev/null 2>&1 || true; }
+run_w web
+[ "$(cat "$w/web/dist/index.html")" = old-dist ] || { echo "FAIL launcher: rebuilt an up-to-date web app"; exit 1; }
+echo "ok launcher keeps an up-to-date web app"
+
+touch "$w/web/src/main.tsx"
+run_w status
+[ "$(cat "$w/web/dist/index.html")" = old-dist ] || { echo "FAIL launcher: a non-web command built the web app"; exit 1; }
+PNPM_FAIL=1 run_w web
+[ "$(cat "$w/web/dist/index.html")" = old-dist ] || { echo "FAIL launcher: a failed web build lost the old one"; exit 1; }
+echo "ok launcher keeps the old web app when a build fails"
+run_w web
+[ "$(cat "$w/web/dist/index.html")" = new-dist ] || { echo "FAIL launcher: kept a stale web app after its sources changed"; exit 1; }
+echo "ok launcher rebuilds a stale web app"
+
+rm -rf "$w/web/dist"
+run_w
+[ "$(cat "$w/web/dist/index.html" 2>/dev/null)" = new-dist ] || { echo "FAIL launcher: the start did not build a missing web app"; exit 1; }
+echo "ok launcher builds a missing web app on start"

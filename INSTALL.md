@@ -41,19 +41,22 @@ git clone https://github.com/fyodoriv/cashcast.git <DIR>   # or: git -C <DIR> pu
 
 Tell the person, in your own short words:
 
-- what they need: git, [Rust](https://rustup.rs) (cargo), jq, yq, sqlite3,
-  and Node with pnpm; a few minutes (the
-  first engine build is the slow part), and network for the first install,
-- what will change: a `.venv` in the clone, the built engine in
+- what they need: git and Homebrew. The setup installs the rest when it is
+  missing (Rust, jq, yq, Node, pnpm, poppler); if Homebrew is missing, it
+  prints the one line to install it (that line asks for the Mac password).
+  A few minutes (the first engine build is the slow part), and network for
+  the first install,
+- what will change: missing tools from Homebrew and rustup, the built engine in
   `engine/target`, the built web app, an owner-only `private/` folder, and a
   `~/.local/bin/cashcast` link. Nothing else outside the clone changes, the
-  uv, cargo, and pnpm caches aside,
+  cargo and pnpm caches aside,
 - that rerunning the setup is safe: it is idempotent,
 - that no data leaves the computer unless they grant consent themselves,
 - how to undo: delete the clone and the `~/.local/bin/cashcast` link.
 
-If a tool is missing, `scripts/doctor.sh` names the install command for it.
-Help install it first, then show the plan again.
+If Homebrew is missing, the setup stops with its install line: ask the
+person to run it in their own terminal (it needs their password), then run
+the setup again. `scripts/doctor.sh` names the fix for anything else.
 
 ## 3. Ask for preferences
 
@@ -75,7 +78,7 @@ Get a clear yes to the plan, then run from the clone:
 cd <DIR> && scripts/setup.sh
 ```
 
-It installs the web and engine dependencies, makes the local
+It installs missing tools, the web and engine dependencies, makes the local
 folders, installs the git hooks, links `cashcast` on the PATH, and ends with
 the doctor. On a failure, tell the person what failed and the fix line, and
 offer the report in step 8.

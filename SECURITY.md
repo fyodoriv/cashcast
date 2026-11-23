@@ -28,6 +28,29 @@ allowlist, and `private/` is never tracked.
 | Data leaves the computer only with the owner's consent | `engine/src/core/consent.rs`, `engine/src/core/gate.rs`, [docs/privacy.md](docs/privacy.md) exits table | engine tests |
 | Agents never move money, type passwords or 2FA codes | [AGENTS.md](AGENTS.md) rule 6 | agent rules |
 
+## Repository settings
+
+These GitHub settings protect the public repo. They live on GitHub, not in
+the code; read them with `gh api repos/fyodoriv/cashcast` and
+`gh api repos/fyodoriv/cashcast/rulesets`.
+
+| Setting | Value | Why |
+|---|---|---|
+| Ruleset `main` | changes only through a pull request with green `gate` and `fresh-mac` checks; no force-push, no deletion; nobody bypasses it | a broken or rewritten `main` would reach every install through auto-update |
+| Secret scanning and push protection | on | a token pushed by mistake is blocked or reported |
+| Dependabot security updates | on, plus `.github/dependabot.yml` (cargo, npm, GitHub Actions, weekly) | known-vulnerable packages get a fix PR |
+| Private vulnerability reporting | on | the advisory link above works |
+| Actions must be pinned to a full SHA | on | a moved tag cannot change what CI runs |
+| Fork pull requests need approval to run CI | all outside contributors | a stranger's PR cannot use the runners unseen |
+
+## The web app stays on this computer
+
+`bin/cashcast web` listens on `127.0.0.1` only, never on the network. Every
+API call needs the token printed in the link, and the server answers only to
+the `127.0.0.1` or `localhost` Host header, which blocks DNS-rebinding pages.
+Tests: `engine/src/web.rs` and `engine/tests/app_web.rs`. There is no hosted
+version: a server would hold people's money data.
+
 `scripts/public-readiness.sh --history` also checks every commit: gitleaks on
 the whole history, the private pattern in every diff and commit message, and
 noreply author emails. The public history starts from one fresh root commit
