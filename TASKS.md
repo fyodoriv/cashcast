@@ -66,12 +66,16 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     "Learning rule"). Proposal: a damped trend on each category base (growth of the last 6
     months over the 6 before, clamped to 0.8-1.25, half applied). Also check whether
     Uncategorized holds stock-plan cash or transfers (`bin/cashcast columns`, no raw rows).
-  - **Hypothesis**: net cash flow WAPE drops from 58.2 % to about 55 %, and the spending bias
-    halves, because spending has been rising.
+  - **Hypothesis**: re-registered 2026-11-22 after task `import-window-last-full-month` moved the
+    baseline (net cash flow 48.3 %, spending 23.7 % with the forecast too low on average): a
+    "damped trend average" method lowers net cash flow WAPE to about 45 % and halves the
+    spending bias, because spending has been rising. Tried first as a new method, so
+    `backtest` scores it beside the others.
   - **Measurement**: `bin/cashcast backtest` lines "Spending excl. rent" (mean miss and WAPE)
     and "Net cash flow" WAPE, before and after.
-  - **Success**: net cash flow WAPE 56 % or lower, spending WAPE not above 23.2 %.
-  - **Pivot**: net cash flow WAPE above 58 %: rising spending is not the cause; drop it.
+  - **Success**: net cash flow WAPE 45.3 % or lower (3 points under 48.3 %), spending WAPE not
+    above 23.7 %.
+  - **Pivot**: net cash flow WAPE above 47.3 %: rising spending is not the cause; drop it.
   - **Anchor**: Hyndman & Athanasopoulos 2021, §8.2 (damped trend methods); Gardner &
     McKenzie 1985, *Management Science* 31(10) (damped trend).
   - **Files**: `engine/src/forecast/model.rs`, `engine/tests/forecast_model.rs`
