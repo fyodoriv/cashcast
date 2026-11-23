@@ -158,7 +158,11 @@ consent grant and the money moves stay with the owner.
 4b. Learn: `bin/cashcast backtest`. While task `forecast-spending-double-count`
    is open in `TASKS.md`, call the forecast unreliable and do not trust its
    "no new money" verdict. When the miss grew since last week, name its cause
-   on the results page and add the `TASKS.md` task in step 6.
+   on the results page and add the `TASKS.md` task in step 6. When the import
+   report's months end before last month, the history export is stale: say so
+   and ask the owner to export a fresh MoneyWiz net-worth CSV. When "Net cash
+   flow WAPE by method" lists a lower method than "(now)", ask the owner whether
+   to set `[forecast] method` to it (a settings change: explain both methods).
 4c. Card lesson: `bin/cashcast cards missed` (this week) and `cards missed
    --since <30 days ago>`. Totals per card and category only.
 4d. Verdict: can this weekly replace typing into MoneyWiz, except cash? Yes

@@ -32,6 +32,7 @@ Biggest category misses (mean per month):
 
 Mean miss by calendar month of the forecast month (repeated signs are patterns to learn):
 Line                      Jan    Feb    Mar    Apr    May    Jun    Jul    Aug    Sep    Oct    Nov    Dec
+Net salary             +3,000 +3,000 +3,000 +3,000 +4,500 +3,000 +3,000 +3,000 +3,000 +3,000 +4,500 +3,000
 Extra income               +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0
 Taxes                      +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0     +0
 Spending excl. rent      -919   -817   -715   -612   -510   -408   -306   -204   -102 -1,225 -1,123 -1,021

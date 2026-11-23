@@ -834,6 +834,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
   "generated_on": "<NOW>",
   "base_currency": "",
   "months": [
+    "2023-10",
     "2023-11",
     "2023-12",
     "2024-01",
@@ -868,8 +869,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
     "2026-06",
     "2026-07",
     "2026-08",
-    "2026-09",
-    "2026-10"
+    "2026-09"
   ],
   "files": [
     {
@@ -904,7 +904,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
   "pay": {
     "schedule": "biweekly",
     "source": "Income > Salary",
-    "anchor": "2026-10-02",
+    "anchor": "2026-09-18",
     "cycles": [
       {
         "nominal": "2025-10-03",
@@ -1087,13 +1087,6 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
         "weekday": "Fri",
         "offset_days": 0,
         "deposits": 1
-      },
-      {
-        "nominal": "2026-10-02",
-        "paid_on": "2026-10-02",
-        "weekday": "Fri",
-        "offset_days": 0,
-        "deposits": 1
       }
     ],
     "half_years": [
@@ -1111,17 +1104,17 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       },
       {
         "period": "2026-H2",
-        "cheques": 7,
+        "cheques": 6,
         "median_cents": 300000,
         "off_median": 0
       }
     ],
     "gap_days": {
-      "14": 26
+      "14": 25
     },
     "off_cycle_deposits": 0,
     "deposit_accounts": {
-      "bank": 27
+      "bank": 26
     },
     "cycles_per_month": [
       0,
@@ -1147,6 +1140,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       0,
       0,
       0,
+      0,
       3,
       2,
       2,
@@ -1158,8 +1152,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       2,
       2,
       2,
-      2,
-      1
+      2
     ]
   },
   "income_cents": {},
@@ -1189,6 +1182,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       0,
       0,
       0,
+      0,
       8000,
       8000,
       8000,
@@ -1200,8 +1194,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       8000,
       8000,
       8000,
-      8000,
-      0
+      8000
     ],
     "Food": [
       0,
@@ -1227,6 +1220,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       0,
       0,
       0,
+      0,
       57000,
       57000,
       57000,
@@ -1238,8 +1232,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       57000,
       57000,
       57000,
-      57000,
-      0
+      57000
     ],
     "Housing": [
       0,
@@ -1265,6 +1258,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       0,
       0,
       0,
+      0,
       180000,
       180000,
       180000,
@@ -1276,8 +1270,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       180000,
       180000,
       180000,
-      180000,
-      0
+      180000
     ]
   },
   "flows_cents": {
@@ -1457,6 +1450,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       0,
       0,
       0,
+      0,
       900000,
       600000,
       600000,
@@ -1468,8 +1462,7 @@ deposit groups and recurring payments apart. It stays in private/ and the app ne
       600000,
       600000,
       600000,
-      600000,
-      300000
+      600000
     ],
     "salary_off_cycle": [
       0,
@@ -3250,9 +3243,6 @@ Next review: **Mon, Nov 2**.
 7. Cash back: redeem balances of $25+ as a statement credit.
 8. Budget: look at the categories over budget; adjust the budget or the habit.
 
-**Signals this month:**
-- Spending 2026-10: predicted $2,450.00, actual $0.00 (-100%).
-
 ## Dated checklist
 
 - [ ] 2026-10-16: Pay Test Costly down to $50.00 — you do this (moves money)
@@ -4051,7 +4041,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "start-net-total", "event": "report_shown", "scope": "agent:strategy"}
@@ -4073,7 +4062,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "start-net-total", "event": "report_shown", "scope": "agent:strategy"}
@@ -4111,7 +4099,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "strategy", "event": "report_shown", "scope": "agent:strategy"}
@@ -4132,7 +4119,6 @@ Next review: **Mon, Nov 2**.
 {"event": "section_built", "section": "spending"}
 {"event": "section_built", "section": "budget"}
 {"event": "section_built", "section": "alternatives"}
-{"checked": 1, "event": "forecast_scored", "misses": 1}
 {"event": "section_built", "section": "review"}
 {"event": "section_built", "section": "net_total"}
 {"command": "tasks", "event": "report_shown", "scope": "agent:strategy"}

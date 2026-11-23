@@ -698,6 +698,7 @@ fn cmd_backtest(home: &Path, today: NaiveDate, o: &mut Out) -> Result<(), Failur
     );
     let at = |m: NaiveDate| hist.months.iter().position(|x| *x == m);
     for line in [
+        "net_salary",
         "extra_income",
         "taxes",
         "spending_excl_rent",

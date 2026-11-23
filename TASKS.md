@@ -34,52 +34,6 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Gray & Reuter 1993, *Transaction Processing*, ch. 10 (idempotent resend after
     an unacknowledged write)
 
-- [ ] The import window ends at the last month the data covers
-  - **ID**: import-window-last-full-month
-  - **Tags**: forecast, import, judges
-  - **Details**: Found 2026-11-22 while testing task `forecast-salary-point-in-time` (dropped by
-    its pivot: pay medians known at each origin made net salary worse, 24.3 % to 30.9 %, and
-    net cash flow 58.2 % to 62.4 %, so pay was not leaking backward). The new Net salary row in
-    "Mean miss by calendar month" showed the whole salary missing in the last month. The
-    forecast history comes from one MoneyWiz CSV that ends on the 1st of that month, but the
-    default window (`summarize.rs` `window`) still ends at last calendar month, so its last
-    month holds one day of rows and every origin scores it. Change: with no
-    `[window] last_month`, end the window at the newest month whose last day is within 3 days
-    of the newest included row.
-  - **Hypothesis**: net cash flow WAPE drops from 58.2 % to about 50 % and month end from
-    69.7 % to under 60 %, because the backtest stops scoring a month with no data.
-  - **Measurement**: `bin/cashcast import`, then `bin/cashcast backtest` lines "Net cash flow",
-    "Net salary" and "Month end (cumulative net)" WAPE, before and after.
-  - **Success**: net cash flow WAPE 56 % or lower and month end WAPE under 69.7 %.
-  - **Pivot**: net cash flow WAPE above 58 %: the partial month is not what drives the miss;
-    drop the change.
-  - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 3rd ed.,
-    §5.8 (evaluate on complete periods; a partial last period biases the test set).
-  - **Files**: `engine/src/summarize.rs`, `engine/tests/classes.rs`
-
-- [ ] Spending forecast stops running low on Travel and Uncategorized
-  - **ID**: forecast-spending-low-bias
-  - **Tags**: forecast, judges
-  - **Details**: Judge panel, 2026-11-22 (statistician rank 1 and 2). Spending excl. rent is
-    forecast too low on average (WAPE 23.2 %), mostly in Travel and Uncategorized; trimming
-    spikes would make it worse, and a spending method per category already failed (README
-    "Learning rule"). Proposal: a damped trend on each category base (growth of the last 6
-    months over the 6 before, clamped to 0.8-1.25, half applied). Also check whether
-    Uncategorized holds stock-plan cash or transfers (`bin/cashcast columns`, no raw rows).
-  - **Hypothesis**: re-registered 2026-11-22 after task `import-window-last-full-month` moved the
-    baseline (net cash flow 48.3 %, spending 23.7 % with the forecast too low on average): a
-    "damped trend average" method lowers net cash flow WAPE to about 45 % and halves the
-    spending bias, because spending has been rising. Tried first as a new method, so
-    `backtest` scores it beside the others.
-  - **Measurement**: `bin/cashcast backtest` lines "Spending excl. rent" (mean miss and WAPE)
-    and "Net cash flow" WAPE, before and after.
-  - **Success**: net cash flow WAPE 45.3 % or lower (3 points under 48.3 %), spending WAPE not
-    above 23.7 %.
-  - **Pivot**: net cash flow WAPE above 47.3 %: rising spending is not the cause; drop it.
-  - **Anchor**: Hyndman & Athanasopoulos 2021, §8.2 (damped trend methods); Gardner &
-    McKenzie 1985, *Management Science* 31(10) (damped trend).
-  - **Files**: `engine/src/forecast/model.rs`, `engine/tests/forecast_model.rs`
-
 - [ ] The forecast's spending and opening cash match the owner's real accounts
   - **ID**: forecast-spending-double-count
   - **Tags**: forecast, bug, moneywiz
@@ -121,6 +75,15 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     23.2 %. Mean absolute monthly miss fell 9.5 %. Month end (cumulative) rose 61.3 % to 69.7 %:
     the double and empty rent months had cancelled out, and the forecast's optimistic lean now
     shows (tasks `forecast-salary-point-in-time`, `forecast-spending-low-bias`).
+    Follow-ups, 2026-11-22 late: pay known at each origin was dropped by its pivot (net salary
+    24.3 % to 30.9 %, net cash flow 58.2 % to 62.4 %). The new Net salary row in "Mean miss by
+    calendar month" showed the last month empty: the MoneyWiz CSV the import reads ends on the
+    1st. The default window now ends at the last month most active accounts cover: net cash
+    flow 58.2 % to 48.3 % (best method, same month last year, 57.5 % to 41.8 %), net salary
+    24.3 % to 10.1 %, month end 69.7 % to 58.3 %, mean absolute miss down 24.5 %; spending
+    23.2 % to 23.7 %; 9 origins instead of 10. A "damped trend average" method was dropped by
+    its pivot (49.2 %, above 47.3 %). Next: refresh the MoneyWiz CSV export (or read the live
+    database) so the newest months are in the history.
   - **Files**: `engine/src/summarize.rs` (classes, roles), `engine/src/forecast/model.rs`
     (opening cash), `engine/tests/classes.rs`, `engine/tests/forecast_model.rs`
   - **Acceptance**: a failing synthetic test first (a bank export that repeats MoneyWiz rows
