@@ -34,27 +34,28 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Gray & Reuter 1993, *Transaction Processing*, ch. 10 (idempotent resend after
     an unacknowledged write)
 
-- [ ] The salary forecast in the backtest uses only pay known at each start month
-  - **ID**: forecast-salary-point-in-time
-  - **Tags**: forecast, judges, backtest
-  - **Details**: Judge panel, 2026-11-22 (backtest judge rank 3, household-finance judge rank
-    2). `inputs_from` (`engine/src/forecast/model.rs`, the `half_years` "latest" pick) gives
-    every backtest start month the newest half-year net pay, so a raise leaks into forecasts
-    made before it. Net salary misses 24.3 % with the forecast too high on average, and after
-    the rent fix the forecast leans optimistic in every cumulative line (month end 69.7 %).
-    Change: carry `half_years` in `Inputs` and, at each origin, use the newest half-year that
-    ended before it; config values still win.
-  - **Hypothesis**: net salary WAPE drops from 24.3 % to about 12 %, and net cash flow WAPE
-    from 58.2 % to about 55 %, because past forecasts stop using future pay.
-  - **Measurement**: `bin/cashcast backtest` lines "Net salary" and "Net cash flow" WAPE, and
-    "Month end (cumulative net)", same history, before and after.
-  - **Success**: net cash flow WAPE 56 % or lower and month end WAPE lower than before.
-  - **Pivot**: net salary bias keeps more than half its size: the cause is the cheque count
-    per month, not the pay rate; check `cheques_in` against deposits instead.
+- [ ] The import window ends at the last month the data covers
+  - **ID**: import-window-last-full-month
+  - **Tags**: forecast, import, judges
+  - **Details**: Found 2026-11-22 while testing task `forecast-salary-point-in-time` (dropped by
+    its pivot: pay medians known at each origin made net salary worse, 24.3 % to 30.9 %, and
+    net cash flow 58.2 % to 62.4 %, so pay was not leaking backward). The new Net salary row in
+    "Mean miss by calendar month" showed the whole salary missing in the last month. The
+    forecast history comes from one MoneyWiz CSV that ends on the 1st of that month, but the
+    default window (`summarize.rs` `window`) still ends at last calendar month, so its last
+    month holds one day of rows and every origin scores it. Change: with no
+    `[window] last_month`, end the window at the newest month whose last day is within 3 days
+    of the newest included row.
+  - **Hypothesis**: net cash flow WAPE drops from 58.2 % to about 50 % and month end from
+    69.7 % to under 60 %, because the backtest stops scoring a month with no data.
+  - **Measurement**: `bin/cashcast import`, then `bin/cashcast backtest` lines "Net cash flow",
+    "Net salary" and "Month end (cumulative net)" WAPE, before and after.
+  - **Success**: net cash flow WAPE 56 % or lower and month end WAPE under 69.7 %.
+  - **Pivot**: net cash flow WAPE above 58 %: the partial month is not what drives the miss;
+    drop the change.
   - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 3rd ed.,
-    §5.10 (time series cross-validation: each forecast uses only data before its origin).
-  - **Files**: `engine/src/forecast/model.rs`, `engine/src/forecast/backtest.rs`,
-    `engine/tests/forecast_model.rs`
+    §5.8 (evaluate on complete periods; a partial last period biases the test set).
+  - **Files**: `engine/src/summarize.rs`, `engine/tests/classes.rs`
 
 - [ ] Spending forecast stops running low on Travel and Uncategorized
   - **ID**: forecast-spending-low-bias
