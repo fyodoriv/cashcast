@@ -10,7 +10,7 @@ aes-gcm = "0.10"
 calamine = { version = "0.37.0", default-features = false, features = ["dates"] }
 chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
 csv = "1.4.0"
-getrandom = "0.2"
+getrandom = "0.3"
 plist = { version = "1", default-features = false }
 quick-xml = "0.42"
 regex = { version = "1.13", default-features = false, features = ["std", "unicode", "perf"] }
