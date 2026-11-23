@@ -186,6 +186,8 @@ Run from the repo root.
 | 2026-11-22 | the transfer plan said to pay a card in full that the owner had already paid | it used a 6-day-old download's balance; skill step 2c: compare each sync balance with the live site and plan transfers from live balances only |
 | 2026-11-22 | a test with a bare `PATH` still found the real `jq` and `curl` (and ran the real rustup installer) | this Mac's `BASH_ENV` hook prepends tool folders to every bash; run such tests with `/usr/bin/env -i` (`tests/repo/install-tools.sh`) |
 | 2026-11-22 | a stub test of `install-tools.sh` reinstalled a real Homebrew formula (sqlite) | the script also looks for `brew` in `/opt/homebrew/bin` (a fresh Homebrew is not on PATH yet); a test must set `CASHCAST_BREW_DIRS` to an empty folder |
+| 2026-11-22 | a Bash call that appends Rust tests with a heredoc is refused ("starts a detached process with no watch"), and a `cd` to another repo in one call resets the shell to the main checkout | the hook reads an `&` in the heredoc (`&u`) as a background start when the call also runs a command it does not know (`rg`, `python3`): write such text with the Edit tool. Use `git -C <path>` and absolute paths, not `cd`, for other checkouts |
+| 2026-11-22 | `rustfmt` on `engine/tests/citizenship.rs` rewraps old long lines | format only the source files you changed; restore unrelated test lines before the commit |
 | 2026-10-02 | the pre-push privacy gate flags a word | do not add accounting-file formats that match it; see memory |
 
 ## Cloud sessions
