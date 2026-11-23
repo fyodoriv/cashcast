@@ -666,6 +666,17 @@ fn cmd_backtest(home: &Path, today: NaiveDate, o: &mut Out) -> Result<(), Failur
         let mark = if m == inputs.method { " (now)" } else { "" };
         say!(o, "- {m}: {}{mark}", pct(wape));
     }
+    let mut exact = backtest::if_exact(&misses);
+    // "(untracked)" is only the baseline padding (forecast side only), not a line to fix.
+    exact.retain(|(k, w)| w.is_some() && k != "cat:(untracked)");
+    exact.sort_by(|a, b| a.1.cmp(&b.1));
+    say!(o, "\nNet cash flow WAPE if one line were exact (lowest = where accuracy is lost):");
+    for (k, wape) in exact.iter().take(6) {
+        let name = k
+            .strip_prefix("cat:")
+            .map_or_else(|| label(k).to_string(), |c| format!("category {c}"));
+        say!(o, "- {name}: {}", pct(*wape));
+    }
     let mut cat_scores: Vec<(String, backtest::Score)> = lines
         .iter()
         .filter_map(|(k, v)| {

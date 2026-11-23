@@ -99,6 +99,58 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
   - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 5.8
     (scale-free accuracy measures such as WAPE/MAPE)
 
+- [ ] The forecast follows a spending level that moved, so the monthly cash flow is 65 % accurate
+  - **ID**: forecast-level-shift
+  - **Tags**: forecast, accuracy
+  - **Details**: Owner goal 2026-11-22: "at least reach 65% accuracy" (the Forecast view's
+    monthly cash flow accuracy, 100 % minus the backtest WAPE; now 51.7 %). A new backtest
+    line, "Net cash flow WAPE if one line were exact", shows where the miss comes from: an exact
+    Travel forecast alone would give 29.8 % (an exact extra income line is not in the top 6).
+    Travel was near zero each month until late 2025 and has been large most months since, so
+    the trailing-12 average lags the new level for a year. Try methods that follow a moved
+    level: the average of the last 6 months, and simple exponential smoothing.
+  - **Files**: `engine/src/forecast/model.rs` (`METHODS`, `run`), `engine/src/forecast/backtest.rs`
+    (`if_exact`), `engine/src/forecast/mod.rs`, `engine/tests/forecast_model.rs`
+  - **Acceptance**: a failing synthetic test first (a category that jumps to a new level is
+    forecast near the new level); `backtest` scores the new methods beside the old ones; the
+    owner's `[forecast] method` is set to the lowest one (owner said yes, 2026-11-22).
+  - **Hypothesis**: a level-following method lowers net cash flow WAPE from 48.3 % to 35 % or
+    less, because Travel moved to a higher level a year ago and the 12-month average still
+    mixes in the old one.
+  - **Measurement**: `bin/cashcast backtest` ("Net cash flow WAPE by method" lines; guard:
+    "Month end (cumulative net)" WAPE for the chosen method)
+  - **Success**: net cash flow WAPE 35.0 % or lower for the best new method, with month-end
+    WAPE not above 58.3 %
+  - **Pivot**: above 45 %: a moved level is not the cause; look at Travel planned ahead
+    (known trips) instead of history
+  - **Anchor**: Hyndman & Athanasopoulos 2021, *Forecasting: Principles and Practice*, 8.1
+    (simple exponential smoothing for a level that moves)
+  - **Result 1** (2026-11-22): dropped by its pivot. Net cash flow WAPE 50.1 % (last 6 months)
+    and 50.8 % (smoothing, 0.3), above 45 %. Spending excl. rent 23.7 % to 19.3-20.2 %, month
+    end 58.3 % to 50.9-53.3 %, but an exact Travel line still gives about 32 %: what is left
+    is when trips happen, not their level.
+  - **Approach 2, pre-registered 2026-11-22**: a "trailing-6 median" method (the median is the
+    point forecast that minimizes absolute error, so it fits WAPE; Hyndman & Athanasopoulos
+    5.4). Success: net cash flow WAPE 35.0 % or lower, month end not above 58.3 %. Pivot:
+    above 45 %, drop it.
+  - **Approach 3, pre-registered 2026-11-22**: correct each line by its mean miss over the
+    backtest months that ended before the forecast date (model output statistics, Glahn and
+    Lowry 1972), scored in `backtest` as a separate line first. Success: net cash flow WAPE
+    35.0 % or lower. Pivot: above 45 %, drop it; then 65 % monthly accuracy is out of reach
+    from history alone, and the next step is trips planned ahead.
+  - **Result 2-3** (2026-11-22): both dropped by their pivots. Last-6-months median 51.5 %
+    (month end 84.9 %). Moving each forecast by its own past mean miss made every method worse
+    (trailing-12 average 56.1 %, same month last year 64.9 %). Best from history alone: same
+    month last year, 41.8 % (58.2 % accurate), but its month end misses by 74.0 % (58.3 % now),
+    so the owner's method stays. Kept: the "if one line were exact" backtest line.
+  - **Approach 4, pre-registered 2026-11-22**: trips the owner has booked go into
+    `cashcast.toml` as planned spending (month, amount, category), like `[extra_income]`.
+    History cannot show it, so it is measured forward: "Last saved forecast vs actual" in
+    `bin/cashcast backtest` over the next 3 months. Success: Travel's mean absolute miss in
+    those months at most half of the backtest's and net cash flow WAPE
+    35.0 % or lower. Pivot: Travel miss above 75 % of the backtest's: booked trips are not what
+    drives the Travel line; drop it.
+
 - [ ] The owner answers the open invest-plan questions, and the judge loop reaches 10 of 10
   - **ID**: invest-owner-answers
   - **Tags**: invest-plan, owner
