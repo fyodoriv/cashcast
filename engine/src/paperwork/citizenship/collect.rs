@@ -151,8 +151,9 @@ pub fn parse_nomads(text: &str) -> Result<Vec<Stay>, String> {
     };
     let pick = |o: &Map<String, Value>, re: &str| {
         let re = Regex::new(&format!("(?i)^({re})$")).unwrap();
+        // The site's own CSV export writes "Arrival date", with a space.
         o.iter()
-            .find(|(k, _)| re.is_match(k))
+            .find(|(k, _)| re.is_match(&k.trim().replace(' ', "_")))
             .map(|(_, v)| v.clone())
     };
     let mut out = vec![];
@@ -160,7 +161,7 @@ pub fn parse_nomads(text: &str) -> Result<Vec<Stay>, String> {
         let from = day_value(
             pick(
                 o,
-                r"date_?start|start(_?date)?|from|arrival|check_?in|epoch_?start",
+                r"date_?start|start(_?date)?|from|arrival(_?date)?|check_?in|epoch_?start",
             )
             .as_ref(),
             false,
@@ -168,7 +169,7 @@ pub fn parse_nomads(text: &str) -> Result<Vec<Stay>, String> {
         let to = day_value(
             pick(
                 o,
-                r"date_?end|end(_?date)?|to|departure|check_?out|epoch_?end",
+                r"date_?end|end(_?date)?|to|departure(_?date)?|check_?out|epoch_?end",
             )
             .as_ref(),
             false,
@@ -539,6 +540,25 @@ fn country(code: &str) -> String {
         .map_or(code.to_string(), |(_, n)| n.to_string())
 }
 
+/// A day the way the card prints it: "01 JUN / JUIN 21" (month in two languages, a
+/// 2-digit year). A 2-digit year after today's is read as the last century.
+fn card_day(s: &str, today: &str) -> Option<String> {
+    let c = Regex::new(r"^(\d{1,2}) ([A-Za-z]{3})[A-Za-z]*(?: ?/ ?\p{L}+)? (\d{4}|\d{2})$")
+        .unwrap()
+        .captures(s.trim())?;
+    let mut year: i32 = c[3].parse().ok()?;
+    if c[3].len() == 2 {
+        let now: i32 = today.get(..4)?.parse().ok()?;
+        year += now / 100 * 100;
+        if year > now {
+            year -= 100;
+        }
+    }
+    NaiveDate::parse_from_str(&format!("{} {} {year}", &c[1], &c[2]), "%d %b %Y")
+        .ok()
+        .map(iso)
+}
+
 /// The PR card: the back's TD1 zone (name, birth); the front's "PR since" and UCI, which
 /// Claude transcribes from the owner's photo. Also returns whether the zone's digits hold.
 pub fn parse_pr_card(text: &str, today: &str) -> (Partial, Option<bool>) {
@@ -548,7 +568,7 @@ pub fn parse_pr_card(text: &str, today: &str) -> (Partial, Option<bool>) {
         out.insert("uci".into(), json!(c[1].replace([' ', '-'], "")));
     }
     let since = Regex::new(
-        r"(?i)(?:PR since|RP depuis|permanent resident since|date of landing)[^\d]{0,20}(\d{4}[-/ ]\d{2}[-/ ]\d{2}|\d{1,2} [A-Za-z]{3,9} \d{4}|[A-Za-z]{3,9} \d{1,2},? \d{4})",
+        r"(?i)(?:PR since|RP depuis|permanent resident since|date of landing)[^\d]{0,20}(\d{4}[-/ ]\d{2}[-/ ]\d{2}|\d{1,2} [A-Za-z]{3,9}(?: ?/ ?\p{L}{3,9})? (?:\d{4}|\d{2})\b|[A-Za-z]{3,9} \d{1,2},? \d{4})",
     )
     .unwrap();
     if let Some(c) = since.captures(text) {
@@ -556,7 +576,7 @@ pub fn parse_pr_card(text: &str, today: &str) -> (Partial, Option<bool>) {
         let s = Regex::new(r"(\d{4}) (\d{2}) (\d{2})")
             .unwrap()
             .replace(&s, "$1-$2-$3");
-        if let Some(d) = day(&s, false) {
+        if let Some(d) = card_day(&c[1], today).or_else(|| day(&s, false)) {
             out.insert("pr_date".into(), json!(d));
         }
     }
@@ -583,11 +603,17 @@ pub fn parse_passport(text: &str, today: &str) -> (Partial, Option<bool>) {
         return (out, Some(false));
     }
     let issued = Regex::new(
-        r"(?i)(?:date of issue|issued|d[ée]livrance)[^\d]{0,20}(\d{4}-\d{2}-\d{2}|\d{1,2} [A-Za-z]{3,9} \d{4})",
+        r"(?i)(?:date of issue|issued|d[ée]livrance)[^\d]{0,20}(\d{4}-\d{2}-\d{2}|\d{1,2} [A-Za-z]{3,9} \d{4}|\d{1,2}\.\d{1,2}\.\d{4})",
     )
     .unwrap()
     .captures(text)
-    .and_then(|c| day(&c[1], false));
+    .and_then(|c| {
+        // Many passports print the day first, with dots: 16.04.2018.
+        NaiveDate::parse_from_str(&c[1], "%d.%m.%Y")
+            .ok()
+            .map(iso)
+            .or_else(|| day(&c[1], false))
+    });
     let mut p = Map::new();
     p.insert(
         "holder".into(),
