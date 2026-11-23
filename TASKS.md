@@ -520,6 +520,43 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
 
 ## P2
 
+- [ ] `sync status` clears a failed Reminders run once `reminders sync` succeeds
+  - **ID**: sync-status-after-reminders-sync
+  - **Tags**: tasks, reminders, sync
+  - **Details**: Found 2026-11-22. Reminders sync failed on missing access; the owner granted it,
+    and a rerun of `bin/cashcast reminders sync` worked. `bin/cashcast sync status` still said
+    "reminders: last run failed … no full Reminders access". Only `sync all` writes
+    `data/sync-state.json` (`engine/src/tasks/sync.rs` `save_state`), so a standalone target run
+    that succeeds never replaces the old failure.
+  - **Files**: `engine/src/tasks/sync.rs`, `engine/src/tasks/apple.rs`, `engine/src/core/cli.rs`
+  - **Acceptance**: a failing synthetic test: a failed state, then a good `reminders sync` with the
+    fake JXA, then `sync status` reads "in sync"; then the fix.
+  - **Hypothesis**: stale "last run failed" lines after a good standalone run fall from 1 of 1 to 0.
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test app_tasks` (the new test)
+    and `bin/cashcast sync status` after `bin/cashcast reminders sync`
+  - **Success**: the test passes and `sync status` shows no stale failure after a good run
+  - **Pivot**: if a standalone run must not touch the shared state, print "rerun `sync all`" in
+    the failed line instead
+  - **Anchor**: Nygard 2018, *Release It!* 2nd ed. (health checks must reflect the latest result)
+
+- [ ] `bin/cashcast` in a worktree finds the main checkout's private data or says where it is
+  - **ID**: worktree-finds-private-data
+  - **Tags**: launcher, agent, worktree
+  - **Details**: Found 2026-11-22. In an agent worktree (`.claude/worktrees/<name>`) every command
+    failed "no profile for user 'default'. Run: bin/cashcast users adopt", because `private/` lives
+    only in the main checkout. The hint sends a person to adopt a new user, which is wrong there.
+    `CASHCAST_ROOT=<main checkout>` did not help for `tasks` and `sync status`.
+  - **Files**: `bin/cashcast` (release branch owns it: coordinate), `engine/src/core/users.rs`,
+    `tests/repo/launcher.sh`
+  - **Acceptance**: a repo test runs the launcher from a fake worktree with no `private/` and gets
+    either the main checkout's data or a hint naming the main checkout path, never "users adopt".
+  - **Hypothesis**: worktree runs that print the "users adopt" hint fall from 100 % to 0 %.
+  - **Measurement**: `tests/repo/run.sh launcher`
+  - **Success**: the new case passes; no "users adopt" hint in a worktree
+  - **Pivot**: if reading the main checkout's data from a worktree breaks the privacy rules, print
+    only the main checkout path and stop
+  - **Anchor**: Nielsen 1994, *Usability Engineering* (error messages that help recover)
+
 - [ ] Find the flat cash gap in two MoneyWiz investment accounts
   - **ID**: moneywiz-invest-cash-gap
   - **Tags**: moneywiz, investments
