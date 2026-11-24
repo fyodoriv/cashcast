@@ -122,6 +122,14 @@ since the PR date, because each wrong day moves the count by 1.
 - **Rate each leave day and return day** high, medium or low, and give the reason. High
   needs 2 sources that do not come from each other, one a record of that day. A return day
   also needs a record on the Canadian side. The owner's calendar is a plan, never enough alone.
+  Apply the same rule to every row: a leave day needs a record in Canada on that day or the
+  day before, and a row that rests on an open question is medium until the answer.
+- **Read every ride and food-delivery receipt on each border day, from every provider**
+  (Uber, Lyft, DoorDash and others), not only receipts with an airport charge. A ride to the
+  airport proves the leave day; a ride from it proves the return day. List the provider's
+  mails for the whole period first to see which providers the owner uses.
+- **List every stretch of 6 days or more with no located photo**, from the photo index, and
+  check each one for receipts. Name the ones with no record as weak stretches, with their cost.
 - **Sweep every month since the PR date** for a trip the list does not hold: photo places,
   declaration mails, airport ride receipts, booking mails, carrier mails. Say what you searched
   and what you did not. "None found" is not "none exist": ask the owner to confirm.
