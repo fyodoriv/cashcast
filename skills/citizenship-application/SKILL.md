@@ -106,6 +106,33 @@ The collector prints which keys it added, never a value.
   number a source masks (CRA shows part of the SIN). Ask them all in one batch.
 - Scratch files hold ID numbers: delete each right after its collect.
 
+### Check the trips against outside records (before the sign day is final)
+
+The nomads.com list is the owner's own log. Do not trust its border days. Check each trip
+since the PR date, because each wrong day moves the count by 1.
+
+- **The list gives arrival days, not leave days.** An evening flight leaves Canada the day
+  before the first stay starts. Read the ticket mail for the departure day.
+- **A flight home due near midnight may land the next day.** The return day is the day the
+  owner crossed the border. Best mail evidence: the CBSA declaration mail (ArriveCAN, sent
+  minutes before the kiosk) and a ride receipt from the airport with its pickup time. A
+  declaration mail sent 1 to 3 days before the flight is an advance declaration, not a crossing.
+- **A gap between two stays abroad is not a visit to Canada.** The collector may turn a
+  transit of 1 or 2 days into "returned, then left". Join the two trips with `put`.
+- **Rate each leave day and return day** high, medium or low, and give the reason. High
+  needs 2 sources that do not come from each other, one a record of that day. A return day
+  also needs a record on the Canadian side. The owner's calendar is a plan, never enough alone.
+- **Sweep every month since the PR date** for a trip the list does not hold: photo places,
+  declaration mails, airport ride receipts, booking mails, carrier mails. Say what you searched
+  and what you did not. "None found" is not "none exist": ask the owner to confirm.
+- **Photos prove where a phone was, not who held it.** A library can hold photos from other
+  people's phones. Name the phone model when a photo is the proof.
+- **Never write "ready to submit" while a question is open.** Put each row below high, each
+  airport ride with no flight, and same-day trips to the United States in a loud gaps list,
+  each with one question the owner can answer in a word, and the official fix: the CBSA
+  travel history request and the US I-94 travel history page (the owner types the passport
+  details).
+
 ### The evidence page (the owner's one view of the draft)
 
 After each collect, keep a screenshot of the source as proof, then rebuild the page:

@@ -802,6 +802,27 @@ Every new tracked path needs a `!` line in the allowlist `.gitignore`.
     rule and only document it in the skill
   - **Anchor**: Beizer 1990, *Software Testing Techniques* (a regression test per defect)
 
+- [ ] The nomads collector keeps a transit gap as one absence and warns on border days
+  - **ID**: citizenship-nomads-border-days
+  - **Tags**: paperwork, citizenship, quality
+  - **Details**: Found 2026-11-23 in the travel check. (1) `collect nomads` turned a gap of
+    2 days between two stays abroad (a long flight with a stop) into "returned to Canada, then
+    left again": two trips with a visit to Canada that never happened. (2) The list holds
+    arrival days: a trip whose first stay starts the day after an evening flight got a leave day
+    1 day late. (3) `citizenship answers` gives no hint that a trip's border days are unchecked.
+  - **Files**: `engine/src/paperwork/citizenship/collect.rs`, `engine/src/paperwork/citizenship/answers.rs`,
+    `engine/tests/citizenship.rs`, `skills/citizenship-application/SKILL.md`
+  - **Acceptance**: a failing synthetic test first for each: (1) a gap of up to 2 days between
+    two stays abroad, with no stay in Canada, stays one absence; (2) `answers` prints one WARN
+    that names how many trips have border days from the nomads list only, until `put` sets them.
+  - **Hypothesis**: border days that are wrong by 1 day or a false visit to Canada reach the
+    owner's review 0 times without a warning (2 of 5 trips and 1 gap did on 2026-11-23).
+  - **Measurement**: `cargo test --manifest-path engine/Cargo.toml --test citizenship`
+  - **Success**: the 2 new tests pass and parity shows 0 mismatches
+  - **Pivot**: if a gap cannot be told from a real short visit without more data, keep the
+    two trips and only print the warning
+  - **Anchor**: Beizer 1990, *Software Testing Techniques* (a regression test per defect)
+
 - [ ] The citizenship judge knows the official document checklist and its version
   - **ID**: citizenship-checklist-fact
   - **Tags**: paperwork, citizenship, knowledge
