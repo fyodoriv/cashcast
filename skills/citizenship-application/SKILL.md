@@ -220,6 +220,15 @@ they must be the same. If they differ, find the trip that differs before you go 
 3. Final gate, all fresh: `paperwork sources --live` 0 CHANGED; `citizenship
    answers` exit 0 with today's date; every screen judged; every upload ticked off; today is
    the sign day in the answers and the calculator.
+   Final ID check, when the owner asks for it: compare each ID number on the form with the
+   picture of its document, from two screenshots side by side. Never type or print the
+   number: report its length, its last 2 characters, and "match" or "differs". UCI: the
+   "ID No" on the PR card front. Passport number: the printed number and the `<<<` line
+   (recompute its check digit). Tax number: the Service Canada "SIN Confirmation" letter;
+   with no letter, say "checksum passes, yours to confirm", not "match". In the site's file
+   viewer a page can hold several viewers: show them all and read the one with a canvas.
+   After a long gap, list the browser tabs again before the first read: a tab id can go stale.
+   Give each page and each file its own read time, taken from the clock.
 4. The owner signs (the date sets the 5-year window), reads the declaration and submits.
    They save the confirmation.
 
