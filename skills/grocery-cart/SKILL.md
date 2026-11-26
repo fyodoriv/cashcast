@@ -81,6 +81,13 @@ Search the delivery apps the person has a membership for (`grocery prefs`), sign
   rendered text (the HTML is a shell). Add with the card's "Quick Add" inside the
   store's section. Checkout shows "Taxes & Non-Gov't Fees" and may default to
   Priority delivery; Standard is cheaper. Never press Place order.
+  - Search one store: `<store url>?diningMode=DELIVERY&storeSearchQuery=<item>`
+    (or `history.pushState` to that URL plus a `popstate` event, no reload).
+  - A card's count bubble opens a stepper (`Increment`/`Decrement`) that closes
+    after each tap: reopen it per tap and read the bubble until it shows the count.
+  - Cross-store search: a convenience store "4 x 330 ml" at a single-can price
+    is a per-can listing. Skip per-litre outliers under half the median.
+  - Checkout opens with a "Complete your order" upsell: press Skip, then read it.
 - DoorDash: `/search/store/<item>/` groups items by store. The store banner shows
   promos ("30% off, up to CA$19"). Read cards with `textContent` (innerText is
   empty in a background tab). Add with `[data-testid=add-button-label]`.
