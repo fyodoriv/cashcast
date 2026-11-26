@@ -192,7 +192,7 @@ Chrome tab. The owner signs in. Wait; do not touch the sign-in page.
 | Representative (Q8) | `representative` | yes means IMM 5476; a representative who submits for you means paper |
 | Physical presence (Q9) | the calculator in the account | see step 4 below; the calculator's application date is the sign day |
 | Address history (Q10) | `addresses`, newest first, current address first | covers all 5 years, no gaps, postal codes; row 1 copies the contact address |
-| Work and study (Q11) | `activities` | every month of 5 years: work, school, language classes, unemployed, caregiver; "present" for ongoing |
+| Work and study (Q11) | `activities` | every month of 5 years: work, school, language classes, unemployed, caregiver; "present" for ongoing; leave "Province or state" empty unless the country is Canada or the United States (the sign step refuses it) |
 | Taxes (Q12) | `taxes.sin`, each year's had-to-file and filed, `taxes.cra_consent` | the years fill in from the window; answer all 5 even if abroad |
 | Status elsewhere (Q13) | `other_status` | your country of citizenship counts |
 | Passports (Q14) | `passports` | every one held in the 5 years, numbers exactly, no spaces |
@@ -220,6 +220,12 @@ they must be the same. If they differ, find the trip that differs before you go 
 3. Final gate, all fresh: `paperwork sources --live` 0 CHANGED; `citizenship
    answers` exit 0 with today's date; every screen judged; every upload ticked off; today is
    the sign day in the answers and the calculator.
+   "This page is ready" is not the sign check: the sign step runs more rules. Before the
+   owner pays, read every work row: a row for a country other than Canada or the United
+   States must show no province after its city. If one does, ask the owner, then open the
+   row with Edit and press "Save activity" (the field is greyed out and saves empty). If
+   signing fails with "Something went wrong with your signature", look for such a rule
+   first; no sign request was sent.
    Final ID check, when the owner asks for it: compare each ID number on the form with the
    picture of its document, from two screenshots side by side. Never type or print the
    number: report its length, its last 2 characters, and "match" or "differs". UCI: the
